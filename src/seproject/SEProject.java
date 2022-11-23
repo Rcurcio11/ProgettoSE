@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXML.java to edit this template
- */
+
 package seproject;
 
 import javafx.application.Application;
@@ -12,7 +9,7 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author Rosario
+ * @author Group14
  */
 public class SEProject extends Application {
     
