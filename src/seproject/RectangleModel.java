@@ -9,10 +9,10 @@ import javafx.scene.shape.Rectangle;
  *
  * @author Group14
  */
-public class ShapeRectangle extends DrawShape{
+public class RectangleModel extends ShapeModel{
     private Rectangle rectangle;
 
-    public ShapeRectangle() {
+    public RectangleModel() {
         rectangle = new Rectangle();
     }
 

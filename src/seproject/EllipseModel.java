@@ -13,11 +13,11 @@ import javafx.scene.shape.Ellipse;
  * @author Group14
  */
 
-public class ShapeEllipse extends DrawShape{
+public class EllipseModel extends ShapeModel{
     
     private Ellipse ellipse;
 
-    public ShapeEllipse() {
+    public EllipseModel() {
         ellipse = new Ellipse();
     }
 

@@ -16,17 +16,17 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import seproject.ShapeRectangle;
+import seproject.RectangleModel;
 
 /**
  *
  * @author uondi
  */
 public class ShapeRectangleTest {
-    private ShapeRectangle testShapeRectangle;
+    private RectangleModel testShapeRectangle;
     
     public ShapeRectangleTest() {
-        testShapeRectangle = new ShapeRectangle();
+        testShapeRectangle = new RectangleModel();
         
     }
     

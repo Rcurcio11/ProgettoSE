@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
  *
  * @author Group14
  */
-public abstract class DrawShape {
+public abstract class ShapeModel {
     
     public void insert (AnchorPane drawingPane, double prevX, double prevY, double lastX, double lastY){
         

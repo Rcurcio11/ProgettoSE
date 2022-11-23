@@ -10,18 +10,18 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import seproject.DrawShape;
-import seproject.ShapeEllipse;
+import seproject.ShapeModel;
+import seproject.EllipseModel;
 
 /**
  *
  * @author giuseppefusco
  */
 public class ShapeEllipseTest {
-    private ShapeEllipse testShapeEllipse;
+    private EllipseModel testShapeEllipse;
     
     public ShapeEllipseTest() {
-        testShapeEllipse = new ShapeEllipse();
+        testShapeEllipse = new EllipseModel();
     }
     
     @BeforeClass
