@@ -8,7 +8,7 @@
    <children>
       <ScrollPane layoutY="128.0" prefHeight="320.0" prefWidth="589.0">
         <content>
-          <AnchorPane fx:id="drawingArea" minHeight="0.0" minWidth="0.0" onMouseClicked="#startDrawingPoint" onMouseReleased="#endDrawingPoint" prefHeight="2000.0" prefWidth="2000.0" />
+          <AnchorPane fx:id="drawingArea" minHeight="0.0" minWidth="0.0" onMouseClicked="#handleMouseClickedOnDrawingArea" onMouseReleased="#handleMouseReleasedOnDrawingArea" prefHeight="2000.0" prefWidth="2000.0" />
         </content>
       </ScrollPane>
       <HBox fx:id="toolBox" prefHeight="130.0" prefWidth="589.0" />

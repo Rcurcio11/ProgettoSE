@@ -3,10 +3,12 @@ package seproject;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
@@ -31,12 +33,12 @@ public class FXMLGuiDocumentController implements Initializable {
     }
 
     @FXML
-    private void endDrawingPoint(MouseEvent event) {
+    private void handleMouseReleasedOnDrawingArea(MouseEvent event) {
         endPoint = new Point2D(event.getX(),event.getY());
     }
 
     @FXML
-    private void startDrawingPoint(MouseEvent event) {
+    private void handleMouseClickedOnDrawingArea(MouseEvent event) {
         startPoint = new Point2D(event.getX(),event.getY());
     }
 
