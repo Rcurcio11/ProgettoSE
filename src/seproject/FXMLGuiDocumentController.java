@@ -27,6 +27,8 @@ public class FXMLGuiDocumentController implements Initializable {
     private Point2D endPoint;
     @FXML
     private Button rettangleButton;
+    @FXML
+    private Button ellipseButton;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -46,6 +48,10 @@ public class FXMLGuiDocumentController implements Initializable {
 
     @FXML
     private void handleButtonActionRectangle(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleButtonActionEllipse(ActionEvent event) {
     }
 
     
