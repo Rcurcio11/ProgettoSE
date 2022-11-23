@@ -6,13 +6,18 @@ package seproject;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.layout.AnchorPane;
 
 /**
  *
  * @author Rosario
  */
 public class FXMLGuiDocumentController implements Initializable {
+
+    @FXML
+    private AnchorPane drawingArea;
 
     
     

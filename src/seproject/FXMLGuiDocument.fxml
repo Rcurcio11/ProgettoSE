@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="200" prefWidth="320" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seproject.FXMLGuiDocumentController" />
+<AnchorPane id="AnchorPane" prefHeight="448.0" prefWidth="539.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seproject.FXMLGuiDocumentController">
+   <children>
+      <ScrollPane layoutY="128.0" prefHeight="320.0" prefWidth="589.0">
+        <content>
+          <AnchorPane fx:id="drawingArea" minHeight="0.0" minWidth="0.0" prefHeight="2000.0" prefWidth="2000.0" />
+        </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>
