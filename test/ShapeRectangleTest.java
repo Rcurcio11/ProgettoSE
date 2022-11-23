@@ -24,7 +24,6 @@ import seproject.ShapeRectangle;
  */
 public class ShapeRectangleTest {
     private ShapeRectangle testShapeRectangle;
-    public static final double TOLERANCE = 1e-9;
     
     public ShapeRectangleTest() {
         testShapeRectangle = new ShapeRectangle();
@@ -49,24 +48,17 @@ public class ShapeRectangleTest {
 
     @Test
     public void testInsert() {
-       AnchorPane testPane = new AnchorPane();
-       
+       AnchorPane testPane = new AnchorPane();     
        double startX = Math.random()*663;
        double startY = Math.random()*479;
        double endX = Math.random()*663; 
        double endY = Math.random()*479;
-
        
        testShapeRectangle.insert(testPane, startX, startY, endX, endY);
        
        assertEquals(1, testPane.getChildren().size());
-       
-       
        assertEquals(testPane.getChildren().get(0).getClass(), javafx.scene.shape.Rectangle.class);
-       
-  
-    }
-    
+    }   
 }
 
 

@@ -18,10 +18,10 @@ import seproject.ShapeEllipse;
  * @author giuseppefusco
  */
 public class ShapeEllipseTest {
-    private DrawShape ellipse;
+    private ShapeEllipse testShapeEllipse;
     
     public ShapeEllipseTest() {
-        ellipse = new ShapeEllipse();
+        testShapeEllipse = new ShapeEllipse();
     }
     
     @BeforeClass
@@ -44,7 +44,13 @@ public class ShapeEllipseTest {
     @Test
     public void testInsert() {
         AnchorPane drawingPane = new AnchorPane();
-        ellipse.insert(drawingPane, 1, 1, 100, 100);
+        double startX = Math.random()*663;
+        double startY = Math.random()*479;
+        double endX = Math.random()*663; 
+        double endY = Math.random()*479;
+        
+        testShapeEllipse.insert(drawingPane, startX, startY, endX, endY);
+        
         assertEquals(1,drawingPane.getChildren().size());
         assertEquals(javafx.scene.shape.Ellipse.class,drawingPane.getChildren().get(0).getClass());
     }
