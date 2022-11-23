@@ -17,6 +17,7 @@
          <children>
             <Button fx:id="rettangleButton" mnemonicParsing="false" onAction="#handleButtonActionRectangle" text="Rectangle" />
             <Button fx:id="ellipseButton" mnemonicParsing="false" onAction="#handleButtonActionEllipse" text="Ellipse" />
+            <Button fx:id="lineeButton" mnemonicParsing="false" onAction="#handleButtonActionLinee" text="Line" />
          </children>
          <padding>
             <Insets left="10.0" top="10.0" />
