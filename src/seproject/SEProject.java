@@ -18,7 +18,6 @@ public class SEProject extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLGuiDocument.fxml"));
         
         Scene scene = new Scene(root);
-        
         stage.setScene(scene);
         stage.show();
     }
