@@ -25,6 +25,8 @@ public class FXMLGuiDocumentController implements Initializable {
 
     private Point2D startPoint;
     private Point2D endPoint;
+    @FXML
+    private Button rettangleButton;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -40,6 +42,10 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private void handleMouseClickedOnDrawingArea(MouseEvent event) {
         startPoint = new Point2D(event.getX(),event.getY());
+    }
+
+    @FXML
+    private void handleButtonActionRectangle(ActionEvent event) {
     }
 
     
