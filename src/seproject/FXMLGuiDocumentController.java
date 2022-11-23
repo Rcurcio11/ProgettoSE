@@ -30,7 +30,7 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private Button ellipseButton;
     @FXML
-    private Button lineeButton;
+    private Button lineButton;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -57,7 +57,7 @@ public class FXMLGuiDocumentController implements Initializable {
     }
 
     @FXML
-    private void handleButtonActionLinee(ActionEvent event) {
+    private void handleButtonActionLine(ActionEvent event) {
     }
 
     
