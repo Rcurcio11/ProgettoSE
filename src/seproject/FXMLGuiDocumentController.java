@@ -18,13 +18,19 @@ import javafx.scene.layout.HBox;
  */
 public class FXMLGuiDocumentController implements Initializable {
 
+    ///////////////// USER VARIABLES /////////////////
+    
+    private ShapeModel selectedShape;
+    private OperationExecutor commandInvoker = new OperationExecutor();
+    private Point2D startPoint;
+    private Point2D endPoint;
+    
+    //////////////////////////////////////////////////
+    
     @FXML
     private AnchorPane drawingArea;
     @FXML
     private HBox toolBox;
-
-    private Point2D startPoint;
-    private Point2D endPoint;
     @FXML
     private Button rettangleButton;
     @FXML
@@ -41,12 +47,16 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private void handleMouseReleasedOnDrawingArea(MouseEvent event) {
         endPoint = new Point2D(event.getX(),event.getY());
+        InsertCommand command = new InsertCommand(drawingArea, selectedShape, startPoint, endPoint);
+        commandInvoker.execute(command);
+        selectedShape = selectedShape.nextDraw();
+        
     }
-
     @FXML
-    private void handleMouseClickedOnDrawingArea(MouseEvent event) {
+    private void handleMousePressedOnDrawingArea(MouseEvent event) {
         startPoint = new Point2D(event.getX(),event.getY());
     }
+
 
     @FXML
     private void handleButtonActionRectangle(ActionEvent event) {
@@ -54,12 +64,15 @@ public class FXMLGuiDocumentController implements Initializable {
 
     @FXML
     private void handleButtonActionEllipse(ActionEvent event) {
+        selectedShape = new EllipseModel();
     }
 
     @FXML
     private void handleButtonActionLine(ActionEvent event) {
         
     }
+
+    
 
     
 }

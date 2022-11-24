@@ -29,8 +29,8 @@ public class EllipseModel extends Ellipse implements ShapeModel{
     @Override
     public void insert(AnchorPane drawingPane, Point2D startPoint,Point2D endPoint) {
         
-        double width = abs(startPoint.getX()-endPoint.getX());
-        double height = abs(startPoint.getY()-endPoint.getY());
+        double width = abs(endPoint.getX()-startPoint.getX());
+        double height = abs(endPoint.getY()-startPoint.getY());
         double centerX = (startPoint.getX()+endPoint.getX())/2;
         double centerY = (startPoint.getY()+endPoint.getY())/2;
 
