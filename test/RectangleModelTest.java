@@ -1,8 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
- */
-
 
 import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
@@ -16,7 +11,7 @@ import seproject.RectangleModel;
 
 /**
  *
- * @author uondi
+ * @author Group14
  */
 public class RectangleModelTest {
     private RectangleModel testShapeRectangle;
@@ -49,13 +44,13 @@ public class RectangleModelTest {
        double startY = Math.random()*479;
        double endX = Math.random()*663; 
        double endY = Math.random()*479;
-        Point2D startPoint = new Point2D(startX,startY);
-        Point2D endPoint = new Point2D(endX,endY);
+       Point2D startPoint = new Point2D(startX,startY);
+       Point2D endPoint = new Point2D(endX,endY);
        
        testShapeRectangle.insert(testPane, startPoint, endPoint);
        
        assertEquals(1, testPane.getChildren().size());
-       assertEquals(testPane.getChildren().get(0).getClass(), javafx.scene.shape.Rectangle.class);
+       assertEquals(RectangleModel.class, testPane.getChildren().get(0).getClass());
     }   
 }
 

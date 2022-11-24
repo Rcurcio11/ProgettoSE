@@ -50,7 +50,7 @@ public class LineModelTest {
         
         testShapeLine.insert(drawingPane, startPoint, endPoint);
         assertEquals(1,drawingPane.getChildren().size());
-        assertEquals(javafx.scene.shape.Line.class,drawingPane.getChildren().get(0).getClass());
+        assertEquals(LineModel.class,drawingPane.getChildren().get(0).getClass());
     }
     
     

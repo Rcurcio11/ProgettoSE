@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
- */
 
 import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
@@ -15,7 +11,7 @@ import seproject.EllipseModel;
 
 /**
  *
- * @author giuseppefusco
+ * @author Group14
  */
 public class EllipseModelTest {
     private EllipseModel testShapeEllipse;
@@ -54,6 +50,6 @@ public class EllipseModelTest {
         testShapeEllipse.insert(drawingPane, startPoint, endPoint);
         
         assertEquals(1,drawingPane.getChildren().size());
-        assertEquals(javafx.scene.shape.Ellipse.class,drawingPane.getChildren().get(0).getClass());
+        assertEquals(EllipseModel.class,drawingPane.getChildren().get(0).getClass());
     }
 }
