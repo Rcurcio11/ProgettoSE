@@ -16,6 +16,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 
 /**
@@ -116,6 +117,7 @@ public class FXMLGuiDocumentController implements Initializable {
 
     @FXML
     private void handleActionChangeColor(ActionEvent event) {
+        selectedShape.setColor(outlineColor.getValue(), Color.TRANSPARENT);
     }
 
     
