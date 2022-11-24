@@ -49,7 +49,10 @@ public class LineModelTest {
         Point2D startPoint = new Point2D(startX,startY);
         Point2D endPoint = new Point2D(endX,endY);
         
-        testShapeLine.insert(drawingPane, startPoint, endPoint, Color.color(Math.random(), Math.random(), Math.random()));
+        Color outlineColor = Color.color(Math.random(), Math.random(), Math.random());
+        Color fillingColor = Color.color(Math.random(), Math.random(), Math.random());
+        
+        testShapeLine.insert(drawingPane, startPoint, endPoint, outlineColor, fillingColor);
         assertEquals(1,drawingPane.getChildren().size());
         assertEquals(LineModel.class,drawingPane.getChildren().get(0).getClass());
     }

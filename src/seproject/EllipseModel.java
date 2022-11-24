@@ -31,7 +31,7 @@ public class EllipseModel extends Ellipse implements ShapeModel{
     }
 
     @Override
-    public void insert(AnchorPane drawingPane, Point2D startPoint,Point2D endPoint, Color outlineColor) {
+    public void insert(AnchorPane drawingPane, Point2D startPoint,Point2D endPoint, Color outlineColor, Color fillingColor) {
         this.startPoint = startPoint;
         this.endPoint = endPoint;
         double width = abs(endPoint.getX()-startPoint.getX());
@@ -45,12 +45,13 @@ public class EllipseModel extends Ellipse implements ShapeModel{
         this.setRadiusY(height/2);
         
         this.setStroke(outlineColor);
+        this.setFill(fillingColor);
         drawingPane.getChildren().add(this);
     }
 
 
     @Override
     public String saveOnFileString(String separator) {
-        return this.getClass().getSimpleName() + separator + startPoint.getX() + separator + startPoint.getY() + separator + endPoint.getX() + separator + endPoint.getY() + separator + this.getStroke() + separator;
+        return this.getClass().getSimpleName() + separator + startPoint.getX() + separator + startPoint.getY() + separator + endPoint.getX() + separator + endPoint.getY() + separator + this.getStroke() + separator + this.getFill() + separator;
     }
 }

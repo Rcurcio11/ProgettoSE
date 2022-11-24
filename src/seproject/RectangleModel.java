@@ -23,7 +23,7 @@ public class RectangleModel extends Rectangle implements ShapeModel{
     }
 
     @Override
-    public void insert(AnchorPane drawingPane, Point2D startPoint,Point2D endPoint, Color outlineColor) {
+    public void insert(AnchorPane drawingPane, Point2D startPoint,Point2D endPoint, Color outlineColor, Color fillingColor) {
         if(startPoint.getX() > endPoint.getX())
             this.setX(endPoint.getX());
         else
@@ -41,6 +41,7 @@ public class RectangleModel extends Rectangle implements ShapeModel{
         this.setHeight(height);
         
         this.setStroke(outlineColor);
+        this.setFill(fillingColor);
         
         drawingPane.getChildren().add(this);
     }
@@ -48,6 +49,6 @@ public class RectangleModel extends Rectangle implements ShapeModel{
 
     @Override
     public String saveOnFileString(String separator) {
-        return this.getClass().getSimpleName() + separator + this.getX() + separator + this.getY() + separator + (this.getX() + this.getWidth()) + separator + (this.getY() + this.getHeight()) + separator + this.getStroke() + separator;
+        return this.getClass().getSimpleName() + separator + this.getX() + separator + this.getY() + separator + (this.getX() + this.getWidth()) + separator + (this.getY() + this.getHeight()) + separator + this.getStroke() + separator + this.getFill() + separator;
     }
 }

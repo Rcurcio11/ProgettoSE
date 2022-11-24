@@ -67,7 +67,7 @@ public class FXMLGuiDocumentController implements Initializable {
     private void handleMouseReleasedOnDrawingArea(MouseEvent event) {
         endPoint = new Point2D(event.getX(),event.getY());
         try{
-            InsertCommand command = new InsertCommand(drawingArea, selectedShape,startPoint, endPoint, outlineColor.getValue());
+            InsertCommand command = new InsertCommand(drawingArea, selectedShape,startPoint, endPoint, outlineColor.getValue(), fillingColor.getValue());
             commandInvoker.execute(command);
             selectedShape = selectedShape.nextDraw();
         }catch(ShapeNotSelectedDrawException ex){

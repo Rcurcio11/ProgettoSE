@@ -25,7 +25,7 @@ public class LineModel extends Line implements ShapeModel {
     }
     
    @Override
-    public void insert(AnchorPane drawingPane, Point2D startPoint,Point2D endPoint, Color outlineColor) {
+    public void insert(AnchorPane drawingPane, Point2D startPoint,Point2D endPoint, Color outlineColor, Color fillingColor) {
         this.setStartX(startPoint.getX());
         this.setStartY(startPoint.getY());
         this.setEndX(endPoint.getX());
@@ -38,7 +38,7 @@ public class LineModel extends Line implements ShapeModel {
 
     @Override
     public String saveOnFileString(String separator) {
-        return this.getClass().getSimpleName() + separator + this.getStartX() + separator + this.getStartY() + separator + this.getEndX() + separator + this.getEndY() + separator + this.getStroke() + separator;
+        return this.getClass().getSimpleName() + separator + this.getStartX() + separator + this.getStartY() + separator + this.getEndX() + separator + this.getEndY() + separator + this.getStroke() + separator + this.getStroke() + separator;
     }
     
 }

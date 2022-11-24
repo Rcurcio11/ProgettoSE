@@ -47,9 +47,10 @@ public class LoadDrawingFromFileCommand implements OperationCommand{
                 double endX = loader.nextDouble();
                 double endY = loader.nextDouble();
                 String outlineColor = loader.next();
+                String fillingColor = loader.next();
                 Point2D startPoint = new Point2D(startX,startY);
                 Point2D endPoint = new Point2D(endX,endY);
-                shape.insert(drawingArea,startPoint,endPoint,Color.web(outlineColor));
+                shape.insert(drawingArea,startPoint,endPoint,Color.web(outlineColor), Color.web(fillingColor));
              }
         }catch(FileNotFoundException ex){
             throw new FileErrorDrawException();
