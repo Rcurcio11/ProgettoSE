@@ -1,6 +1,7 @@
 
 package seproject;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -14,6 +15,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 
 /**
  *
@@ -87,6 +89,16 @@ public class FXMLGuiDocumentController implements Initializable {
 
     @FXML
     private void handleActionSaveDrawing(ActionEvent event) {
+        FileChooser fc = new FileChooser();
+        File selectedFile = fc.showSaveDialog(null);
+        if(selectedFile != null){
+            try{
+                commandInvoker.execute(new SaveDrawingOnFileCommand(drawingArea,selectedFile.getAbsolutePath()));
+                //add result message
+            }catch(FileErrorDrawException ex){
+                //Manage the error
+            }
+        }
     }
 
     @FXML

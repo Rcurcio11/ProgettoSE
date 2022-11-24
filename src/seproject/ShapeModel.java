@@ -16,4 +16,6 @@ public interface ShapeModel {
     public ShapeModel nextDraw ();
     
     public void setColor (Color outlineColor, Color fillingColor);
+    
+    public String saveOnFileString(String separator);
 }

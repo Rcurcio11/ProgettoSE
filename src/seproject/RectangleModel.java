@@ -47,4 +47,9 @@ public class RectangleModel extends Rectangle implements ShapeModel{
     public void setColor(Color outlineColor, Color fillingColor) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+    @Override
+    public String saveOnFileString(String separator) {
+        return this.getClass().getSimpleName() + separator + this.getX() + separator + this.getY() + separator + (this.getX() + this.getWidth()) + separator + (this.getY() + this.getHeight()) + separator;
+    }
 }

@@ -38,5 +38,10 @@ public class LineModel extends Line implements ShapeModel {
     public void setColor(Color outlineColor, Color fillingColor) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+    @Override
+    public String saveOnFileString(String separator) {
+        return this.getClass().getSimpleName() + separator + this.getStartX() + separator + this.getStartY() + separator + this.getEndX() + separator + this.getEndY() + separator;
+    }
     
 }

@@ -2,6 +2,10 @@
 package seproject;
 
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
+import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 
 /**
@@ -19,8 +23,17 @@ public class SaveDrawingOnFileCommand implements OperationCommand{
     }
     
     @Override
-    public void execute() {
-        
-    }
+    public void execute() throws GenericDrawException{
+        try{
+            PrintWriter saver = new PrintWriter(new FileOutputStream(filePath));
+                for(Node n:drawingArea.getChildren()){
+                    ShapeModel shape = (ShapeModel)n;
+                    saver.print(shape.saveOnFileString(";"));
+                }
+                saver.close();
+            }catch(FileNotFoundException ex){
+        }
+    
+}
     
 }

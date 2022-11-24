@@ -16,9 +16,13 @@ import javafx.scene.shape.Ellipse;
  */
 
 public class EllipseModel extends Ellipse implements ShapeModel{
+    private Point2D startPoint;
+    private Point2D endPoint;
     
     public EllipseModel() {
         super();
+        startPoint = new Point2D(0,0);
+        endPoint = new Point2D(0,0);
     }
 
     @Override
@@ -28,7 +32,8 @@ public class EllipseModel extends Ellipse implements ShapeModel{
 
     @Override
     public void insert(AnchorPane drawingPane, Point2D startPoint,Point2D endPoint) {
-        
+        this.startPoint = startPoint;
+        this.endPoint = endPoint;
         double width = abs(endPoint.getX()-startPoint.getX());
         double height = abs(endPoint.getY()-startPoint.getY());
         double centerX = (startPoint.getX()+endPoint.getX())/2;
@@ -45,5 +50,10 @@ public class EllipseModel extends Ellipse implements ShapeModel{
     @Override
     public void setColor(Color outlineColor, Color fillingColor) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public String saveOnFileString(String separator) {
+        return this.getClass().getSimpleName() + separator + startPoint.getX() + separator + startPoint.getY() + separator + endPoint.getX() + separator + endPoint.getY() + separator;
     }
 }
