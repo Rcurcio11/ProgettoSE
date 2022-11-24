@@ -9,8 +9,11 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 /**
  *
@@ -37,6 +40,14 @@ public class FXMLGuiDocumentController implements Initializable {
     private Button ellipseButton;
     @FXML
     private Button lineButton;
+    @FXML
+    private VBox menuVBox;
+    @FXML
+    private Menu fileMenu;
+    @FXML
+    private MenuItem saveMenu;
+    @FXML
+    private MenuItem loadMenu;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -72,6 +83,14 @@ public class FXMLGuiDocumentController implements Initializable {
     private void handleButtonActionLine(ActionEvent event) {
         selectedShape = new LineModel();
         
+    }
+
+    @FXML
+    private void handleActionSaveDrawing(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleActionLoadDrawing(ActionEvent event) {
     }
 
     
