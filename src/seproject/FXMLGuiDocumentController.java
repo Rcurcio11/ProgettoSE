@@ -30,6 +30,7 @@ public class FXMLGuiDocumentController implements Initializable {
     private OperationExecutor commandInvoker = new OperationExecutor();
     private Point2D startPoint;
     private Point2D endPoint;
+    private FileChooser fc;
     
     //////////////////////////////////////////////////
     
@@ -96,7 +97,7 @@ public class FXMLGuiDocumentController implements Initializable {
 
     @FXML
     private void handleActionSaveDrawing(ActionEvent event) {
-        FileChooser fc = new FileChooser();
+        fc = new FileChooser();
         File selectedFile = fc.showSaveDialog(null);
         if(selectedFile != null){
             try{
@@ -108,7 +109,7 @@ public class FXMLGuiDocumentController implements Initializable {
 
     @FXML
     private void handleActionLoadDrawing(ActionEvent event) {
-        FileChooser fc = new FileChooser();
+        fc = new FileChooser();
         File selectedFile = fc.showOpenDialog(null);
         if(selectedFile != null){
             try{

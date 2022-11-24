@@ -32,8 +32,8 @@ public class SaveDrawingOnFileCommand implements OperationCommand{
                 }
                 saver.close();
             }catch(FileNotFoundException ex){
+                System.out.println("Error");
+                throw new FileErrorDrawException();
         }
-    
-}
-    
+    }
 }
