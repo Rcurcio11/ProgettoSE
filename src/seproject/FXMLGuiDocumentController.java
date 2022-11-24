@@ -16,6 +16,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 
 /**
@@ -54,6 +55,8 @@ public class FXMLGuiDocumentController implements Initializable {
     private MenuItem loadMenu;
     @FXML
     private ColorPicker outlineColor;
+    @FXML
+    private ColorPicker fillingColor;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -65,7 +68,7 @@ public class FXMLGuiDocumentController implements Initializable {
     private void handleMouseReleasedOnDrawingArea(MouseEvent event) {
         endPoint = new Point2D(event.getX(),event.getY());
         try{
-            InsertCommand command = new InsertCommand(drawingArea, selectedShape, startPoint, endPoint);
+            InsertCommand command = new InsertCommand(drawingArea, selectedShape,startPoint, endPoint, outlineColor.getValue(), fillingColor.getValue());
             commandInvoker.execute(command);
             selectedShape = selectedShape.nextDraw();
         }catch(ShapeNotSelectedDrawException ex){
@@ -117,13 +120,7 @@ public class FXMLGuiDocumentController implements Initializable {
             }catch(FileErrorDrawException ex){
             }
         }
-    }
-
-    @FXML
-    private void handleActionChangeColor(ActionEvent event) {
-    }
-
-    
+    }    
 
     
 }

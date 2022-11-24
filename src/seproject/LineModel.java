@@ -25,23 +25,20 @@ public class LineModel extends Line implements ShapeModel {
     }
     
    @Override
-    public void insert(AnchorPane drawingPane, Point2D startPoint,Point2D endPoint) {
+    public void insert(AnchorPane drawingPane, Point2D startPoint,Point2D endPoint, Color outlineColor, Color fillingColor) {
         this.setStartX(startPoint.getX());
         this.setStartY(startPoint.getY());
         this.setEndX(endPoint.getX());
         this.setEndY(endPoint.getY());
+        this.setStroke(outlineColor);
 
         drawingPane.getChildren().add(this);
     }
 
-    @Override
-    public void setColor(Color outlineColor, Color fillingColor) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 
     @Override
     public String saveOnFileString(String separator) {
-        return this.getClass().getSimpleName() + separator + this.getStartX() + separator + this.getStartY() + separator + this.getEndX() + separator + this.getEndY() + separator;
+        return this.getClass().getSimpleName() + separator + this.getStartX() + separator + this.getStartY() + separator + this.getEndX() + separator + this.getEndY() + separator + this.getStroke() + separator + this.getStroke() + separator;
     }
     
 }

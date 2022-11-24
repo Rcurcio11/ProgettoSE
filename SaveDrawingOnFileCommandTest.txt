@@ -1,1 +1,1 @@
-LineModel;10.0;12.0;14.0;16.0;RectangleModel;10.0;12.0;14.0;16.0;EllipseModel;10.0;12.0;14.0;16.0;LineModel;10.0;12.0;14.0;16.0;
+LineModel;10.0;12.0;14.0;16.0;0x000000ff;0x000000ff;RectangleModel;10.0;12.0;14.0;16.0;0x000000ff;0xff0000ff;EllipseModel;10.0;12.0;14.0;16.0;0x000000ff;0xff0000ff;LineModel;10.0;12.0;14.0;16.0;0x000000ff;0x000000ff;

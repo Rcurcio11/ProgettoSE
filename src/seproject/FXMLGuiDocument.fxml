@@ -32,10 +32,23 @@
                   <Button fx:id="rettangleButton" mnemonicParsing="false" onAction="#handleButtonActionRectangle" text="Rectangle" />
                   <Button fx:id="ellipseButton" mnemonicParsing="false" onAction="#handleButtonActionEllipse" text="Ellipse" />
                   <Button fx:id="lineButton" mnemonicParsing="false" onAction="#handleButtonActionLine" text="Line" />
-                  <Label prefHeight="25.0" prefWidth="69.0" text="Outline color" />
-                  <ColorPicker fx:id="outlineColor" onAction="#handleActionChangeColor" prefHeight="26.0" prefWidth="45.0">
+                  <Label prefHeight="25.0" prefWidth="69.0" text="Outline color">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding></Label>
+                  <ColorPicker fx:id="outlineColor" prefHeight="26.0" prefWidth="45.0">
                      <value>
                         <Color />
+                     </value>
+                  </ColorPicker>
+                  <Label prefHeight="25.0" prefWidth="65.0" text="Filling color">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <ColorPicker fx:id="fillingColor" prefHeight="26.0" prefWidth="45.0">
+                     <value>
+                        <Color red="1.0" green="1.0" blue="1.0" opacity="0.0" />
                      </value>
                   </ColorPicker>
                </children>

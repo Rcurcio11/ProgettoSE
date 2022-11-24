@@ -11,11 +11,10 @@ import javafx.scene.paint.Color;
  */
 public interface ShapeModel {
     
-    public void insert (AnchorPane drawingArea,Point2D starPoint, Point2D endPoint);
+    public void insert (AnchorPane drawingArea,Point2D starPoint, Point2D endPoint, Color outlineColor, Color fillingColor);
     
     public ShapeModel nextDraw ();
     
-    public void setColor (Color outlineColor, Color fillingColor);
     
     public String saveOnFileString(String separator);
 }
