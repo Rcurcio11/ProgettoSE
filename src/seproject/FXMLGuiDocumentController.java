@@ -53,6 +53,8 @@ public class FXMLGuiDocumentController implements Initializable {
     private MenuItem loadMenu;
     @FXML
     private ColorPicker outlineColor;
+    @FXML
+    private ColorPicker fillingColor;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
