@@ -22,10 +22,10 @@ import seproject.RectangleModel;
  *
  * @author uondi
  */
-public class ShapeRectangleTest {
+public class RectangleModelTest {
     private RectangleModel testShapeRectangle;
     
-    public ShapeRectangleTest() {
+    public RectangleModelTest() {
         testShapeRectangle = new RectangleModel();
         
     }

@@ -12,11 +12,11 @@ import javafx.scene.shape.Line;
 *
 * @author Group14
 */
-public class ShapeLine extends ShapeModel {
+public class LineModel extends ShapeModel {
     
     private Line line;
 
-   public ShapeLine() {
+   public LineModel() {
         line = new Line();
     }
 

@@ -3,32 +3,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
  */
 
-import static java.lang.Math.abs;
-import java.util.Arrays;
-import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Rectangle;
-import static org.hamcrest.CoreMatchers.instanceOf;
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import seproject.ShapeLine;
-
+import seproject.EllipseModel;
 
 /**
  *
- * @author Group14
+ * @author giuseppefusco
  */
-public class ShapeLineTest {
+public class EllipseModelTest {
+    private EllipseModel testShapeEllipse;
     
-    private ShapeLine testShapeLine;
-    
-    public ShapeLineTest() {
-        testShapeLine = new ShapeLine();
+    public EllipseModelTest() {
+        testShapeEllipse = new EllipseModel();
     }
     
     @BeforeClass
@@ -47,19 +39,18 @@ public class ShapeLineTest {
     public void tearDown() {
     }
 
+
     @Test
-    public void testInsert(){    
+    public void testInsert() {
         AnchorPane drawingPane = new AnchorPane();
         double startX = Math.random()*663;
         double startY = Math.random()*479;
         double endX = Math.random()*663; 
         double endY = Math.random()*479;
         
-        testShapeLine.insert(drawingPane, startX, startY, endX, endY);
+        testShapeEllipse.insert(drawingPane, startX, startY, endX, endY);
+        
         assertEquals(1,drawingPane.getChildren().size());
-        assertEquals(javafx.scene.shape.Line.class,drawingPane.getChildren().get(0).getClass());
+        assertEquals(javafx.scene.shape.Ellipse.class,drawingPane.getChildren().get(0).getClass());
     }
-    
-    
-
 }
