@@ -22,7 +22,9 @@ public class InsertCommand implements OperationCommand{
     }
 
     @Override
-    public void execute() {
+    public void execute() throws GenericDrawException{
+        if(selectedShape == null)
+            throw new ShapeNotSelectedDrawException();
         selectedShape.insert(drawingArea,starPoint, endPoint);
         
     }

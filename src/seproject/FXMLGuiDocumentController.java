@@ -54,6 +54,8 @@ public class FXMLGuiDocumentController implements Initializable {
     private MenuItem loadMenu;
     @FXML
     private ColorPicker outlineColor;
+    @FXML
+    private ColorPicker fillingColor;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -64,9 +66,13 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private void handleMouseReleasedOnDrawingArea(MouseEvent event) {
         endPoint = new Point2D(event.getX(),event.getY());
-        InsertCommand command = new InsertCommand(drawingArea, selectedShape, startPoint, endPoint);
-        commandInvoker.execute(command);
-        selectedShape = selectedShape.nextDraw();
+        try{
+            InsertCommand command = new InsertCommand(drawingArea, selectedShape, startPoint, endPoint);
+            commandInvoker.execute(command);
+            selectedShape = selectedShape.nextDraw();
+        }catch(ShapeNotSelectedDrawException ex){
+            //manage exception message
+        }
         
     }
     @FXML
