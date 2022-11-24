@@ -1,6 +1,8 @@
 
+
 import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -47,7 +49,7 @@ public class EllipseModelTest {
         Point2D startPoint = new Point2D(startX,startY);
         Point2D endPoint = new Point2D(endX,endY);
         
-        testShapeEllipse.insert(drawingPane, startPoint, endPoint);
+        testShapeEllipse.insert(drawingPane, startPoint, endPoint, Color.color(Math.random(), Math.random(), Math.random()));
         
         assertEquals(1,drawingPane.getChildren().size());
         assertEquals(EllipseModel.class,drawingPane.getChildren().get(0).getClass());

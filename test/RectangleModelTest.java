@@ -1,6 +1,7 @@
 
 import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -47,7 +48,7 @@ public class RectangleModelTest {
        Point2D startPoint = new Point2D(startX,startY);
        Point2D endPoint = new Point2D(endX,endY);
        
-       testShapeRectangle.insert(testPane, startPoint, endPoint);
+       testShapeRectangle.insert(testPane, startPoint, endPoint, Color.color(Math.random(), Math.random(), Math.random()));
        
        assertEquals(1, testPane.getChildren().size());
        assertEquals(RectangleModel.class, testPane.getChildren().get(0).getClass());

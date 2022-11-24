@@ -23,7 +23,7 @@ public class RectangleModel extends Rectangle implements ShapeModel{
     }
 
     @Override
-    public void insert(AnchorPane drawingPane, Point2D startPoint,Point2D endPoint) {
+    public void insert(AnchorPane drawingPane, Point2D startPoint,Point2D endPoint, Color outlineColor) {
         if(startPoint.getX() > endPoint.getX())
             this.setX(endPoint.getX());
         else
@@ -40,16 +40,14 @@ public class RectangleModel extends Rectangle implements ShapeModel{
         this.setWidth(width);
         this.setHeight(height);
         
+        this.setStroke(outlineColor);
+        
         drawingPane.getChildren().add(this);
     }
 
-    @Override
-    public void setColor(Color outlineColor, Color fillingColor) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 
     @Override
     public String saveOnFileString(String separator) {
-        return this.getClass().getSimpleName() + separator + this.getX() + separator + this.getY() + separator + (this.getX() + this.getWidth()) + separator + (this.getY() + this.getHeight()) + separator;
+        return this.getClass().getSimpleName() + separator + this.getX() + separator + this.getY() + separator + (this.getX() + this.getWidth()) + separator + (this.getY() + this.getHeight()) + separator + this.getStroke() + separator;
     }
 }

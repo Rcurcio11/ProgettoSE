@@ -36,7 +36,7 @@
                      <padding>
                         <Insets top="5.0" />
                      </padding></Label>
-                  <ColorPicker fx:id="outlineColor" onAction="#handleActionChangeColor" prefHeight="26.0" prefWidth="45.0">
+                  <ColorPicker fx:id="outlineColor" prefHeight="26.0" prefWidth="45.0">
                      <value>
                         <Color />
                      </value>
@@ -46,7 +46,7 @@
                         <Insets top="5.0" />
                      </padding>
                   </Label>
-                  <ColorPicker fx:id="fillingColor" onAction="#handleActionChangeColor" prefHeight="26.0" prefWidth="45.0">
+                  <ColorPicker fx:id="fillingColor" prefHeight="26.0" prefWidth="45.0">
                      <value>
                         <Color red="1.0" green="1.0" blue="1.0" opacity="0.0" />
                      </value>

@@ -7,6 +7,7 @@ import java.util.Locale;
 import java.util.Scanner;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 
 /**
  *
@@ -45,9 +46,10 @@ public class LoadDrawingFromFileCommand implements OperationCommand{
                 double startY = loader.nextDouble();
                 double endX = loader.nextDouble();
                 double endY = loader.nextDouble();
+                String outlineColor = loader.next();
                 Point2D startPoint = new Point2D(startX,startY);
                 Point2D endPoint = new Point2D(endX,endY);
-                shape.insert(drawingArea,startPoint,endPoint);
+                shape.insert(drawingArea,startPoint,endPoint,Color.web(outlineColor));
              }
         }catch(FileNotFoundException ex){
             throw new FileErrorDrawException();
