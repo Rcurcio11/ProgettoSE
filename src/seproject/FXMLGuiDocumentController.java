@@ -58,6 +58,7 @@ public class FXMLGuiDocumentController implements Initializable {
 
     @FXML
     private void handleButtonActionLine(ActionEvent event) {
+        
     }
 
     
