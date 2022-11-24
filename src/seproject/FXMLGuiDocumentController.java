@@ -60,6 +60,7 @@ public class FXMLGuiDocumentController implements Initializable {
 
     @FXML
     private void handleButtonActionRectangle(ActionEvent event) {
+        selectedShape = new RectangleModel();
     }
 
     @FXML

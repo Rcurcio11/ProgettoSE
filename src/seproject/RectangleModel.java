@@ -24,15 +24,15 @@ public class RectangleModel extends Rectangle implements ShapeModel{
 
     @Override
     public void insert(AnchorPane drawingPane, Point2D startPoint,Point2D endPoint) {
-        if(startPoint.getX() > endPoint.getY())
-            this.setX(startPoint.getX());
-        else
+        if(startPoint.getX() > endPoint.getX())
             this.setX(endPoint.getX());
+        else
+            this.setX(startPoint.getX());
        
         if(startPoint.getY() > endPoint.getY())
-            this.setY(startPoint.getY());
-        else
             this.setY(endPoint.getY());
+        else
+            this.setY(startPoint.getY());
         
         double width = abs(startPoint.getX()-endPoint.getX());
         double height = abs(startPoint.getY()- endPoint.getY());
