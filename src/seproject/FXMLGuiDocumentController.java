@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
@@ -50,6 +51,8 @@ public class FXMLGuiDocumentController implements Initializable {
     private MenuItem saveMenu;
     @FXML
     private MenuItem loadMenu;
+    @FXML
+    private ColorPicker outlineColor;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -109,6 +112,10 @@ public class FXMLGuiDocumentController implements Initializable {
             }catch(FileErrorDrawException ex){
             }
         }
+    }
+
+    @FXML
+    private void handleActionChangeColor(ActionEvent event) {
     }
 
     
