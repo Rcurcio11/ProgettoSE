@@ -5,7 +5,9 @@
 package seproject;
 
 import static java.lang.Math.abs;
+import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 
 /**
@@ -13,32 +15,35 @@ import javafx.scene.shape.Ellipse;
  * @author Group14
  */
 
-public class EllipseModel extends ShapeModel{
+public class EllipseModel extends Ellipse implements ShapeModel{
     
-    private Ellipse ellipse;
-
     public EllipseModel() {
-        ellipse = new Ellipse();
+        super();
     }
 
     @Override
-    public void nextDraw() {
-        ellipse = new Ellipse();
+    public ShapeModel nextDraw() {
+        return new EllipseModel();
     }
 
     @Override
-    public void insert(AnchorPane drawingPane, double prevX, double prevY, double lastX, double lastY) {
+    public void insert(AnchorPane drawingPane, Point2D startPoint,Point2D endPoint) {
         
-        double width = abs(lastX-prevX);
-        double height = abs(lastY-prevY);
-        double centerX = (lastX+prevX)/2;
-        double centerY = (lastY+prevY)/2;
+        double width = abs(startPoint.getX()-endPoint.getX());
+        double height = abs(startPoint.getY()-endPoint.getY());
+        double centerX = (startPoint.getX()+endPoint.getX())/2;
+        double centerY = (startPoint.getY()+endPoint.getY())/2;
 
-        ellipse.setCenterX(centerX);
-        ellipse.setCenterY(centerY);
-        ellipse.setRadiusX(width/2);
-        ellipse.setRadiusY(height/2);
+        this.setCenterX(centerX);
+        this.setCenterY(centerY);
+        this.setRadiusX(width/2);
+        this.setRadiusY(height/2);
 
-        drawingPane.getChildren().add(ellipse);
+        drawingPane.getChildren().add(this);
+    }
+
+    @Override
+    public void setColor(Color outlineColor, Color fillingColor) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

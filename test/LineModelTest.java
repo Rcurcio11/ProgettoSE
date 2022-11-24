@@ -1,4 +1,5 @@
 
+import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -44,8 +45,10 @@ public class LineModelTest {
         double startY = Math.random()*479;
         double endX = Math.random()*663; 
         double endY = Math.random()*479;
+        Point2D startPoint = new Point2D(startX,startY);
+        Point2D endPoint = new Point2D(endX,endY);
         
-        testShapeLine.insert(drawingPane, startX, startY, endX, endY);
+        testShapeLine.insert(drawingPane, startPoint, endPoint);
         assertEquals(1,drawingPane.getChildren().size());
         assertEquals(javafx.scene.shape.Line.class,drawingPane.getChildren().get(0).getClass());
     }

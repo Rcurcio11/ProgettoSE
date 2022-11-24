@@ -2,53 +2,49 @@
 package seproject;
 
 import static java.lang.Math.abs;
+import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 /**
  *
  * @author Group14
  */
-public class RectangleModel extends ShapeModel{
-    private Rectangle rectangle;
+public class RectangleModel extends Rectangle implements ShapeModel{
 
     public RectangleModel() {
-        rectangle = new Rectangle();
+        super();
     }
 
     @Override
-    public void nextDraw() {
-        rectangle = new Rectangle();
+    public ShapeModel nextDraw() {
+        return new RectangleModel();
     }
 
     @Override
-    public void insert(AnchorPane drawingPane, double prevX, double prevY, double lastX, double lastY) {
-        if(prevX>lastX && prevY>lastY){
-            rectangle.setX(lastX);
-            rectangle.setY(lastY);
-            
-        }else if(prevX>lastX){
-
-            rectangle.setX(lastX);
-            rectangle.setY(prevY);
-            
-        }else if(prevY>lastY){
-
-            rectangle.setX(prevX);
-            rectangle.setY(lastY);
-
-        }else{
-
-            rectangle.setX(prevX);
-            rectangle.setY(prevY);
-
-        }
-        double width = abs(lastX-prevX);
-        double height = abs(lastY- prevY);
+    public void insert(AnchorPane drawingPane, Point2D startPoint,Point2D endPoint) {
+        if(startPoint.getX() > endPoint.getY())
+            this.setX(startPoint.getX());
+        else
+            this.setX(endPoint.getX());
+       
+        if(startPoint.getY() > endPoint.getY())
+            this.setY(startPoint.getY());
+        else
+            this.setY(endPoint.getY());
         
-        rectangle.setWidth(width);
-        rectangle.setHeight(height);
+        double width = abs(startPoint.getX()-endPoint.getX());
+        double height = abs(startPoint.getY()- endPoint.getY());
         
-        drawingPane.getChildren().add(rectangle);
+        this.setWidth(width);
+        this.setHeight(height);
+        
+        drawingPane.getChildren().add(this);
+    }
+
+    @Override
+    public void setColor(Color outlineColor, Color fillingColor) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

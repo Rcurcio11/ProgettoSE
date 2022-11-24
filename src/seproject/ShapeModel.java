@@ -1,6 +1,7 @@
 
 package seproject;
 
+import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 
@@ -8,15 +9,11 @@ import javafx.scene.paint.Color;
  *
  * @author Group14
  */
-public abstract class ShapeModel {
+public interface ShapeModel {
     
-    public void insert (AnchorPane drawingPane, double prevX, double prevY, double lastX, double lastY){
-        
-    }
-    public void nextDraw (){
-        
-    }
-    public void setColor (Color outlineColor, Color fillingColor){
-        
-    }
+    public void insert (AnchorPane drawingArea,Point2D starPoint, Point2D endPoint);
+    
+    public ShapeModel nextDraw ();
+    
+    public void setColor (Color outlineColor, Color fillingColor);
 }

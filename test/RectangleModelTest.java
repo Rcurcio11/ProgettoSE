@@ -3,15 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
  */
 
-import static java.lang.Math.abs;
-import java.util.Arrays;
-import javafx.scene.Node;
+
+import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Rectangle;
-import static org.hamcrest.CoreMatchers.instanceOf;
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -53,8 +49,10 @@ public class RectangleModelTest {
        double startY = Math.random()*479;
        double endX = Math.random()*663; 
        double endY = Math.random()*479;
+        Point2D startPoint = new Point2D(startX,startY);
+        Point2D endPoint = new Point2D(endX,endY);
        
-       testShapeRectangle.insert(testPane, startX, startY, endX, endY);
+       testShapeRectangle.insert(testPane, startPoint, endPoint);
        
        assertEquals(1, testPane.getChildren().size());
        assertEquals(testPane.getChildren().get(0).getClass(), javafx.scene.shape.Rectangle.class);

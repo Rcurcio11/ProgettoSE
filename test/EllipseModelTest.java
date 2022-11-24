@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
  */
 
+import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -47,8 +48,10 @@ public class EllipseModelTest {
         double startY = Math.random()*479;
         double endX = Math.random()*663; 
         double endY = Math.random()*479;
+        Point2D startPoint = new Point2D(startX,startY);
+        Point2D endPoint = new Point2D(endX,endY);
         
-        testShapeEllipse.insert(drawingPane, startX, startY, endX, endY);
+        testShapeEllipse.insert(drawingPane, startPoint, endPoint);
         
         assertEquals(1,drawingPane.getChildren().size());
         assertEquals(javafx.scene.shape.Ellipse.class,drawingPane.getChildren().get(0).getClass());
