@@ -94,15 +94,21 @@ public class FXMLGuiDocumentController implements Initializable {
         if(selectedFile != null){
             try{
                 commandInvoker.execute(new SaveDrawingOnFileCommand(drawingArea,selectedFile.getAbsolutePath()));
-                //add result message
             }catch(FileErrorDrawException ex){
-                //Manage the error
             }
         }
     }
 
     @FXML
     private void handleActionLoadDrawing(ActionEvent event) {
+        FileChooser fc = new FileChooser();
+        File selectedFile = fc.showOpenDialog(null);
+        if(selectedFile != null){
+            try{
+                commandInvoker.execute(new LoadDrawingFromFileCommand(drawingArea,selectedFile.getAbsolutePath()));
+            }catch(FileErrorDrawException ex){
+            }
+        }
     }
 
     
