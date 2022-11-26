@@ -76,6 +76,7 @@ public class FXMLGuiDocumentController implements Initializable {
             selectedShape = selectedShape.nextDraw();
         }catch(ShapeNotSelectedDrawException ex){
             //manage exception message
+            statusLabel.setText("Shape not selected");
         }
         
     }
@@ -135,6 +136,7 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private void handleClickedToolBox(MouseEvent event) {
         statusLabel.setText("");
+        selectedShape = null;
     }
 
     
