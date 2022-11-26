@@ -11,12 +11,12 @@ import javafx.geometry.Point2D;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 
 /**
@@ -57,11 +57,14 @@ public class FXMLGuiDocumentController implements Initializable {
     private ColorPicker outlineColor;
     @FXML
     private ColorPicker fillingColor;
+    @FXML
+    private Label statusLabel;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         startPoint = new Point2D(0,0);
         endPoint = new Point2D(0,0);
+        statusLabel.setText("Welcome");
     }
 
     @FXML
@@ -85,42 +88,54 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private void handleButtonActionRectangle(ActionEvent event) {
         selectedShape = new RectangleModel();
+        statusLabel.setText("Rectangle");
     }
 
     @FXML
     private void handleButtonActionEllipse(ActionEvent event) {
         selectedShape = new EllipseModel();
+        statusLabel.setText("Ellipse");
     }
 
     @FXML
     private void handleButtonActionLine(ActionEvent event) {
         selectedShape = new LineModel();
+        statusLabel.setText("Line");
         
     }
 
     @FXML
     private void handleActionSaveDrawing(ActionEvent event) {
+        statusLabel.setText("");
         fc = new FileChooser();
         File selectedFile = fc.showSaveDialog(null);
         if(selectedFile != null){
             try{
                 commandInvoker.execute(new SaveDrawingOnFileCommand(drawingArea,selectedFile.getAbsolutePath()));
             }catch(FileErrorDrawException ex){
+                statusLabel.setText("File error, try again");
             }
         }
     }
 
     @FXML
     private void handleActionLoadDrawing(ActionEvent event) {
+        statusLabel.setText("");
         fc = new FileChooser();
         File selectedFile = fc.showOpenDialog(null);
         if(selectedFile != null){
             try{
                 commandInvoker.execute(new LoadDrawingFromFileCommand(drawingArea,selectedFile.getAbsolutePath()));
-            }catch(FileErrorDrawException ex){
+            }catch(FileErrorDrawException | ShapeModelNotSupportedDrawException ex){
+                statusLabel.setText("File not supported");
             }
         }
     }    
+
+    @FXML
+    private void handleClickedToolBox(MouseEvent event) {
+        statusLabel.setText("");
+    }
 
     
 }
