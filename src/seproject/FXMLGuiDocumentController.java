@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -59,6 +60,14 @@ public class FXMLGuiDocumentController implements Initializable {
     private ColorPicker fillingColor;
     @FXML
     private Label statusLabel;
+    @FXML
+    private Menu fileMenu1;
+    @FXML
+    private CheckBox selectShapeCheckBox;
+    @FXML
+    private HBox editBox;
+    @FXML
+    private Button deleteButton;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
