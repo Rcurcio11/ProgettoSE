@@ -61,13 +61,13 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private Label statusLabel;
     @FXML
-    private Menu fileMenu1;
-    @FXML
     private CheckBox selectShapeCheckBox;
     @FXML
     private HBox editBox;
     @FXML
     private Button deleteButton;
+    @FXML
+    private Menu undoMenu;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {

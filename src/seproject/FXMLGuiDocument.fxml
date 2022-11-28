@@ -26,7 +26,7 @@
                         <MenuItem fx:id="loadMenu" mnemonicParsing="false" onAction="#handleActionLoadDrawing" text="Load" />
                   </items>
                 </Menu>
-                  <Menu fx:id="fileMenu1" mnemonicParsing="false" text="Undo" />
+                  <Menu fx:id="undoMenu" mnemonicParsing="false" text="Undo" />
               </menus>
             </MenuBar>
             <HBox fx:id="toolBox" onMouseClicked="#handleClickedToolBox" prefHeight="105.0" prefWidth="589.0" spacing="10.0">
