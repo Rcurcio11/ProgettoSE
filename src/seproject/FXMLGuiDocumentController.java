@@ -74,6 +74,7 @@ public class FXMLGuiDocumentController implements Initializable {
         startPoint = new Point2D(0,0);
         endPoint = new Point2D(0,0);
         statusLabel.setText("Welcome");
+        editBox.visibleProperty().bind(selectShapeCheckBox.selectedProperty());
     }
 
     @FXML

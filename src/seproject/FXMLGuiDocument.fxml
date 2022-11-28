@@ -64,7 +64,7 @@
                   <Insets left="10.0" top="10.0" />
                </padding>
             </HBox>
-            <HBox fx:id="editBox" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+            <HBox fx:id="editBox" prefHeight="100.0" prefWidth="200.0" spacing="10.0" visible="false">
                <children>
                   <Button fx:id="deleteButton" mnemonicParsing="false" text="Delete" />
                   <Button mnemonicParsing="false" text="Move" />
