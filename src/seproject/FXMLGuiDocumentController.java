@@ -18,6 +18,7 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -34,6 +35,7 @@ public class FXMLGuiDocumentController implements Initializable {
     ///////////////// USER VARIABLES /////////////////
     
     private ShapeModel shapeToInsert;
+    private ShapeModel toyShape;
     private OperationExecutor commandInvoker;
     private Point2D startPoint;
     private Point2D endPoint;
@@ -86,14 +88,17 @@ public class FXMLGuiDocumentController implements Initializable {
         selectedShape = null;
         shapeIsSelected = new SimpleBooleanProperty(false);
         selectionRectangle = null;
+        shapeToInsert = null;
+        toyShape = null;
         
-        //  BINDINGS
+        //BINDINGS
         editBox.disableProperty().bind(shapeIsSelected.not());
         editBox.visibleProperty().bind(selectShapeCheckBox.selectedProperty());
         shapeIsSelected.addListener((shapeisSelected) -> {
             if(shapeIsSelected.get() == false){
                 removeSelectionRectangle();
                 selectedShape = null;
+                //System.out.println("done reset");
             }
             else
                 insertSelectionRectangle();
@@ -104,29 +109,36 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private void handleMouseReleasedOnDrawingArea(MouseEvent event) {
         endPoint = new Point2D(event.getX(),event.getY());
-        try{
-            InsertCommand command = new InsertCommand(drawingArea, shapeToInsert,startPoint, endPoint, outlineColor.getValue(), fillingColor.getValue());
-            commandInvoker.execute(command);
-            shapeToInsert = shapeToInsert.nextDraw();
+        try{            
+            if(shapeIsSelected.getValue() == true){
+                OperationCommand c = new ChangeShapeDimensionsCommand(drawingArea,selectedShape.getStartPoint(),endPoint,selectedShape);
+                commandInvoker.execute(c);
+                shapeIsSelected.setValue(false);
+            }
+            else{  
+                InsertCommand command = new InsertCommand(drawingArea, shapeToInsert,startPoint, endPoint, outlineColor.getValue(), fillingColor.getValue());
+                commandInvoker.execute(command);
+                drawingArea.getChildren().remove(toyShape);
+                shapeToInsert = shapeToInsert.nextDraw();
+            }
         }catch(ShapeNotSelectedDrawException ex){
             //manage exception message
         }
-        if(shapeIsSelected.getValue() == true){
-            OperationCommand c = new ChangeShapeDimensionsCommand(drawingArea,selectedShape.getStartPoint(),endPoint,selectedShape);
-            commandInvoker.execute(c);
-            shapeIsSelected.set(false);
-        }
         
     }
+    
     @FXML
     private void handleMousePressedOnDrawingArea(MouseEvent event) {
         startPoint = new Point2D(event.getX(),event.getY());
+        if(toyShape != null)
+            toyShape.insert(drawingArea, startPoint, startPoint, Color.GREY, Color.TRANSPARENT);
     }
 
 
     @FXML
     private void handleButtonActionRectangle(ActionEvent event) {
         shapeToInsert = new RectangleModel();
+        toyShape = new RectangleModel();
         statusLabel.setText("Rectangle");
         selectShapeCheckBox.setSelected(false);
         shapeIsSelected.setValue(false);
@@ -135,6 +147,7 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private void handleButtonActionEllipse(ActionEvent event) {
         shapeToInsert = new EllipseModel();
+        toyShape = new EllipseModel();
         statusLabel.setText("Ellipse");
         selectShapeCheckBox.setSelected(false);
         shapeIsSelected.setValue(false);
@@ -143,6 +156,7 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private void handleButtonActionLine(ActionEvent event) {
         shapeToInsert = new LineModel();
+        toyShape = new LineModel();
         statusLabel.setText("Line");
         selectShapeCheckBox.setSelected(false);
         shapeIsSelected.setValue(false);        
@@ -180,6 +194,7 @@ public class FXMLGuiDocumentController implements Initializable {
     private void handleClickedToolBox(MouseEvent event) {
         statusLabel.setText("");
         shapeToInsert = null;
+        toyShape = null;
     }
 
 
@@ -192,23 +207,30 @@ public class FXMLGuiDocumentController implements Initializable {
         shapeIsSelected.setValue(false);
         removeSelectionRectangle();
         shapeToInsert = null;
+        toyShape = null;
     }
 
     @FXML
     private void handleMouseClickeOnDrawingArea(MouseEvent event) {
+        //System.out.println("set done");
         if(selectShapeCheckBox.isSelected()){
             Point2D selectPoint = new Point2D(event.getX(),event.getY());
+            //System.out.println(selectedShape);
             selectShape(selectPoint);
         }
     }
     
     @FXML
     private void handleMouseDraggedOnDrawingArea(MouseEvent event) {
+        Point2D endPoint = new Point2D(event.getX(),event.getY());
         if(shapeIsSelected.getValue() == true){
-            Point2D endPoint = new Point2D(event.getX(),event.getY());
             startPoint = selectedShape.getStartPoint();
             selectionRectangle.changeDimensions(drawingArea, startPoint, endPoint);
         }
+        if(toyShape != null){
+            toyShape.changeDimensions(drawingArea, startPoint, endPoint);
+        }
+        
     }
     
     private void selectShape(Point2D selectPoint){

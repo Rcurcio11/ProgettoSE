@@ -27,6 +27,8 @@ public class ChangeShapeDimensionsCommand implements OperationCommand{
     
     @Override
     public void execute() throws GenericDrawException {
+        if(shape == null)
+            throw new ShapeNotSelectedDrawException();
         shape.changeDimensions(drawingArea, startPoint, endPoint);
     }
     
