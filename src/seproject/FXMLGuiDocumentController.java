@@ -21,6 +21,8 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Shape;
 import javafx.stage.FileChooser;
 
 /**
@@ -38,6 +40,7 @@ public class FXMLGuiDocumentController implements Initializable {
     private FileChooser fc;
     private ShapeModel selectedShape;
     private BooleanProperty shapeIsSelected;
+    private RectangleModel selectionRectangle;
     
     //////////////////////////////////////////////////
     
@@ -81,10 +84,18 @@ public class FXMLGuiDocumentController implements Initializable {
         statusLabel.setText("Welcome");
         selectedShape = null;
         shapeIsSelected = new SimpleBooleanProperty(false);
+        selectionRectangle = null;
         
         //  BINDINGS
         editBox.disableProperty().bind(shapeIsSelected.not());
         editBox.visibleProperty().bind(selectShapeCheckBox.selectedProperty());
+        shapeIsSelected.addListener((shapeisSelected) -> {
+            if(shapeIsSelected.get() == false)
+                removeSelectionRectangle();
+            else
+                insertSelectionRectangle();
+        });
+        
     }
 
     @FXML
@@ -110,6 +121,7 @@ public class FXMLGuiDocumentController implements Initializable {
         shapeToInsert = new RectangleModel();
         statusLabel.setText("Rectangle");
         selectShapeCheckBox.setSelected(false);
+        shapeIsSelected.setValue(false);
     }
 
     @FXML
@@ -117,13 +129,15 @@ public class FXMLGuiDocumentController implements Initializable {
         shapeToInsert = new EllipseModel();
         statusLabel.setText("Ellipse");
         selectShapeCheckBox.setSelected(false);
+        shapeIsSelected.setValue(false);
     }
 
     @FXML
     private void handleButtonActionLine(ActionEvent event) {
         shapeToInsert = new LineModel();
         statusLabel.setText("Line");
-        selectShapeCheckBox.setSelected(false);        
+        selectShapeCheckBox.setSelected(false);
+        shapeIsSelected.setValue(false);        
     }
 
     @FXML
@@ -169,6 +183,7 @@ public class FXMLGuiDocumentController implements Initializable {
             statusLabel.setText("");
         selectedShape = null;
         shapeIsSelected.setValue(false);
+        removeSelectionRectangle();
         shapeToInsert = null;
     }
 
@@ -176,24 +191,37 @@ public class FXMLGuiDocumentController implements Initializable {
     private void handleMouseClickeOnDrawingArea(MouseEvent event) {
         if(selectShapeCheckBox.isSelected()){
             Point2D selectPoint = new Point2D(event.getX(),event.getY());
-            selectedShape = selectShape(selectPoint);
+            selectShape(selectPoint);
         }
     }
     
-    private ShapeModel selectShape(Point2D selectPoint){
+    private void selectShape(Point2D selectPoint){
         Node actualNode = null;
-        
+        selectedShape = null;
+        shapeIsSelected.setValue(false);
         for(int i = drawingArea.getChildren().size()-1; i>=0; i--){
             actualNode = drawingArea.getChildren().get(i);
             if(actualNode.contains(selectPoint)){
+               //actualNode.setOpacity(0.5);
+               selectedShape = (ShapeModel)actualNode; 
+               
                shapeIsSelected.setValue(true);
-               return (ShapeModel) actualNode;
+               //insertSelectionRectangle();
+               return;
             }
         }
-        shapeIsSelected.setValue(false);
-        return null;
+        
     }
 
-
+    private void insertSelectionRectangle(){
+        selectionRectangle = new RectangleModel();
+        ((Shape)selectionRectangle).getStrokeDashArray().addAll(5d);
+        selectionRectangle.insert(drawingArea, selectedShape.getStartPoint(), selectedShape.getEndPoint(), Color.GREY, Color.TRANSPARENT);
+    }
+    
+    private void removeSelectionRectangle(){
+        drawingArea.getChildren().remove(selectionRectangle);
+        selectionRectangle = null;
+    }
     
 }

@@ -24,6 +24,32 @@ public class RectangleModel extends Rectangle implements ShapeModel{
 
     @Override
     public void insert(AnchorPane drawingPane, Point2D startPoint,Point2D endPoint, Color outlineColor, Color fillingColor) {
+        setShapeParameters(startPoint,endPoint);
+        
+        this.setStroke(outlineColor);
+        this.setFill(fillingColor);
+        
+        drawingPane.getChildren().add(this);
+    }
+
+
+    @Override
+    public String saveOnFileString(String separator) {
+        return this.getClass().getSimpleName() + separator + this.getX() + separator + this.getY() + separator + (this.getX() + this.getWidth()) + separator + (this.getY() + this.getHeight()) + separator + this.getStroke() + separator + this.getFill() + separator;
+    }
+
+    @Override
+    public Point2D getStartPoint() {
+        return new Point2D(this.getX(),this.getY());
+    }
+
+    @Override
+    public Point2D getEndPoint() {
+        return new Point2D(this.getX() + this.getWidth(),this.getY() + this.getHeight());
+    }
+
+    @Override
+    public void setShapeParameters(Point2D startPoint, Point2D endPoint) {
         if(startPoint.getX() > endPoint.getX())
             this.setX(endPoint.getX());
         else
@@ -39,16 +65,5 @@ public class RectangleModel extends Rectangle implements ShapeModel{
         
         this.setWidth(width);
         this.setHeight(height);
-        
-        this.setStroke(outlineColor);
-        this.setFill(fillingColor);
-        
-        drawingPane.getChildren().add(this);
-    }
-
-
-    @Override
-    public String saveOnFileString(String separator) {
-        return this.getClass().getSimpleName() + separator + this.getX() + separator + this.getY() + separator + (this.getX() + this.getWidth()) + separator + (this.getY() + this.getHeight()) + separator + this.getStroke() + separator + this.getFill() + separator;
     }
 }
