@@ -3,9 +3,9 @@ package seproject;
 
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,7 +21,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Shape;
 import javafx.stage.FileChooser;
 
 /**
@@ -32,12 +31,13 @@ public class FXMLGuiDocumentController implements Initializable {
 
     ///////////////// USER VARIABLES /////////////////
     
-    private ShapeModel selectedShape;
+    private ShapeModel shapeToInsert;
     private OperationExecutor commandInvoker = new OperationExecutor();
     private Point2D startPoint;
     private Point2D endPoint;
     private FileChooser fc;
-    private Shape modifyShape;
+    private ShapeModel selectedShape;
+    private BooleanProperty shapeIsSelected;
     
     //////////////////////////////////////////////////
     
@@ -79,19 +79,23 @@ public class FXMLGuiDocumentController implements Initializable {
         startPoint = new Point2D(0,0);
         endPoint = new Point2D(0,0);
         statusLabel.setText("Welcome");
-        editBox.setDisable(true);
+        selectedShape = null;
+        shapeIsSelected = new SimpleBooleanProperty(false);
+        
+        //  BINDINGS
+        editBox.disableProperty().bind(shapeIsSelected.not());
+        editBox.visibleProperty().bind(selectShapeCheckBox.selectedProperty());
     }
 
     @FXML
     private void handleMouseReleasedOnDrawingArea(MouseEvent event) {
         endPoint = new Point2D(event.getX(),event.getY());
         try{
-            InsertCommand command = new InsertCommand(drawingArea, selectedShape,startPoint, endPoint, outlineColor.getValue(), fillingColor.getValue());
+            InsertCommand command = new InsertCommand(drawingArea, shapeToInsert,startPoint, endPoint, outlineColor.getValue(), fillingColor.getValue());
             commandInvoker.execute(command);
-            selectedShape = selectedShape.nextDraw();
+            shapeToInsert = shapeToInsert.nextDraw();
         }catch(ShapeNotSelectedDrawException ex){
             //manage exception message
-            statusLabel.setText("Shape not selected");
         }
         
     }
@@ -103,27 +107,23 @@ public class FXMLGuiDocumentController implements Initializable {
 
     @FXML
     private void handleButtonActionRectangle(ActionEvent event) {
-        selectedShape = new RectangleModel();
+        shapeToInsert = new RectangleModel();
         statusLabel.setText("Rectangle");
         selectShapeCheckBox.setSelected(false);
-        editBox.setDisable(true);
     }
 
     @FXML
     private void handleButtonActionEllipse(ActionEvent event) {
-        selectedShape = new EllipseModel();
+        shapeToInsert = new EllipseModel();
         statusLabel.setText("Ellipse");
         selectShapeCheckBox.setSelected(false);
-        editBox.setDisable(true);
     }
 
     @FXML
     private void handleButtonActionLine(ActionEvent event) {
-        selectedShape = new LineModel();
+        shapeToInsert = new LineModel();
         statusLabel.setText("Line");
-        selectShapeCheckBox.setSelected(false);
-        editBox.setDisable(true);
-        
+        selectShapeCheckBox.setSelected(false);        
     }
 
     @FXML
@@ -157,45 +157,40 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private void handleClickedToolBox(MouseEvent event) {
         statusLabel.setText("");
-        selectedShape = null;
+        shapeToInsert = null;
     }
 
 
     @FXML
     private void handleSelectCheckBox(ActionEvent event) {
-        if(selectShapeCheckBox.isSelected()){
+        if(selectShapeCheckBox.isSelected())
             statusLabel.setText("Select a shape");
-        }else{
+        else
             statusLabel.setText("");
-            editBox.setDisable(true);
-        }
         selectedShape = null;
+        shapeIsSelected.setValue(false);
+        shapeToInsert = null;
     }
 
     @FXML
     private void handleMouseClickeOnDrawingArea(MouseEvent event) {
         if(selectShapeCheckBox.isSelected()){
-            modifyShape = null;
             Point2D selectPoint = new Point2D(event.getX(),event.getY());
-            
-            modifyShape = selectShape(selectPoint);
-            if(modifyShape != null){
-                editBox.setDisable(false);
-            }else{
-                editBox.setDisable(true);
-            }
+            selectedShape = selectShape(selectPoint);
         }
     }
     
-    private Shape selectShape(Point2D selectPoint){
+    private ShapeModel selectShape(Point2D selectPoint){
         Node actualNode = null;
         
         for(int i = drawingArea.getChildren().size()-1; i>=0; i--){
             actualNode = drawingArea.getChildren().get(i);
             if(actualNode.contains(selectPoint)){
-               return (Shape) actualNode;
+               shapeIsSelected.setValue(true);
+               return (ShapeModel) actualNode;
             }
         }
+        shapeIsSelected.setValue(false);
         return null;
     }
 
