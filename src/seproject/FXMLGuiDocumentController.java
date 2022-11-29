@@ -34,7 +34,7 @@ public class FXMLGuiDocumentController implements Initializable {
     ///////////////// USER VARIABLES /////////////////
     
     private ShapeModel shapeToInsert;
-    private OperationExecutor commandInvoker = new OperationExecutor();
+    private OperationExecutor commandInvoker;
     private Point2D startPoint;
     private Point2D endPoint;
     private FileChooser fc;
@@ -79,6 +79,7 @@ public class FXMLGuiDocumentController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        commandInvoker = new OperationExecutor();
         startPoint = new Point2D(0,0);
         endPoint = new Point2D(0,0);
         statusLabel.setText("Welcome");
@@ -90,8 +91,10 @@ public class FXMLGuiDocumentController implements Initializable {
         editBox.disableProperty().bind(shapeIsSelected.not());
         editBox.visibleProperty().bind(selectShapeCheckBox.selectedProperty());
         shapeIsSelected.addListener((shapeisSelected) -> {
-            if(shapeIsSelected.get() == false)
+            if(shapeIsSelected.get() == false){
                 removeSelectionRectangle();
+                selectedShape = null;
+            }
             else
                 insertSelectionRectangle();
         });
@@ -107,6 +110,11 @@ public class FXMLGuiDocumentController implements Initializable {
             shapeToInsert = shapeToInsert.nextDraw();
         }catch(ShapeNotSelectedDrawException ex){
             //manage exception message
+        }
+        if(shapeIsSelected.getValue() == true){
+            OperationCommand c = new ChangeShapeDimensionsCommand(drawingArea,selectedShape.getStartPoint(),endPoint,selectedShape);
+            commandInvoker.execute(c);
+            shapeIsSelected.set(false);
         }
         
     }
@@ -181,7 +189,6 @@ public class FXMLGuiDocumentController implements Initializable {
             statusLabel.setText("Select a shape");
         else
             statusLabel.setText("");
-        selectedShape = null;
         shapeIsSelected.setValue(false);
         removeSelectionRectangle();
         shapeToInsert = null;
@@ -195,9 +202,17 @@ public class FXMLGuiDocumentController implements Initializable {
         }
     }
     
+    @FXML
+    private void handleMouseDraggedOnDrawingArea(MouseEvent event) {
+        if(shapeIsSelected.getValue() == true){
+            Point2D endPoint = new Point2D(event.getX(),event.getY());
+            startPoint = selectedShape.getStartPoint();
+            selectionRectangle.changeDimensions(drawingArea, startPoint, endPoint);
+        }
+    }
+    
     private void selectShape(Point2D selectPoint){
         Node actualNode = null;
-        selectedShape = null;
         shapeIsSelected.setValue(false);
         for(int i = drawingArea.getChildren().size()-1; i>=0; i--){
             actualNode = drawingArea.getChildren().get(i);

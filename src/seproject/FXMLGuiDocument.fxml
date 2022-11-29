@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 
-<AnchorPane id="AnchorPane" prefHeight="448.0" prefWidth="539.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seproject.FXMLGuiDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="448.0" prefWidth="539.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seproject.FXMLGuiDocumentController">
    <children>
       <VBox fx:id="menuVBox" alignment="CENTER" prefHeight="127.0" prefWidth="589.0">
          <children>
@@ -85,7 +85,7 @@
       </VBox>
       <ScrollPane layoutY="128.0" prefHeight="320.0" prefWidth="589.0">
         <content>
-          <AnchorPane fx:id="drawingArea" minHeight="0.0" minWidth="0.0" onMouseClicked="#handleMouseClickeOnDrawingArea" onMousePressed="#handleMousePressedOnDrawingArea" onMouseReleased="#handleMouseReleasedOnDrawingArea" prefHeight="2000.0" prefWidth="2000.0" />
+          <AnchorPane fx:id="drawingArea" minHeight="0.0" minWidth="0.0" onMouseClicked="#handleMouseClickeOnDrawingArea" onMouseDragged="#handleMouseDraggedOnDrawingArea" onMousePressed="#handleMousePressedOnDrawingArea" onMouseReleased="#handleMouseReleasedOnDrawingArea" prefHeight="2000.0" prefWidth="2000.0" />
         </content>
       </ScrollPane>
    </children>
