@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package seproject;
 
 import java.util.List;
@@ -12,7 +9,7 @@ import javafx.scene.layout.AnchorPane;
 
 /**
  *
- * @author uondi
+ * @author Gruppo14
  */
 public class SelectCommand implements OperationCommand{
     

@@ -235,8 +235,7 @@ public class FXMLGuiDocumentController implements Initializable {
         }
         if(toyShape != null){
             toyShape.changeDimensions(drawingArea, startPoint, endPoint);
-        }
-        
+        }  
     }
     
     private void selectShape(Point2D selectPoint){
@@ -253,7 +252,6 @@ public class FXMLGuiDocumentController implements Initializable {
                return;
             }
         }
-        
     }
 
     private void insertSelectionRectangle(){
