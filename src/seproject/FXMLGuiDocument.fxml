@@ -31,7 +31,7 @@
             </MenuBar>
             <HBox fx:id="toolBox" onMouseClicked="#handleClickedToolBox" prefHeight="105.0" prefWidth="589.0" spacing="10.0">
                <children>
-                  <Button fx:id="rettangleButton" mnemonicParsing="false" onAction="#handleButtonActionRectangle" text="Rectangle" />
+                  <Button fx:id="rectangleButton" mnemonicParsing="false" onAction="#handleButtonActionRectangle" text="Rectangle" />
                   <Button fx:id="ellipseButton" mnemonicParsing="false" onAction="#handleButtonActionEllipse" text="Ellipse" />
                   <Button fx:id="lineButton" mnemonicParsing="false" onAction="#handleButtonActionLine" text="Line" />
                   <Label prefHeight="25.0" prefWidth="69.0" text="Outline color">
