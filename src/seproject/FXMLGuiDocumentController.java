@@ -78,6 +78,8 @@ public class FXMLGuiDocumentController implements Initializable {
     private Button deleteButton;
     @FXML
     private Menu undoMenu;
+    @FXML
+    private Button changeDimensionsButton;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -260,5 +262,8 @@ public class FXMLGuiDocumentController implements Initializable {
         drawingArea.getChildren().remove(selectionRectangle);
         selectionRectangle = null;
     }
-    
+
+    @FXML
+    private void handleActionChangeDimensions(ActionEvent event) {
+    }
 }
