@@ -47,7 +47,17 @@ public class RectangleModel extends Rectangle implements ShapeModel{
     public Point2D getEndPoint() {
         return new Point2D(this.getX() + this.getWidth(),this.getY() + this.getHeight());
     }
-
+    
+    @Override 
+    public Color getOutlineColor(){
+        return (Color) this.getStroke();
+    }
+    
+    @Override
+    public Color getFillingColor(){
+        return (Color) this.getFill();
+    }
+    
     @Override
     public void setShapeParameters(Point2D startPoint, Point2D endPoint) {
         if(startPoint.getX() > endPoint.getX())

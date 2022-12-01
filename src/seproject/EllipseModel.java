@@ -26,7 +26,17 @@ public class EllipseModel extends Ellipse implements ShapeModel{
     public ShapeModel nextDraw() {
         return new EllipseModel();
     }
-
+   
+    @Override 
+    public Color getOutlineColor(){
+        return (Color) this.getStroke();
+    }
+    
+    @Override
+    public Color getFillingColor(){
+        return (Color) this.getFill();
+    }
+    
     @Override
     public void insert(AnchorPane drawingPane, Point2D startPoint,Point2D endPoint, Color outlineColor, Color fillingColor) {
         
