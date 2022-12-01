@@ -2,7 +2,6 @@
 import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Shape;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -47,18 +46,14 @@ public class LineModelTest {
     @Test
     public void testMove(){
         
-        LineModel actualShape = (LineModel) testDrawingArea.getChildren().get(0);
+        Point2D translatePoint= new Point2D(12,34);
+        Point2D startPoint = testShapeLine.getStartPoint();
         
-        testShapeLine.setTranslateX(Math.random()*663);
-        testShapeLine.setTranslateX(Math.random()*479);
-        
-        
-        testShapeLine.move();
+        testShapeLine.move(translatePoint);
         
         assertEquals(testShapeLine, testDrawingArea.getChildren().get(0));
-        
-        assertEquals(actualShape.getTranslateX() + actualShape.getStartX() , testShapeLine.getStartX(), 0.1);
-        assertEquals(actualShape.getStartY() + actualShape.getTranslateY() , testShapeLine.getStartY(), 0.1);
+        assertEquals(startPoint.getX() + translatePoint.getX() , testShapeLine.getStartPoint().getX(),0.1);
+        assertEquals(startPoint.getY() + translatePoint.getY() , testShapeLine.getStartPoint().getY(), 0.1);
         
     }
     
@@ -84,9 +79,25 @@ public class LineModelTest {
     
     @Test 
     public void testChangeColor(){
-        testShapeLine.changeColor(testShapeLine, Color.ALICEBLUE, Color.GAINSBORO);
-        assertEquals(Color.GAINSBORO, testShapeLine.getFillingColor());
+        testShapeLine.changeColor(Color.ALICEBLUE, Color.GAINSBORO);
         assertEquals(Color.ALICEBLUE, testShapeLine.getOutlineColor());
+    }
+    
+    @Test public void testChangeDimensions(){
+        Point2D oldEndPoint = testShapeLine.getEndPoint();
+        Point2D oldStartPoint = testShapeLine.getStartPoint();
+        Point2D newEndPoint = new Point2D(100,100);
+        Point2D newStartPoint = new Point2D(20,15);
+        
+        testShapeLine.changeDimensions(oldStartPoint, oldEndPoint);
+        assertEquals(oldEndPoint,testShapeLine.getEndPoint());
+        
+        testShapeLine.changeDimensions(newEndPoint, newStartPoint);
+        assertEquals(newStartPoint,testShapeLine.getEndPoint());
+        assertEquals(newEndPoint,testShapeLine.getStartPoint());
+        
+        testShapeLine.changeDimensions(newStartPoint, oldEndPoint);
+        assertEquals(newStartPoint,testShapeLine.getStartPoint());
     }
 
 

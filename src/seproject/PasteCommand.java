@@ -21,12 +21,13 @@ public class PasteCommand implements OperationCommand{
 
     @Override
     public void execute() throws GenericDrawException {
-        shapeToPaste.pasteShape(drawingArea, startPoint);
+        shapeToPaste = shapeToPaste.pasteShape(drawingArea, startPoint);
     }
 
     @Override
     public void undo() {
-        drawingArea.getChildren().remove(shapeToPaste);
+        shapeToPaste.deleteShape(drawingArea);
+        
     }
     
 }

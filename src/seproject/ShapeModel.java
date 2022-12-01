@@ -4,7 +4,6 @@ package seproject;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Shape;
 
 /**
  *
@@ -28,7 +27,7 @@ public interface ShapeModel {
     
     public void setShapeParameters(Point2D startPoint,Point2D endPoint);
     
-    default void changeDimensions(AnchorPane drawingArea,Point2D startPoint,Point2D endPoint){
+    default void changeDimensions(Point2D startPoint,Point2D endPoint){
         setShapeParameters(startPoint,endPoint);
     }
 
@@ -40,5 +39,5 @@ public interface ShapeModel {
     
     public void changeColor(Color outlineColor, Color fillingColor);
 
-    public void pasteShape(AnchorPane drawingArea, Point2D startPoint);
+    public ShapeModel pasteShape(AnchorPane drawingArea, Point2D startPoint);
 }

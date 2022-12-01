@@ -30,12 +30,12 @@ public class ChangeShapeDimensionsCommand implements OperationCommand{
     public void execute() throws GenericDrawException {
         if(shape == null)
             throw new ShapeNotSelectedDrawException();
-        shape.changeDimensions(drawingArea, startPoint, endPoint);
+        shape.changeDimensions(startPoint, endPoint);
     }
 
     @Override
     public void undo() {
-        shape.changeDimensions(drawingArea, oldStartPoint, oldEndPoint);
+        shape.changeDimensions(oldStartPoint, oldEndPoint);
     }
     
 }

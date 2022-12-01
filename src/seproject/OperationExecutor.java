@@ -20,13 +20,11 @@ public class OperationExecutor {
     public void execute(OperationCommand command){
         command.execute();
         commandStack.push(command);
-        System.out.println("command done");
     }
     
     public void undo(){
         if(!commandStack.isEmpty()){
             OperationCommand command = commandStack.pop();
-            System.out.println(command);
             command.undo();
         }
     }

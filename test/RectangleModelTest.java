@@ -5,7 +5,6 @@ import javafx.scene.paint.Color;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
-import seproject.LineModel;
 import seproject.RectangleModel;
 
 /**
@@ -46,18 +45,15 @@ public class RectangleModelTest {
     @Test
     public void testMove(){
         
-        RectangleModel actualShape = (RectangleModel) testDrawingArea.getChildren().get(0);
+        Point2D translatePoint= new Point2D(12,34);
+        Point2D startPoint = testShapeRectangle.getStartPoint();
         
-        testShapeRectangle.setTranslateX(Math.random()*663);
-        testShapeRectangle.setTranslateX(Math.random()*479);
-        
-        
-        testShapeRectangle.move();
+        testShapeRectangle.move(translatePoint);
         
         assertEquals(testShapeRectangle, testDrawingArea.getChildren().get(0));
+        assertEquals(startPoint.getX() + translatePoint.getX() , testShapeRectangle.getStartPoint().getX(),0.1);
+        assertEquals(startPoint.getY() + translatePoint.getY() , testShapeRectangle.getStartPoint().getY(), 0.1);
         
-        assertEquals(actualShape.getTranslateX() + actualShape.getX() , testShapeRectangle.getX(), 0.1);
-        assertEquals(actualShape.getY() + actualShape.getTranslateY() , testShapeRectangle.getY(), 0.1);
     }
     
     @Test
@@ -82,11 +78,28 @@ public class RectangleModelTest {
     
     @Test 
     public void testChangeColor(){
-        testShapeRectangle.changeColor(testShapeRectangle, Color.ALICEBLUE, Color.GAINSBORO);
+        testShapeRectangle.changeColor(Color.ALICEBLUE, Color.GAINSBORO);
         assertEquals(Color.GAINSBORO, testShapeRectangle.getFillingColor());
         assertEquals(Color.ALICEBLUE, testShapeRectangle.getOutlineColor());
     }
-
+    
+    @Test
+    public void testChangeDimensions(){
+        Point2D oldEndPoint = testShapeRectangle.getEndPoint();
+        Point2D oldStartPoint = testShapeRectangle.getStartPoint();
+        Point2D newEndPoint = new Point2D(100,100);
+        Point2D newStartPoint = new Point2D(20,15);
+        
+        testShapeRectangle.changeDimensions(oldStartPoint, oldEndPoint);
+        assertEquals(oldEndPoint,testShapeRectangle.getEndPoint());
+        
+        testShapeRectangle.changeDimensions(newEndPoint, newStartPoint);
+        assertEquals(newStartPoint,testShapeRectangle.getEndPoint());
+        assertEquals(newEndPoint,testShapeRectangle.getStartPoint());
+        
+        testShapeRectangle.changeDimensions(newStartPoint, oldEndPoint);
+        assertEquals(newStartPoint,testShapeRectangle.getStartPoint());
+    }
 }
 
 

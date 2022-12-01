@@ -7,7 +7,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import seproject.EllipseModel;
-import seproject.LineModel;
 
 /**
  *
@@ -21,10 +20,10 @@ public class EllipseModelTest {
     public void setup(){
         testShapeEllipse = new EllipseModel();
         testDrawingArea = new AnchorPane();
-        double startX = Math.random()*663;
-        double startY = Math.random()*479;
-        double endX = Math.random()*663; 
-        double endY = Math.random()*479;
+        double startX = 50.0;
+        double startY = 50.0;
+        double endX = 60.0; 
+        double endY = 60.0;
         Point2D startPoint = new Point2D(startX,startY);
         Point2D endPoint = new Point2D(endX,endY);
         Color outlineColor = Color.color(Math.random(), Math.random(), Math.random());
@@ -43,17 +42,14 @@ public class EllipseModelTest {
     
     @Test
     public void testMove() {   
-        EllipseModel actualShape = (EllipseModel) testDrawingArea.getChildren().get(0);
+        Point2D translatePoint= new Point2D(12,34);
+        Point2D startPoint = testShapeEllipse.getStartPoint();
         
-        testShapeEllipse.setTranslateX(Math.random()*663);
-        testShapeEllipse.setTranslateX(Math.random()*479);
-        
-        testShapeEllipse.move();
+        testShapeEllipse.move(translatePoint);
         
         assertEquals(testShapeEllipse, testDrawingArea.getChildren().get(0));
-        
-        assertEquals(actualShape.getTranslateX() + actualShape.getStartPoint().getX() , testShapeEllipse.getStartPoint().getX(), 0.1);
-        assertEquals(actualShape.getTranslateY() + actualShape.getStartPoint().getY() , testShapeEllipse.getStartPoint().getY(), 0.1);
+        assertEquals(startPoint.getX() + translatePoint.getX() , testShapeEllipse.getStartPoint().getX(),0.1);
+        assertEquals(startPoint.getY() + translatePoint.getY() , testShapeEllipse.getStartPoint().getY(), 0.1);
         
     }
     
@@ -66,8 +62,8 @@ public class EllipseModelTest {
     
     @Test
     public void testPasteShape(){
-        double newStartX = Math.random()*663;
-        double newStartY = Math.random()*479;
+       double newStartX = Math.random()*663;
+       double newStartY = Math.random()*479;
         
        Point2D newStart = new Point2D(newStartX, newStartY);
        testShapeEllipse.pasteShape(testDrawingArea, newStart);
@@ -79,9 +75,29 @@ public class EllipseModelTest {
     
     @Test 
     public void testChangeColor(){
-        testShapeEllipse.changeColor(testShapeEllipse, Color.ALICEBLUE, Color.GAINSBORO);
+        testShapeEllipse.changeColor(Color.ALICEBLUE, Color.GAINSBORO);
         assertEquals(Color.GAINSBORO, testShapeEllipse.getFillingColor());
         assertEquals(Color.ALICEBLUE, testShapeEllipse.getOutlineColor());
-}
+    }
+    
+    @Test
+    public void testChangeDimensions(){
+        Point2D oldEndPoint = testShapeEllipse.getEndPoint();
+        Point2D oldStartPoint = testShapeEllipse.getStartPoint();
+        Point2D newEndPoint = new Point2D(100,100);
+        Point2D newStartPoint = new Point2D(20,15);
+        
+        testShapeEllipse.changeDimensions(oldStartPoint, oldEndPoint);
+        assertEquals(oldEndPoint,testShapeEllipse.getEndPoint());
+        
+        testShapeEllipse.changeDimensions(newEndPoint, newStartPoint);
+        assertEquals(newStartPoint,testShapeEllipse.getEndPoint());
+        assertEquals(newEndPoint,testShapeEllipse.getStartPoint());
+        
+        testShapeEllipse.changeDimensions(newStartPoint, oldEndPoint);
+        assertEquals(newStartPoint,testShapeEllipse.getStartPoint());
+        
+    }
+    
 
 }

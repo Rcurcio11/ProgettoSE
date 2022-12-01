@@ -92,7 +92,7 @@ public class LineModel extends Line implements ShapeModel {
     }
 
     @Override
-    public void pasteShape(AnchorPane drawingArea, Point2D startPoint) {
+    public ShapeModel pasteShape(AnchorPane drawingArea, Point2D startPoint) {
 
         double endX = startPoint.getX() + this.getLayoutBounds().getWidth();
         double endY;
@@ -107,6 +107,7 @@ public class LineModel extends Line implements ShapeModel {
         toInsert.setStroke(this.getStroke());
 
         drawingArea.getChildren().add(toInsert);
+        return toInsert;
     }
 
     @Override

@@ -26,7 +26,6 @@
                         <MenuItem fx:id="loadMenu" mnemonicParsing="false" onAction="#handleActionLoadDrawing" text="Load" />
                   </items>
                 </Menu>
-                  <Menu fx:id="undoMenu" mnemonicParsing="false" onShown="#handleActionUndoMenu" text="Undo" />
               </menus>
             </MenuBar>
             <HBox fx:id="toolBox" onMouseClicked="#handleClickedToolBox" prefHeight="105.0" prefWidth="589.0" spacing="10.0">
@@ -65,22 +64,26 @@
                   <Insets left="10.0" top="10.0" />
                </padding>
             </HBox>
-            <HBox fx:id="editBox" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+            <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#handleButtonActionDelete" text="Delete" />
-                  <Button fx:id="moveButton" mnemonicParsing="false" onAction="#handleButtonActionMove" text="Move" />
-                  <Button fx:id="copyButton" mnemonicParsing="false" onAction="#handleButtonActionCopy" text="Copy" />
-                  <Button fx:id="cutButton" mnemonicParsing="false" onAction="#handleButtonActionCut" text="Cut" />
                   <Button fx:id="pasteButton" mnemonicParsing="false" onAction="#handleButtonActionPaste" text="Paste" />
-                  <Button fx:id="changeDimensionsButton" mnemonicParsing="false" onAction="#handleActionChangeDimensions" text="Change dimensions" />
-                  <Button fx:id="frontButton" mnemonicParsing="false" onAction="#handleButtonActionFront" text="To front" />
-                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#handleButtonActionBack" text="To back" />
+                  <HBox fx:id="editBox" prefHeight="40.0" prefWidth="569.0" spacing="10.0">
+                     <children>
+                        <Button fx:id="copyButton" mnemonicParsing="false" onAction="#handleButtonActionCopy" text="Copy" />
+                        <Button fx:id="cutButton" mnemonicParsing="false" onAction="#handleButtonActionCut" text="Cut" />
+                        <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#handleButtonActionDelete" text="Delete" />
+                        <Button fx:id="moveButton" mnemonicParsing="false" onAction="#handleButtonActionMove" text="Move" />
+                        <Button fx:id="changeDimensionsButton" mnemonicParsing="false" onAction="#handleActionChangeDimensions" text="Change dimensions" />
+                        <Button fx:id="frontButton" mnemonicParsing="false" onAction="#handleButtonActionFront" text="To front" />
+                        <Button fx:id="backButton" mnemonicParsing="false" onAction="#handleButtonActionBack" text="To back" />
+                     </children>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </HBox>
                </children>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
                <padding>
-                  <Insets left="10.0" top="10.0" />
+                  <Insets left="10.0" />
                </padding>
             </HBox>
             <Label fx:id="statusLabel" />
