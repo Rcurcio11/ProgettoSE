@@ -4,8 +4,10 @@ package seproject;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,7 +20,6 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -51,8 +52,6 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private HBox toolBox;
     @FXML
-    private Button rettangleButton;
-    @FXML
     private Button ellipseButton;
     @FXML
     private Button lineButton;
@@ -80,6 +79,8 @@ public class FXMLGuiDocumentController implements Initializable {
     private Menu undoMenu;
     @FXML
     private Button changeDimensionsButton;
+    @FXML
+    private Button rectangleButton;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -96,23 +97,33 @@ public class FXMLGuiDocumentController implements Initializable {
         //BINDINGS
         editBox.disableProperty().bind(shapeIsSelected.not());
         editBox.visibleProperty().bind(selectShapeCheckBox.selectedProperty());
-        shapeIsSelected.addListener((shapeisSelected) -> {
-            if(shapeIsSelected.get() == false){
+        shapeIsSelected.addListener((o, oldVal, newVal) -> {
+            if(!newVal){
                 removeSelectionRectangle();
                 selectedShape = null;
-                //System.out.println("done reset");
+                changeDimensionsButton.setDefaultButton(false);
             }
             else
                 insertSelectionRectangle();
         });
         
+        ChangeListener<Boolean> shapeButtonListener = (o, oldVal, newVal) -> {
+            if(newVal.booleanValue()){
+                selectShapeCheckBox.setSelected(false);
+                shapeIsSelected.setValue(false);
+            }
+            
+        };        
+        rectangleButton.armedProperty().addListener(shapeButtonListener);
+        ellipseButton.armedProperty().addListener(shapeButtonListener);
+        lineButton.armedProperty().addListener(shapeButtonListener);
     }
 
     @FXML
     private void handleMouseReleasedOnDrawingArea(MouseEvent event) {
         endPoint = new Point2D(event.getX(),event.getY());
         try{            
-            if(shapeIsSelected.getValue() == true){
+            if(shapeIsSelected.getValue() == true && changeDimensionsButton.defaultButtonProperty().getValue()){
                 OperationCommand c = new ChangeShapeDimensionsCommand(drawingArea,selectedShape.getStartPoint(),endPoint,selectedShape);
                 commandInvoker.execute(c);
                 shapeIsSelected.setValue(false);
@@ -126,7 +137,6 @@ public class FXMLGuiDocumentController implements Initializable {
         }catch(ShapeNotSelectedDrawException ex){
             //manage exception message
         }
-        
     }
     
     @FXML
@@ -136,14 +146,12 @@ public class FXMLGuiDocumentController implements Initializable {
             toyShape.insert(drawingArea, startPoint, startPoint, Color.GREY, Color.TRANSPARENT);
     }
 
-
     @FXML
     private void handleButtonActionRectangle(ActionEvent event) {
         shapeToInsert = new RectangleModel();
         toyShape = new RectangleModel();
         statusLabel.setText("Rectangle");
-        selectShapeCheckBox.setSelected(false);
-        shapeIsSelected.setValue(false);
+       
     }
 
     @FXML
@@ -151,17 +159,13 @@ public class FXMLGuiDocumentController implements Initializable {
         shapeToInsert = new EllipseModel();
         toyShape = new EllipseModel();
         statusLabel.setText("Ellipse");
-        selectShapeCheckBox.setSelected(false);
-        shapeIsSelected.setValue(false);
     }
 
     @FXML
     private void handleButtonActionLine(ActionEvent event) {
         shapeToInsert = new LineModel();
         toyShape = new LineModel();
-        statusLabel.setText("Line");
-        selectShapeCheckBox.setSelected(false);
-        shapeIsSelected.setValue(false);        
+        statusLabel.setText("Line");        
     }
 
     @FXML
@@ -225,14 +229,13 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private void handleMouseDraggedOnDrawingArea(MouseEvent event) {
         Point2D endPoint = new Point2D(event.getX(),event.getY());
-        if(shapeIsSelected.getValue() == true){
+        if(shapeIsSelected.getValue() == true && changeDimensionsButton.defaultButtonProperty().getValue()){
             startPoint = selectedShape.getStartPoint();
             selectionRectangle.changeDimensions(drawingArea, startPoint, endPoint);
         }
         if(toyShape != null){
             toyShape.changeDimensions(drawingArea, startPoint, endPoint);
-        }
-        
+        }  
     }
     
     private void selectShape(Point2D selectPoint){
@@ -249,7 +252,6 @@ public class FXMLGuiDocumentController implements Initializable {
                return;
             }
         }
-        
     }
     
     private void changeColor(Shape selectedShape){
@@ -270,5 +272,9 @@ public class FXMLGuiDocumentController implements Initializable {
 
     @FXML
     private void handleActionChangeDimensions(ActionEvent event) {
+        if(changeDimensionsButton.defaultButtonProperty().getValue())
+            changeDimensionsButton.setDefaultButton(false);
+        else
+            changeDimensionsButton.setDefaultButton(true);
     }
 }
