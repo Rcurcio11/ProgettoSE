@@ -91,4 +91,17 @@ public class EllipseModel extends Ellipse implements ShapeModel{
         this.startPoint = new Point2D(newStartX, newStartY);
         this.endPoint = new Point2D(newEndX, newEndY);
     }
+
+    @Override
+    public void pasteShape(AnchorPane drawingArea, Point2D startPoint) {
+        EllipseModel toInsert = new EllipseModel();
+
+        double newEndX = abs(startPoint.getX() + this.getRadiusX()*2);
+        double newEndY = abs(startPoint.getY()+ this.getRadiusY()*2);
+        Point2D endPoint = new Point2D(newEndX, newEndY);
+        toInsert.setShapeParameters(startPoint, endPoint);
+        toInsert.setStroke(this.getStroke());
+        toInsert.setFill(this.getFill());
+        drawingArea.getChildren().add(toInsert);
+    }
 }

@@ -4,6 +4,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Before;
 import seproject.LineModel;
 import seproject.RectangleModel;
 
@@ -15,7 +16,8 @@ public class RectangleModelTest {
     private RectangleModel testShapeRectangle;
     private AnchorPane testDrawingArea;
     
-    public RectangleModelTest() {
+    @Before
+    public void setup(){
        testShapeRectangle = new RectangleModel();
        testDrawingArea = new AnchorPane();     
        double startX = Math.random()*663;
@@ -28,7 +30,10 @@ public class RectangleModelTest {
        Color fillingColor = Color.color(Math.random(), Math.random(), Math.random());
        
        testShapeRectangle.insert(testDrawingArea, startPoint, endPoint, outlineColor, fillingColor);
-        
+
+    }
+    
+    public RectangleModelTest() {
     }
 
     @Test
@@ -60,6 +65,19 @@ public class RectangleModelTest {
         testShapeRectangle.deleteShape(testDrawingArea);
 
         assertEquals(0, testDrawingArea.getChildren().size());
+    }
+    
+    @Test
+    public void testPasteShape(){
+        double newStartX = Math.random()*663;
+        double newStartY = Math.random()*479;
+        
+       Point2D newStart = new Point2D(newStartX, newStartY);
+       testShapeRectangle.pasteShape(testDrawingArea, newStart);
+       
+       RectangleModel actualLine = (RectangleModel)testDrawingArea.getChildren().get(1);
+       assertEquals(newStartX, actualLine.getX(), 0.1);
+       assertEquals(newStartY, actualLine.getY(), 0.1);
     }
 }
 

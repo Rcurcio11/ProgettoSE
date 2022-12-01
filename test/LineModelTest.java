@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Before;
 import seproject.LineModel;
 
 
@@ -16,7 +17,8 @@ public class LineModelTest {
     private LineModel testShapeLine;
     private AnchorPane testDrawingArea;
     
-    public LineModelTest() {
+    @Before
+    public void setup(){
         testShapeLine = new LineModel();
         testDrawingArea = new AnchorPane();
         double startX = Math.random()*663;
@@ -30,6 +32,9 @@ public class LineModelTest {
         Color fillingColor = Color.color(Math.random(), Math.random(), Math.random());
         
         testShapeLine.insert(testDrawingArea, startPoint, endPoint, outlineColor, fillingColor);
+    }
+    
+    public LineModelTest() {
     }
 
     @Test
@@ -64,6 +69,17 @@ public class LineModelTest {
         assertEquals(0, testDrawingArea.getChildren().size());
     }
     
-    
+    @Test
+    public void testPasteShape(){
+        double newStartX = Math.random()*663;
+        double newStartY = Math.random()*479;
+        
+       Point2D newStart = new Point2D(newStartX, newStartY);
+       testShapeLine.pasteShape(testDrawingArea, newStart);
+       
+       LineModel actualLine = (LineModel)testDrawingArea.getChildren().get(1);
+       assertEquals(newStartX, actualLine.getStartX(), 0.1);
+       assertEquals(newStartY, actualLine.getStartY(), 0.1);
+    }
 
 }

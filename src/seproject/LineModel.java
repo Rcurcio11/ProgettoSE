@@ -26,7 +26,12 @@ public class LineModel extends Line implements ShapeModel {
     
    @Override
     public void insert(AnchorPane drawingPane, Point2D startPoint,Point2D endPoint, Color outlineColor, Color fillingColor) {
-        setShapeParameters(startPoint,endPoint);
+        if(startPoint.getX() > endPoint.getX()){
+            setShapeParameters(endPoint,startPoint);
+        }else{
+            setShapeParameters(startPoint,endPoint);
+        }
+        
         this.setStroke(outlineColor);
 
         drawingPane.getChildren().add(this);
@@ -84,6 +89,24 @@ public class LineModel extends Line implements ShapeModel {
         this.setTranslateX(0);
         this.setTranslateY(0);
 
+    }
+
+    @Override
+    public void pasteShape(AnchorPane drawingArea, Point2D startPoint) {
+
+        double endX = startPoint.getX() + this.getLayoutBounds().getWidth();
+        double endY;
+        if(this.getStartY() > this.getEndY())
+            endY = startPoint.getY() - this.getLayoutBounds().getHeight();
+        else 
+            endY = startPoint.getY() + this.getLayoutBounds().getHeight();
+        
+        Point2D endPoint = new Point2D(endX, endY);
+        LineModel toInsert = new LineModel();
+        toInsert.setShapeParameters(startPoint, endPoint);
+        toInsert.setStroke(this.getStroke());
+
+        drawingArea.getChildren().add(toInsert);
     }
     
 }

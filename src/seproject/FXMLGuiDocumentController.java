@@ -44,8 +44,10 @@ public class FXMLGuiDocumentController implements Initializable {
     private ShapeModel selectedShape;
     private BooleanProperty shapeIsSelected;
     private RectangleModel selectionRectangle;
-    private ShapeModel temporaryShape;
+    private ShapeModel temporaryShape = null;
     double startX, startY;
+    
+    private ShapeModel prova;
     
     
     //////////////////////////////////////////////////
@@ -90,6 +92,8 @@ public class FXMLGuiDocumentController implements Initializable {
     private Button cutButton;
     @FXML
     private Button copyButton;
+    @FXML
+    private Button pasteButton;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -161,6 +165,11 @@ public class FXMLGuiDocumentController implements Initializable {
         if(selectShapeCheckBox.isSelected() && selectedShape!=null){
             startX = event.getSceneX() - ((Shape)selectedShape).getTranslateX();
             startY = event.getSceneY() - ((Shape)selectedShape).getTranslateY();
+        }
+        if(pasteButton.defaultButtonProperty().getValue()){
+            pasteButton.setDefaultButton(false);
+            OperationCommand pc = new PasteCommand(drawingArea, startPoint, temporaryShape);
+            commandInvoker.execute(pc);
         }
 
     }
@@ -262,6 +271,8 @@ public class FXMLGuiDocumentController implements Initializable {
         if(moveButton.defaultButtonProperty().getValue()){
             ((Shape)selectedShape).setTranslateX(event.getSceneX()-startX);
             ((Shape)selectedShape).setTranslateY(event.getSceneY()-startY);
+            ((Shape)selectionRectangle).setTranslateX(event.getSceneX()-startX);
+            ((Shape)selectionRectangle).setTranslateY(event.getSceneY()-startY);
         }
     }
     
@@ -308,8 +319,6 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private void handleButtonActionMove(ActionEvent event) {
         moveButton.setDefaultButton(true);
-        removeSelectionRectangle();
-        //chiedre a rosario come portarlo dietro
     }
 
     @FXML
@@ -334,6 +343,13 @@ public class FXMLGuiDocumentController implements Initializable {
         if(selectShapeCheckBox.isSelected() && selectedShape!=null){
              temporaryShape = selectedShape;
              removeSelectionRectangle();
+        }
+    }
+
+    @FXML
+    private void handleButtonActionPaste(ActionEvent event) {
+        if(selectShapeCheckBox.isSelected() && temporaryShape!=null){
+            pasteButton.setDefaultButton(true);
         }
     }
 }

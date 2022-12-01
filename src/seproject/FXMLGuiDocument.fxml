@@ -70,7 +70,7 @@
                   <Button fx:id="moveButton" mnemonicParsing="false" onAction="#handleButtonActionMove" text="Move" />
                   <Button fx:id="copyButton" mnemonicParsing="false" onAction="#handleButtonActionCopy" text="Copy" />
                   <Button fx:id="cutButton" mnemonicParsing="false" onAction="#handleButtonActionCut" text="Cut" />
-                  <Button mnemonicParsing="false" text="Paste" />
+                  <Button fx:id="pasteButton" mnemonicParsing="false" onAction="#handleButtonActionPaste" text="Paste" />
                   <Button mnemonicParsing="false" text="To the front" />
                   <Button fx:id="changeDimensionsButton" mnemonicParsing="false" onAction="#handleActionChangeDimensions" text="Change dimensions" />
                </children>

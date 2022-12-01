@@ -5,6 +5,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Before;
 import seproject.EllipseModel;
 import seproject.LineModel;
 
@@ -16,7 +17,8 @@ public class EllipseModelTest {
     private EllipseModel testShapeEllipse;
     private AnchorPane testDrawingArea;
     
-    public EllipseModelTest() {
+    @Before
+    public void setup(){
         testShapeEllipse = new EllipseModel();
         testDrawingArea = new AnchorPane();
         double startX = Math.random()*663;
@@ -29,7 +31,8 @@ public class EllipseModelTest {
         Color fillingColor = Color.color(Math.random(), Math.random(), Math.random());
         
         testShapeEllipse.insert(testDrawingArea, startPoint, endPoint, outlineColor, fillingColor);
-        
+    }
+    public EllipseModelTest() {
     }
 
     @Test
@@ -59,5 +62,18 @@ public class EllipseModelTest {
         testShapeEllipse.deleteShape(testDrawingArea);
 
         assertEquals(0, testDrawingArea.getChildren().size());
+    }
+    
+    @Test
+    public void testPasteShape(){
+        double newStartX = Math.random()*663;
+        double newStartY = Math.random()*479;
+        
+       Point2D newStart = new Point2D(newStartX, newStartY);
+       testShapeEllipse.pasteShape(testDrawingArea, newStart);
+       
+       EllipseModel actualLine = (EllipseModel)testDrawingArea.getChildren().get(1);
+       assertEquals(newStartX, actualLine.getStartPoint().getX(), 0.1);
+       assertEquals(newStartY, actualLine.getStartPoint().getY(), 0.1);
     }
 }

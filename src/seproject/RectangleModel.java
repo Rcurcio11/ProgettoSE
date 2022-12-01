@@ -88,4 +88,18 @@ public class RectangleModel extends Rectangle implements ShapeModel{
         this.setTranslateY(0);
     
     }
+
+    @Override
+    public void pasteShape(AnchorPane drawingArea, Point2D startPoint) {
+        RectangleModel toInsert = new RectangleModel();
+        double newEndX = abs(startPoint.getX() + this.getWidth());
+        double newEndY = abs(startPoint.getY()+ this.getHeight());
+        Point2D endPoint = new Point2D(newEndX, newEndY);
+        
+       toInsert.setShapeParameters(startPoint, endPoint);
+        toInsert.setStroke(this.getStroke());
+        toInsert.setFill(this.getFill());
+        
+        drawingArea.getChildren().add(toInsert);
+    }
 }

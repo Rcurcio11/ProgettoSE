@@ -41,4 +41,6 @@ public interface ShapeModel {
     default void deleteShape(AnchorPane drawingArea){
         drawingArea.getChildren().remove(this);
     }
+    
+    public void pasteShape(AnchorPane drawingArea, Point2D startPoint);
 }
