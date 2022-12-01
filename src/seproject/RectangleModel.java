@@ -79,13 +79,11 @@ public class RectangleModel extends Rectangle implements ShapeModel{
     }
 
     @Override
-    public void move() {
-        double newX = this.getX() + this.getTranslateX();
-        double newY = this.getY() + this.getTranslateY();
+    public void move(Point2D translatePoint) {
+        double newX = this.getX() + translatePoint.getX();
+        double newY = this.getY() + translatePoint.getY();
         this.setX(newX);
         this.setY(newY);
-        this.setTranslateX(0);
-        this.setTranslateY(0);
     
     }
 
@@ -101,5 +99,11 @@ public class RectangleModel extends Rectangle implements ShapeModel{
         toInsert.setFill(this.getFill());
         
         drawingArea.getChildren().add(toInsert);
+    }
+
+    @Override
+    public void changeColor(Color outlineColor, Color fillingColor) {
+        this.setStroke(outlineColor);
+        this.setFill(fillingColor);    
     }
 }

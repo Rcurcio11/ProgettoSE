@@ -31,21 +31,14 @@ public interface ShapeModel {
     default void changeDimensions(AnchorPane drawingArea,Point2D startPoint,Point2D endPoint){
         setShapeParameters(startPoint,endPoint);
     }
-    default void changeColor(AnchorPane drawingArea, Shape selectedShape, Color outlineColor, Color fillingColor){
-        selectedShape.setFill(fillingColor);
-        selectedShape.setStroke(outlineColor);
-    }
 
-    public void move();
+    public void move(Point2D translatePoint);
     
     default void deleteShape(AnchorPane drawingArea){
         drawingArea.getChildren().remove(this);
     }
     
-    default void changeColor(Shape selectedShape, Color outlineColor, Color fillingColor){
-        selectedShape.setFill(fillingColor);
-        selectedShape.setStroke(outlineColor);
-    }
+    public void changeColor(Color outlineColor, Color fillingColor);
 
     public void pasteShape(AnchorPane drawingArea, Point2D startPoint);
 }

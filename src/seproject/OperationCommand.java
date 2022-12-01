@@ -7,4 +7,5 @@ package seproject;
  */
 public interface OperationCommand {
     void execute() throws GenericDrawException;
+    void undo();
 }

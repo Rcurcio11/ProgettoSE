@@ -9,6 +9,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
@@ -98,6 +99,8 @@ public class FXMLGuiDocumentController implements Initializable {
     private Button frontButton;
     @FXML
     private Button backButton;
+    @FXML
+    private Button undoButton;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -134,6 +137,7 @@ public class FXMLGuiDocumentController implements Initializable {
         rectangleButton.armedProperty().addListener(shapeButtonListener);
         ellipseButton.armedProperty().addListener(shapeButtonListener);
         lineButton.armedProperty().addListener(shapeButtonListener);
+        
     }
 
     @FXML
@@ -147,7 +151,7 @@ public class FXMLGuiDocumentController implements Initializable {
             }
             else if(moveButton.defaultButtonProperty().getValue() && selectedShape != null && selectShapeCheckBox.isSelected()){
             moveButton.setDefaultButton(false);
-            MoveCommand mc = new MoveCommand(selectedShape);
+            MoveCommand mc = new MoveCommand(selectedShape, new Point2D(selectionRectangle.getTranslateX(),selectionRectangle.getTranslateY()));
             commandInvoker.execute(mc);
             }
             else{  
@@ -167,8 +171,11 @@ public class FXMLGuiDocumentController implements Initializable {
         if(toyShape != null)
             toyShape.insert(drawingArea, startPoint, startPoint, Color.GREY, Color.TRANSPARENT);
         if(selectShapeCheckBox.isSelected() && selectedShape!=null){
-            startX = event.getSceneX() - ((Shape)selectedShape).getTranslateX();
-            startY = event.getSceneY() - ((Shape)selectedShape).getTranslateY();
+            //System.out.println(((Shape)selectedShape).getTranslateX());
+            //startX = event.getSceneX() - ((Shape)selectedShape).getTranslateX();
+            //startY = event.getSceneY() - ((Shape)selectedShape).getTranslateY();
+            startPoint = new Point2D(event.getX(),event.getY());
+            
         }
         if(pasteButton.defaultButtonProperty().getValue()){
             pasteButton.setDefaultButton(false);
@@ -273,10 +280,8 @@ public class FXMLGuiDocumentController implements Initializable {
             toyShape.changeDimensions(drawingArea, startPoint, endPoint);
         }
         if(moveButton.defaultButtonProperty().getValue()){
-            ((Shape)selectedShape).setTranslateX(event.getSceneX()-startX);
-            ((Shape)selectedShape).setTranslateY(event.getSceneY()-startY);
-            ((Shape)selectionRectangle).setTranslateX(event.getSceneX()-startX);
-            ((Shape)selectionRectangle).setTranslateY(event.getSceneY()-startY);
+            ((Shape)selectionRectangle).setTranslateX(event.getX()-startPoint.getX());
+            ((Shape)selectionRectangle).setTranslateY(event.getY()-startPoint.getY());
         }
     }
     
@@ -355,7 +360,7 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private void handleActionChangeOutlineColor(ActionEvent event) {
         if(shapeIsSelected.getValue()){
-            ChangeColorCommand colorCommand = new ChangeColorCommand((Shape) selectedShape, outlineColor.getValue(), fillingColor.getValue());
+            ChangeColorCommand colorCommand = new ChangeColorCommand(selectedShape, outlineColor.getValue(), fillingColor.getValue());
             commandInvoker.execute(colorCommand); 
         }
     }
@@ -363,7 +368,7 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private void handleActionChangeFillingColor(ActionEvent event) {
         if(shapeIsSelected.getValue()){
-            ChangeColorCommand colorCommand = new ChangeColorCommand((Shape) selectedShape, outlineColor.getValue(), fillingColor.getValue());
+            ChangeColorCommand colorCommand = new ChangeColorCommand(selectedShape, outlineColor.getValue(), fillingColor.getValue());
             commandInvoker.execute(colorCommand); 
         }
     }
@@ -375,9 +380,24 @@ public class FXMLGuiDocumentController implements Initializable {
     }
 
     @FXML
+    private void handleActionUndoMenu(Event event) {
+        ToFrontCommand tfc = new ToFrontCommand(selectedShape);
+        commandInvoker.execute(tfc);
+    }
+
+    @FXML
     private void handleButtonActionBack(ActionEvent event) {
         ToBackCommand tbc = new ToBackCommand(selectedShape);
         commandInvoker.execute(tbc);
     }
+
+    @FXML
+    private void handleActionUndoButton(ActionEvent event) {
+        if(commandInvoker.commandIsInserted()){
+            drawingArea.getChildren().remove(selectionRectangle);
+            commandInvoker.undo();
+        }
+    }
+
 
 }

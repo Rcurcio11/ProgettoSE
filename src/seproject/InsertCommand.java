@@ -33,4 +33,9 @@ public class InsertCommand implements OperationCommand{
         selectedShape.insert(drawingArea,starPoint, endPoint, outlineColor, fillingColor);
         
     }
+
+    @Override
+    public void undo() {
+        drawingArea.getChildren().remove(selectedShape);
+    }
 }

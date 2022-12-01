@@ -43,7 +43,7 @@ public class ChangeColorTest {
     }
     @Test
     public void testChangeColor(){
-        shape.changeColor(drawingArea, (Shape) shape, Color.ALICEBLUE, Color.GAINSBORO);
+        shape.changeColor(Color.ALICEBLUE, Color.GAINSBORO);
         assertEquals(Color.GAINSBORO, shape.getFillingColor());
         assertEquals(Color.ALICEBLUE, shape.getOutlineColor());
     }

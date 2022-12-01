@@ -79,9 +79,9 @@ public class EllipseModel extends Ellipse implements ShapeModel{
     }
 
     @Override
-    public void move() {
-        double newStartX = this.getStartPoint().getX() + this.getTranslateX();
-        double newStartY = this.getStartPoint().getY() + this.getTranslateY();
+    public void move(Point2D translatePoint) {
+        double newStartX = this.getStartPoint().getX() + translatePoint.getX();
+        double newStartY = this.getStartPoint().getY() + translatePoint.getY();
         double newEndX = abs(newStartX + this.getRadiusX()*2);
         double newEndY = abs(newStartY + this.getRadiusY()*2);
         this.setCenterX((newStartX + newEndX)/2);
@@ -103,5 +103,11 @@ public class EllipseModel extends Ellipse implements ShapeModel{
         toInsert.setStroke(this.getStroke());
         toInsert.setFill(this.getFill());
         drawingArea.getChildren().add(toInsert);
+    }
+
+    @Override
+    public void changeColor(Color outlineColor, Color fillingColor) {
+        this.setStroke(outlineColor);
+        this.setFill(fillingColor);    
     }
 }

@@ -5,7 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Locale;
 import java.util.Scanner;
+import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
+import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 
@@ -16,11 +18,13 @@ import javafx.scene.paint.Color;
 public class LoadDrawingFromFileCommand implements OperationCommand{
     
     private AnchorPane drawingArea;
+    private ObservableList<Node> children;
     private String filePath;
     
     public LoadDrawingFromFileCommand(AnchorPane drawingArea,String filePath){
         this.drawingArea = drawingArea;
         this.filePath = filePath;
+        children = drawingArea.getChildren();
     }
     
     @Override
@@ -54,6 +58,14 @@ public class LoadDrawingFromFileCommand implements OperationCommand{
              }
         }catch(FileNotFoundException ex){
             throw new FileErrorDrawException();
+        }
+    }
+
+    @Override
+    public void undo() {
+        drawingArea.getChildren().removeAll();
+        for(Node n:children){
+            drawingArea.getChildren().add(n);
         }
     }
     

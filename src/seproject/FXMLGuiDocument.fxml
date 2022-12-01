@@ -14,9 +14,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 
-<AnchorPane id="AnchorPane" prefHeight="448.0" prefWidth="539.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seproject.FXMLGuiDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="448.0" prefWidth="637.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seproject.FXMLGuiDocumentController">
    <children>
-      <VBox fx:id="menuVBox" alignment="CENTER" prefHeight="127.0" prefWidth="589.0">
+      <VBox fx:id="menuVBox" alignment="CENTER" prefHeight="127.0" prefWidth="637.0">
          <children>
             <MenuBar>
               <menus>
@@ -26,7 +26,7 @@
                         <MenuItem fx:id="loadMenu" mnemonicParsing="false" onAction="#handleActionLoadDrawing" text="Load" />
                   </items>
                 </Menu>
-                  <Menu fx:id="undoMenu" mnemonicParsing="false" text="Undo" />
+                  <Menu fx:id="undoMenu" mnemonicParsing="false" onShown="#handleActionUndoMenu" text="Undo" />
               </menus>
             </MenuBar>
             <HBox fx:id="toolBox" onMouseClicked="#handleClickedToolBox" prefHeight="105.0" prefWidth="589.0" spacing="10.0">
@@ -59,6 +59,7 @@
                         <Insets left="5.0" />
                      </padding>
                   </CheckBox>
+                  <Button fx:id="undoButton" mnemonicParsing="false" onAction="#handleActionUndoButton" text="Undo" />
                </children>
                <padding>
                   <Insets left="10.0" top="10.0" />
@@ -85,7 +86,7 @@
             <Label fx:id="statusLabel" />
          </children>
       </VBox>
-      <ScrollPane layoutY="128.0" prefHeight="320.0" prefWidth="589.0">
+      <ScrollPane layoutY="128.0" prefHeight="320.0" prefWidth="637.0">
         <content>
           <AnchorPane fx:id="drawingArea" minHeight="0.0" minWidth="0.0" onMouseClicked="#handleMouseClickeOnDrawingArea" onMouseDragged="#handleMouseDraggedOnDrawingArea" onMousePressed="#handleMousePressedOnDrawingArea" onMouseReleased="#handleMouseReleasedOnDrawingArea" prefHeight="2000.0" prefWidth="2000.0" />
         </content>

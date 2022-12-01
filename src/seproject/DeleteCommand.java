@@ -1,8 +1,6 @@
 package seproject;
 
-import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Shape;
 
 /**
  *
@@ -17,11 +15,14 @@ public class DeleteCommand implements OperationCommand{
         this.shapeToDelete = shapeToDelete;
     }
     
-    
-
     @Override
     public void execute() throws GenericDrawException {
         shapeToDelete.deleteShape(drawingArea);
+    }
+
+    @Override
+    public void undo() {
+        shapeToDelete.insert(drawingArea, shapeToDelete.getStartPoint(), shapeToDelete.getEndPoint(), shapeToDelete.getOutlineColor(), shapeToDelete.getFillingColor());
     }
     
 }

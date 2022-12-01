@@ -36,4 +36,9 @@ public class SaveDrawingOnFileCommand implements OperationCommand{
                 throw new FileErrorDrawException();
         }
     }
+    
+    @Override
+    public void undo(){
+        
+    }
 }

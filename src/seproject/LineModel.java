@@ -73,14 +73,14 @@ public class LineModel extends Line implements ShapeModel {
     }
 
     @Override
-    public void move() {
+    public void move(Point2D translatePoint) {
         
-        double newX = this.getTranslateX() + this.getStartX();
-        double newY = this.getTranslateY() + this.getStartY();
+        double newX = translatePoint.getX() + this.getStartX();
+        double newY = translatePoint.getY() + this.getStartY();
         this.setStartX(newX);
         this.setStartY(newY);
-        double endX = this.getTranslateX() + this.getEndX();
-        double endY = this.getTranslateY() + this.getEndY();
+        double endX = translatePoint.getX() + this.getEndX();
+        double endY = translatePoint.getY() + this.getEndY();
         
   
         this.setEndX(endX);
@@ -108,5 +108,9 @@ public class LineModel extends Line implements ShapeModel {
 
         drawingArea.getChildren().add(toInsert);
     }
-    
+
+    @Override
+    public void changeColor(Color outlineColor, Color fillingColor) {
+        this.setStroke(outlineColor);    
+    }   
 }

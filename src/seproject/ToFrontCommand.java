@@ -19,5 +19,10 @@ public class ToFrontCommand implements OperationCommand{
     public void execute() throws GenericDrawException {
         ((Shape)shapeToChange).toFront();
     }
+
+    @Override
+    public void undo() {
+       ((Shape)shapeToChange).toBack();
+    }
     
 }
