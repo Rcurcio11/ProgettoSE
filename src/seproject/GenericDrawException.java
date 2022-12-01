@@ -3,7 +3,7 @@ package seproject;
 
 /**
  *
- * @author Gruppo14
+ * @author Group14
  */
 public class GenericDrawException extends RuntimeException{
     

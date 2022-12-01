@@ -9,7 +9,7 @@ import javafx.scene.layout.AnchorPane;
 
 /**
  *
- * @author Gruppo14
+ * @author Group14
  */
 public class SelectCommand implements OperationCommand{
     

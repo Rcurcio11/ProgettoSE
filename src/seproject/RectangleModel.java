@@ -75,6 +75,7 @@ public class RectangleModel extends Rectangle implements ShapeModel{
         
         this.setWidth(width);
         this.setHeight(height);
+        this.setStrokeWidth(2.0);
     }
 
     @Override
@@ -84,5 +85,7 @@ public class RectangleModel extends Rectangle implements ShapeModel{
         this.setX(newX);
         this.setY(newY);
         this.setTranslateX(0);
-        this.setTranslateY(0);}
+        this.setTranslateY(0);
+    
+    }
 }

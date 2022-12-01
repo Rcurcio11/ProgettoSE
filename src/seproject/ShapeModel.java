@@ -37,4 +37,8 @@ public interface ShapeModel {
     }
 
     public void move();
+    
+    default void deleteShape(AnchorPane drawingArea){
+        drawingArea.getChildren().remove(this);
+    }
 }

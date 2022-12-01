@@ -305,4 +305,11 @@ public class FXMLGuiDocumentController implements Initializable {
         removeSelectionRectangle();
         //chiedre a rosario come portarlo dietro
     }
+
+    @FXML
+    private void handleButtonActionDelete(ActionEvent event) {
+        DeleteCommand command = new DeleteCommand(drawingArea, selectedShape);
+        removeSelectionRectangle();
+        commandInvoker.execute(command);
+    }
 }

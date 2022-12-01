@@ -1,14 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package seproject;
 
 import javafx.geometry.Point2D;
 
 /**
  *
- * @author giuseppefusco
+ * @author Group14
  */
 public class MoveCommand implements OperationCommand{
     

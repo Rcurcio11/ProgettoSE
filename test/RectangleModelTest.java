@@ -13,15 +13,11 @@ import seproject.RectangleModel;
  */
 public class RectangleModelTest {
     private RectangleModel testShapeRectangle;
+    private AnchorPane testDrawingArea;
     
     public RectangleModelTest() {
-        testShapeRectangle = new RectangleModel();
-        
-    }
-
-    @Test
-    public void testInsert() {
-       AnchorPane testPane = new AnchorPane();     
+       testShapeRectangle = new RectangleModel();
+       testDrawingArea = new AnchorPane();     
        double startX = Math.random()*663;
        double startY = Math.random()*479;
        double endX = Math.random()*663; 
@@ -31,28 +27,21 @@ public class RectangleModelTest {
        Color outlineColor = Color.color(Math.random(), Math.random(), Math.random());
        Color fillingColor = Color.color(Math.random(), Math.random(), Math.random());
        
-       testShapeRectangle.insert(testPane, startPoint, endPoint, outlineColor, fillingColor);
+       testShapeRectangle.insert(testDrawingArea, startPoint, endPoint, outlineColor, fillingColor);
+        
+    }
+
+    @Test
+    public void testInsert() {
        
-       assertEquals(1, testPane.getChildren().size());
-       assertEquals(RectangleModel.class, testPane.getChildren().get(0).getClass());
+       assertEquals(1, testDrawingArea.getChildren().size());
+       assertEquals(RectangleModel.class, testDrawingArea.getChildren().get(0).getClass());
     }  
     
     @Test
     public void testMove(){
         
-        AnchorPane testPane = new AnchorPane();     
-        double startX = Math.random()*663;
-        double startY = Math.random()*479;
-        double endX = Math.random()*663; 
-        double endY = Math.random()*479;
-        Point2D startPoint = new Point2D(startX,startY);
-        Point2D endPoint = new Point2D(endX,endY);
-        Color outlineColor = Color.color(Math.random(), Math.random(), Math.random());
-        Color fillingColor = Color.color(Math.random(), Math.random(), Math.random());
-
-        testShapeRectangle.insert(testPane, startPoint, endPoint, outlineColor, fillingColor);
-        
-        RectangleModel actualShape = (RectangleModel) testPane.getChildren().get(0);
+        RectangleModel actualShape = (RectangleModel) testDrawingArea.getChildren().get(0);
         
         testShapeRectangle.setTranslateX(Math.random()*663);
         testShapeRectangle.setTranslateX(Math.random()*479);
@@ -60,10 +49,17 @@ public class RectangleModelTest {
         
         testShapeRectangle.move();
         
-        assertEquals(testShapeRectangle, testPane.getChildren().get(0));
+        assertEquals(testShapeRectangle, testDrawingArea.getChildren().get(0));
         
         assertEquals(actualShape.getTranslateX() + actualShape.getX() , testShapeRectangle.getX(), 0.1);
         assertEquals(actualShape.getY() + actualShape.getTranslateY() , testShapeRectangle.getY(), 0.1);
+    }
+    
+    @Test
+    public void testDeleteShape(){
+        testShapeRectangle.deleteShape(testDrawingArea);
+
+        assertEquals(0, testDrawingArea.getChildren().size());
     }
 }
 

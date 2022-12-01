@@ -64,6 +64,7 @@ public class LineModel extends Line implements ShapeModel {
         this.setStartY(startPoint.getY());
         this.setEndX(endPoint.getX());
         this.setEndY(endPoint.getY());
+        this.setStrokeWidth(2.0);
     }
 
     @Override
@@ -82,6 +83,7 @@ public class LineModel extends Line implements ShapeModel {
         
         this.setTranslateX(0);
         this.setTranslateY(0);
+
     }
     
 }

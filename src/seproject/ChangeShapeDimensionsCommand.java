@@ -6,7 +6,7 @@ import javafx.scene.layout.AnchorPane;
 
 /**
  *
- * @author Gruppo14
+ * @author Group14
  */
 public class ChangeShapeDimensionsCommand implements OperationCommand{
 
