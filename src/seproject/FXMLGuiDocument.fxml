@@ -68,7 +68,7 @@
                <children>
                   <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#handleButtonActionDelete" text="Delete" />
                   <Button fx:id="moveButton" mnemonicParsing="false" onAction="#handleButtonActionMove" text="Move" />
-                  <Button mnemonicParsing="false" text="Copy" />
+                  <Button fx:id="copyButton" mnemonicParsing="false" onAction="#handleButtonActionCopy" text="Copy" />
                   <Button fx:id="cutButton" mnemonicParsing="false" onAction="#handleButtonActionCut" text="Cut" />
                   <Button mnemonicParsing="false" text="Paste" />
                   <Button mnemonicParsing="false" text="To the front" />

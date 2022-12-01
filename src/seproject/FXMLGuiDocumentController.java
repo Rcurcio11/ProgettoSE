@@ -88,6 +88,8 @@ public class FXMLGuiDocumentController implements Initializable {
     private Button moveButton;
     @FXML
     private Button cutButton;
+    @FXML
+    private Button copyButton;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -324,6 +326,14 @@ public class FXMLGuiDocumentController implements Initializable {
             DeleteCommand command = new DeleteCommand(drawingArea, selectedShape);
             commandInvoker.execute(command);  
             removeSelectionRectangle();
+        }
+    }
+
+    @FXML
+    private void handleButtonActionCopy(ActionEvent event) {
+        if(selectShapeCheckBox.isSelected() && selectedShape!=null){
+             temporaryShape = selectedShape;
+             removeSelectionRectangle();
         }
     }
 }
