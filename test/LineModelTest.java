@@ -81,5 +81,13 @@ public class LineModelTest {
        assertEquals(newStartX, actualLine.getStartX(), 0.1);
        assertEquals(newStartY, actualLine.getStartY(), 0.1);
     }
+    
+    @Test 
+    public void testChangeColor(){
+        testShapeLine.changeColor(testShapeLine, Color.ALICEBLUE, Color.GAINSBORO);
+        assertEquals(Color.GAINSBORO, testShapeLine.getFillingColor());
+        assertEquals(Color.ALICEBLUE, testShapeLine.getOutlineColor());
+    }
+
 
 }

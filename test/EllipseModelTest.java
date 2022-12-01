@@ -76,4 +76,12 @@ public class EllipseModelTest {
        assertEquals(newStartX, actualLine.getStartPoint().getX(), 0.1);
        assertEquals(newStartY, actualLine.getStartPoint().getY(), 0.1);
     }
+    
+    @Test 
+    public void testChangeColor(){
+        testShapeEllipse.changeColor(testShapeEllipse, Color.ALICEBLUE, Color.GAINSBORO);
+        assertEquals(Color.GAINSBORO, testShapeEllipse.getFillingColor());
+        assertEquals(Color.ALICEBLUE, testShapeEllipse.getOutlineColor());
+}
+
 }

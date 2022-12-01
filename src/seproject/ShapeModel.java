@@ -42,5 +42,10 @@ public interface ShapeModel {
         drawingArea.getChildren().remove(this);
     }
     
+    default void changeColor(Shape selectedShape, Color outlineColor, Color fillingColor){
+        selectedShape.setFill(fillingColor);
+        selectedShape.setStroke(outlineColor);
+    }
+
     public void pasteShape(AnchorPane drawingArea, Point2D startPoint);
 }

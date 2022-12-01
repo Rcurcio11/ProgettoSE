@@ -284,7 +284,6 @@ public class FXMLGuiDocumentController implements Initializable {
             if(actualNode.contains(selectPoint)){
                //actualNode.setOpacity(0.5);
                selectedShape = (ShapeModel)actualNode; 
-                changeColor((Shape) selectedShape);
                shapeIsSelected.setValue(true);
                //insertSelectionRectangle();
                return;
@@ -292,10 +291,6 @@ public class FXMLGuiDocumentController implements Initializable {
         }
     }
     
-    private void changeColor(Shape selectedShape){
-        selectedShape.setStroke(outlineColor.getValue());
-        selectedShape.setFill(fillingColor.getValue());
-    }
 
     private void insertSelectionRectangle(){
         selectionRectangle = new RectangleModel();
@@ -352,4 +347,21 @@ public class FXMLGuiDocumentController implements Initializable {
             pasteButton.setDefaultButton(true);
         }
     }
+
+    @FXML
+    private void handleActionChangeOutlineColor(ActionEvent event) {
+        if(shapeIsSelected.getValue()){
+           ChangeColorCommand colorCommand = new ChangeColorCommand((Shape) selectedShape, outlineColor.getValue(), fillingColor.getValue());
+               commandInvoker.execute(colorCommand); 
+        }
+    }
+
+    @FXML
+    private void handleActionChangeFillingColor(ActionEvent event) {
+        if(shapeIsSelected.getValue()){
+           ChangeColorCommand colorCommand = new ChangeColorCommand((Shape) selectedShape, outlineColor.getValue(), fillingColor.getValue());
+               commandInvoker.execute(colorCommand); 
+        }
+    }
+
 }

@@ -79,6 +79,14 @@ public class RectangleModelTest {
        assertEquals(newStartX, actualLine.getX(), 0.1);
        assertEquals(newStartY, actualLine.getY(), 0.1);
     }
+    
+    @Test 
+    public void testChangeColor(){
+        testShapeRectangle.changeColor(testShapeRectangle, Color.ALICEBLUE, Color.GAINSBORO);
+        assertEquals(Color.GAINSBORO, testShapeRectangle.getFillingColor());
+        assertEquals(Color.ALICEBLUE, testShapeRectangle.getOutlineColor());
+    }
+
 }
 
 
