@@ -71,8 +71,9 @@
                   <Button fx:id="copyButton" mnemonicParsing="false" onAction="#handleButtonActionCopy" text="Copy" />
                   <Button fx:id="cutButton" mnemonicParsing="false" onAction="#handleButtonActionCut" text="Cut" />
                   <Button fx:id="pasteButton" mnemonicParsing="false" onAction="#handleButtonActionPaste" text="Paste" />
-                  <Button mnemonicParsing="false" text="To the front" />
                   <Button fx:id="changeDimensionsButton" mnemonicParsing="false" onAction="#handleActionChangeDimensions" text="Change dimensions" />
+                  <Button fx:id="frontButton" mnemonicParsing="false" onAction="#handleButtonActionFront" text="To front" />
+                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#handleButtonActionBack" text="To back" />
                </children>
                <VBox.margin>
                   <Insets />
