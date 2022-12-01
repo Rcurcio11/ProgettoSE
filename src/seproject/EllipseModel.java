@@ -75,6 +75,7 @@ public class EllipseModel extends Ellipse implements ShapeModel{
         this.setCenterY(centerY);
         this.setRadiusX(width/2);
         this.setRadiusY(height/2);
+        this.setStrokeWidth(2.0);
     }
 
     @Override
