@@ -94,6 +94,10 @@ public class FXMLGuiDocumentController implements Initializable {
     private Button copyButton;
     @FXML
     private Button pasteButton;
+    @FXML
+    private Button frontButton;
+    @FXML
+    private Button backButton;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -351,17 +355,29 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private void handleActionChangeOutlineColor(ActionEvent event) {
         if(shapeIsSelected.getValue()){
-           ChangeColorCommand colorCommand = new ChangeColorCommand((Shape) selectedShape, outlineColor.getValue(), fillingColor.getValue());
-               commandInvoker.execute(colorCommand); 
+            ChangeColorCommand colorCommand = new ChangeColorCommand((Shape) selectedShape, outlineColor.getValue(), fillingColor.getValue());
+            commandInvoker.execute(colorCommand); 
         }
     }
 
     @FXML
     private void handleActionChangeFillingColor(ActionEvent event) {
         if(shapeIsSelected.getValue()){
-           ChangeColorCommand colorCommand = new ChangeColorCommand((Shape) selectedShape, outlineColor.getValue(), fillingColor.getValue());
-               commandInvoker.execute(colorCommand); 
+            ChangeColorCommand colorCommand = new ChangeColorCommand((Shape) selectedShape, outlineColor.getValue(), fillingColor.getValue());
+            commandInvoker.execute(colorCommand); 
         }
+    }
+
+    @FXML
+    private void handleButtonActionFront(ActionEvent event) {
+        ToFrontCommand tfc = new ToFrontCommand(selectedShape);
+        commandInvoker.execute(tfc);
+    }
+
+    @FXML
+    private void handleButtonActionBack(ActionEvent event) {
+        ToBackCommand tbc = new ToBackCommand(selectedShape);
+        commandInvoker.execute(tbc);
     }
 
 }
