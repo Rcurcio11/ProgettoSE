@@ -44,7 +44,9 @@ public class FXMLGuiDocumentController implements Initializable {
     private ShapeModel selectedShape;
     private BooleanProperty shapeIsSelected;
     private RectangleModel selectionRectangle;
+    private ShapeModel temporaryShape;
     double startX, startY;
+    
     
     //////////////////////////////////////////////////
     
@@ -84,6 +86,8 @@ public class FXMLGuiDocumentController implements Initializable {
     private Button rectangleButton;
     @FXML
     private Button moveButton;
+    @FXML
+    private Button cutButton;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -311,5 +315,15 @@ public class FXMLGuiDocumentController implements Initializable {
         DeleteCommand command = new DeleteCommand(drawingArea, selectedShape);
         removeSelectionRectangle();
         commandInvoker.execute(command);
+    }
+
+    @FXML
+    private void handleButtonActionCut(ActionEvent event) {
+        if(selectShapeCheckBox.isSelected() && selectedShape!=null){
+            temporaryShape = selectedShape;
+            DeleteCommand command = new DeleteCommand(drawingArea, selectedShape);
+            commandInvoker.execute(command);  
+            removeSelectionRectangle();
+        }
     }
 }
