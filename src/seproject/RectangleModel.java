@@ -76,4 +76,13 @@ public class RectangleModel extends Rectangle implements ShapeModel{
         this.setWidth(width);
         this.setHeight(height);
     }
+
+    @Override
+    public void move() {
+        double newX = this.getX() + this.getTranslateX();
+        double newY = this.getY() + this.getTranslateY();
+        this.setX(newX);
+        this.setY(newY);
+        this.setTranslateX(0);
+        this.setTranslateY(0);}
 }

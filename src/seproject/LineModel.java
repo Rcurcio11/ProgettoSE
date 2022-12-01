@@ -65,5 +65,23 @@ public class LineModel extends Line implements ShapeModel {
         this.setEndX(endPoint.getX());
         this.setEndY(endPoint.getY());
     }
+
+    @Override
+    public void move() {
+        
+        double newX = this.getTranslateX() + this.getStartX();
+        double newY = this.getTranslateY() + this.getStartY();
+        this.setStartX(newX);
+        this.setStartY(newY);
+        double endX = this.getTranslateX() + this.getEndX();
+        double endY = this.getTranslateY() + this.getEndY();
+        
+  
+        this.setEndX(endX);
+        this.setEndY(endY);
+        
+        this.setTranslateX(0);
+        this.setTranslateY(0);
+    }
     
 }

@@ -35,4 +35,6 @@ public interface ShapeModel {
         selectedShape.setFill(fillingColor);
         selectedShape.setStroke(outlineColor);
     }
+
+    public void move();
 }

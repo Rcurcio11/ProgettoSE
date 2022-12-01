@@ -76,4 +76,18 @@ public class EllipseModel extends Ellipse implements ShapeModel{
         this.setRadiusX(width/2);
         this.setRadiusY(height/2);
     }
+
+    @Override
+    public void move() {
+        double newStartX = this.getStartPoint().getX() + this.getTranslateX();
+        double newStartY = this.getStartPoint().getY() + this.getTranslateY();
+        double newEndX = abs(newStartX + this.getRadiusX()*2);
+        double newEndY = abs(newStartY + this.getRadiusY()*2);
+        this.setCenterX((newStartX + newEndX)/2);
+        this.setCenterY((newStartY + newEndY)/2);
+        this.setTranslateX(0);
+        this.setTranslateY(0);
+        this.startPoint = new Point2D(newStartX, newStartY);
+        this.endPoint = new Point2D(newEndX, newEndY);
+    }
 }

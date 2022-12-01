@@ -44,6 +44,7 @@ public class FXMLGuiDocumentController implements Initializable {
     private ShapeModel selectedShape;
     private BooleanProperty shapeIsSelected;
     private RectangleModel selectionRectangle;
+    double startX, startY;
     
     //////////////////////////////////////////////////
     
@@ -81,6 +82,8 @@ public class FXMLGuiDocumentController implements Initializable {
     private Button changeDimensionsButton;
     @FXML
     private Button rectangleButton;
+    @FXML
+    private Button moveButton;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -128,6 +131,11 @@ public class FXMLGuiDocumentController implements Initializable {
                 commandInvoker.execute(c);
                 shapeIsSelected.setValue(false);
             }
+            else if(moveButton.defaultButtonProperty().getValue() && selectedShape != null && selectShapeCheckBox.isSelected()){
+            moveButton.setDefaultButton(false);
+            MoveCommand mc = new MoveCommand(selectedShape);
+            commandInvoker.execute(mc);
+            }
             else{  
                 InsertCommand command = new InsertCommand(drawingArea, shapeToInsert,startPoint, endPoint, outlineColor.getValue(), fillingColor.getValue());
                 commandInvoker.execute(command);
@@ -144,6 +152,11 @@ public class FXMLGuiDocumentController implements Initializable {
         startPoint = new Point2D(event.getX(),event.getY());
         if(toyShape != null)
             toyShape.insert(drawingArea, startPoint, startPoint, Color.GREY, Color.TRANSPARENT);
+        if(selectShapeCheckBox.isSelected() && selectedShape!=null){
+            startX = event.getSceneX() - ((Shape)selectedShape).getTranslateX();
+            startY = event.getSceneY() - ((Shape)selectedShape).getTranslateY();
+        }
+
     }
 
     @FXML
@@ -151,6 +164,7 @@ public class FXMLGuiDocumentController implements Initializable {
         shapeToInsert = new RectangleModel();
         toyShape = new RectangleModel();
         statusLabel.setText("Rectangle");
+        moveButton.setDefaultButton(false);
        
     }
 
@@ -159,13 +173,15 @@ public class FXMLGuiDocumentController implements Initializable {
         shapeToInsert = new EllipseModel();
         toyShape = new EllipseModel();
         statusLabel.setText("Ellipse");
+        moveButton.setDefaultButton(false);
     }
 
     @FXML
     private void handleButtonActionLine(ActionEvent event) {
         shapeToInsert = new LineModel();
         toyShape = new LineModel();
-        statusLabel.setText("Line");        
+        statusLabel.setText("Line"); 
+        moveButton.setDefaultButton(false);
     }
 
     @FXML
@@ -201,6 +217,7 @@ public class FXMLGuiDocumentController implements Initializable {
         statusLabel.setText("");
         shapeToInsert = null;
         toyShape = null;
+        moveButton.setDefaultButton(false);
     }
 
 
@@ -235,7 +252,11 @@ public class FXMLGuiDocumentController implements Initializable {
         }
         if(toyShape != null){
             toyShape.changeDimensions(drawingArea, startPoint, endPoint);
-        }  
+        }
+        if(moveButton.defaultButtonProperty().getValue()){
+            ((Shape)selectedShape).setTranslateX(event.getSceneX()-startX);
+            ((Shape)selectedShape).setTranslateY(event.getSceneY()-startY);
+        }
     }
     
     private void selectShape(Point2D selectPoint){
@@ -276,5 +297,12 @@ public class FXMLGuiDocumentController implements Initializable {
             changeDimensionsButton.setDefaultButton(false);
         else
             changeDimensionsButton.setDefaultButton(true);
+    }
+
+    @FXML
+    private void handleButtonActionMove(ActionEvent event) {
+        moveButton.setDefaultButton(true);
+        removeSelectionRectangle();
+        //chiedre a rosario come portarlo dietro
     }
 }
