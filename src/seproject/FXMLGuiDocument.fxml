@@ -9,6 +9,7 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -16,7 +17,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
-
 
 <GridPane prefHeight="541.0" prefWidth="637.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seproject.FXMLGuiDocumentController">
    <columnConstraints>
@@ -31,11 +31,11 @@
          <content>
             <AnchorPane fx:id="parentArea" prefHeight="200.0" prefWidth="200.0">
                <children>
-                <AnchorPane fx:id="drawingArea" layoutY="-1.0" minHeight="0.0" minWidth="0.0" onMouseClicked="#handleMouseClickeOnDrawingArea" onMousePressed="#handleMousePressedOnDrawingArea" prefHeight="2000.0" prefWidth="2000.0" />
+                <AnchorPane fx:id="drawingArea" layoutY="-1.0" minHeight="0.0" minWidth="0.0" onMouseClicked="#handleMouseClickeOnDrawingArea" prefHeight="2000.0" prefWidth="2000.0" />
                   <AnchorPane fx:id="insertionArea" disable="true" onMouseDragged="#handleMouseDraggedOnInsertionArea" onMousePressed="#handleMousePressedOnInsertionArea" onMouseReleased="#handleMouseReleasedOnInsertionArea" prefHeight="2000.0" prefWidth="2000.0" visible="false" />
                   <AnchorPane fx:id="changeDimensionsArea" disable="true" onMouseDragged="#handleMouseDraggedOnCDArea" onMousePressed="#handleMousePressedOnCDArea" onMouseReleased="#handleMouseReleasedOnCDArea" prefHeight="2000.0" prefWidth="2000.0" visible="false" />
                   <AnchorPane fx:id="moveArea" disable="true" onMouseDragged="#handleMouseDraggedOnMoveArea" onMousePressed="#handleMousePressedOnMoveArea" onMouseReleased="#handleMouseReleasedOnMoveArea" prefHeight="1997.0" prefWidth="1996.0" visible="false" />
-                  <AnchorPane fx:id="editingArea" disable="true" onMousePressed="#handleMousePressedOnEditingArea" onMouseReleased="#handleMouseReleasedOnEditingArea" prefHeight="2000.0" prefWidth="2000.0" visible="false" />
+                  <AnchorPane fx:id="editingArea" disable="true" onMouseReleased="#handleMouseReleasedOnEditingArea" prefHeight="2000.0" prefWidth="2000.0" visible="false" />
                   <AnchorPane fx:id="pasteArea" disable="true" layoutX="-2.0" layoutY="-1.0" onMouseClicked="#handleMouseClickedOnPasteArea" prefHeight="2000.0" prefWidth="2000.0" visible="false" />
                </children>
             </AnchorPane>
@@ -110,6 +110,27 @@
                <padding>
                   <Insets left="10.0" />
                </padding>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets left="10.0" top="10.0" />
+               </padding>
+               <children>
+                  <Button fx:id="gridButton" mnemonicParsing="false" onAction="#handleActionGridButton" text="Grid" />
+                  <Label text="Grid size">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <Slider fx:id="gridSizeSlider" min="10.0" onMouseDragged="#handleActionGridSizeSlider">
+                     <padding>
+                        <Insets top="8.0" />
+                     </padding>
+                  </Slider>
+               </children>
             </HBox>
             <Label fx:id="statusLabel" />
          </children>

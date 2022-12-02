@@ -12,6 +12,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -19,7 +22,14 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Slider;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -111,6 +121,10 @@ public class FXMLGuiDocumentController implements Initializable {
     private AnchorPane moveArea;
     @FXML
     private AnchorPane parentArea;
+    @FXML
+    private Button gridButton;
+    @FXML
+    private Slider gridSizeSlider;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -174,7 +188,6 @@ public class FXMLGuiDocumentController implements Initializable {
         
         // When the insertionArea is enabled automatically the editingArea is set to disable
         insertionArea.disableProperty().addListener((o,oldVal,newVal) -> {
-            System.out.println("insert area");
             if(!newVal){
                 editingArea.setDisable(true);
             }
@@ -194,11 +207,6 @@ public class FXMLGuiDocumentController implements Initializable {
                 editingArea.setDisable(true);
             }
         });
-    }
-    
-    @FXML
-    private void handleMousePressedOnDrawingArea(MouseEvent event) {
-        System.out.println("drawingArea");
     }
 
     @FXML
@@ -333,7 +341,6 @@ public class FXMLGuiDocumentController implements Initializable {
             moveArea.setDisable(false);
             editingArea.toBack();
             drawingArea.toBack();
-            System.out.println("moveArea enabled");
         }
         
     }
@@ -417,6 +424,8 @@ public class FXMLGuiDocumentController implements Initializable {
         }
     }
     
+    
+    
     //INSERTION AREA
     @FXML
     private void handleMouseReleasedOnInsertionArea(MouseEvent event) {
@@ -435,7 +444,6 @@ public class FXMLGuiDocumentController implements Initializable {
 
     @FXML
     private void handleMousePressedOnInsertionArea(MouseEvent event) {
-        System.out.println("insertArea");
         startPoint = new Point2D(event.getX(),event.getY());
         endPoint = startPoint;
         insertionShape.insert(insertionArea, startPoint, endPoint, outlineColor.getValue(), fillingColor.getValue());
@@ -447,12 +455,6 @@ public class FXMLGuiDocumentController implements Initializable {
     private void handleMouseReleasedOnEditingArea(MouseEvent event) {
         Point2D selectPoint = new Point2D(event.getX(),event.getY());
         selectShape(selectPoint); 
-        
-    }
-
-    @FXML
-    private void handleMousePressedOnEditingArea(MouseEvent event) {
-        System.out.println("editArea");
         
     }
 
@@ -475,7 +477,6 @@ public class FXMLGuiDocumentController implements Initializable {
 
     @FXML
     private void handleMouseClickedOnPasteArea(MouseEvent event) {
-        System.out.println("pasteArea");
         OperationCommand pasteCommand = new PasteCommand(drawingArea,new Point2D(event.getX(),event.getY()),clipboardShape);
         commandInvoker.execute(pasteCommand);
         shapeIsSelected.setValue(false);
@@ -506,13 +507,54 @@ public class FXMLGuiDocumentController implements Initializable {
 
     @FXML
     private void handleMousePressedOnCDArea(MouseEvent event) {
-        System.out.println("cdArea");
         startPoint = selectedShape.getStartPoint();
     }
 
     @FXML
     private void handleMousePressedOnMoveArea(MouseEvent event) {
-        System.out.println("moveArea");
         startPoint = new Point2D(event.getX(),event.getY());
     }
+    
+    @FXML
+    private void handleActionGridButton(ActionEvent event) {
+        if(gridButton.defaultButtonProperty().getValue()){
+            gridButton.setDefaultButton(false);
+            drawingArea.setBackground(Background.EMPTY);
+        }else{
+            gridButton.setDefaultButton(true);
+            drawingArea.setBackground(createGridBackground());
+        }
+    }
+    
+    private Background createGridBackground(){
+        double w = gridSizeSlider.getValue();
+        double h = gridSizeSlider.getValue();
+
+        Canvas canvas = new Canvas(w, h);
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(0.3);
+        gc.setFill(Color.LIGHTGRAY.deriveColor(1, 1, 1, 0.2));
+        gc.fillRect(0, 0, w, h);
+        gc.strokeRect(0, 0, w, h);
+
+        Image image = canvas.snapshot(new SnapshotParameters(), null);
+        BackgroundImage backgroundImage = new BackgroundImage(image, 
+                                             BackgroundRepeat.REPEAT, 
+                                             BackgroundRepeat.REPEAT, 
+                                             BackgroundPosition.DEFAULT, 
+                                             BackgroundSize.DEFAULT);
+        Background back = new Background(backgroundImage);
+
+        return back;
+    }
+
+    @FXML
+    private void handleActionGridSizeSlider(MouseEvent event) {
+        if(gridButton.defaultButtonProperty().getValue()){
+            drawingArea.setBackground(createGridBackground());
+        }
+    }
+    
 }
