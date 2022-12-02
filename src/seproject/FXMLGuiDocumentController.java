@@ -8,7 +8,6 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
@@ -36,7 +35,8 @@ public class FXMLGuiDocumentController implements Initializable {
     ///////////////// USER VARIABLES /////////////////
     
     private ShapeModel shapeToInsert;
-    private ShapeModel toyShape;
+    private ShapeModel editingShape;
+    private ShapeModel insertionShape;
     private OperationExecutor commandInvoker;
     private Point2D startPoint;
     private Point2D endPoint;
@@ -44,7 +44,8 @@ public class FXMLGuiDocumentController implements Initializable {
     private ShapeModel selectedShape;
     private BooleanProperty shapeIsSelected;
     private RectangleModel selectionRectangle;
-    private ShapeModel temporaryShape = null;
+    private ShapeModel clipboardShape = null;
+    private AnchorPane editingPane;
     double startX, startY;
     
     private ShapeModel prova;
@@ -98,6 +99,18 @@ public class FXMLGuiDocumentController implements Initializable {
     private Button backButton;
     @FXML
     private Button undoButton;
+    @FXML
+    private AnchorPane insertionArea;
+    @FXML
+    private AnchorPane editingArea;
+    @FXML
+    private AnchorPane changeDimensionsArea;
+    @FXML
+    private AnchorPane pasteArea;
+    @FXML
+    private AnchorPane moveArea;
+    @FXML
+    private AnchorPane parentArea;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -109,80 +122,89 @@ public class FXMLGuiDocumentController implements Initializable {
         shapeIsSelected = new SimpleBooleanProperty(false);
         selectionRectangle = null;
         shapeToInsert = null;
-        toyShape = null;
+        insertionShape = null;
+        editingShape = null;
+        editingPane = null;
         
-        //BINDINGS
+        // BINDINGS
+        
+        // The editBox is enabled when a shape is selected
+        // The edit box is visible whene the checkBox is selected
         editBox.disableProperty().bind(shapeIsSelected.not());
         editBox.visibleProperty().bind(selectShapeCheckBox.selectedProperty());
+        
+        // When a shape is selected, the editingArea is enabled and the selectionRectangle appears
+        // When a there isn't a shape selected the editing area is disabled and the selectionRectangle is removed
         shapeIsSelected.addListener((o, oldVal, newVal) -> {
             if(!newVal){
+                editingArea.setDisable(true);
                 removeSelectionRectangle();
                 selectedShape = null;
-                changeDimensionsButton.setDefaultButton(false);
             }
-            else
+            else{
+                editingArea.setDisable(false);
                 insertSelectionRectangle();
+            }
         });
         
+        // This listener enable the insertionArea and automatically disable the checkBox and the shapeIsSelected property
         ChangeListener<Boolean> shapeButtonListener = (o, oldVal, newVal) -> {
             if(newVal.booleanValue()){
                 selectShapeCheckBox.setSelected(false);
                 shapeIsSelected.setValue(false);
+                insertionArea.setDisable(false);
             }
             
         };        
+        // when a shape button is armed the shapeButtonListener kikcs in
         rectangleButton.armedProperty().addListener(shapeButtonListener);
         ellipseButton.armedProperty().addListener(shapeButtonListener);
         lineButton.armedProperty().addListener(shapeButtonListener);
         
+        // If a shape is selected, then the paste button is disabled (automatically enabled when a there isn't a shape selected)
+        pasteButton.disableProperty().bind(shapeIsSelected);
         pasteButton.visibleProperty().bind(selectShapeCheckBox.selectedProperty());
         
-    }
-
-    @FXML
-    private void handleMouseReleasedOnDrawingArea(MouseEvent event) {
-        endPoint = new Point2D(event.getX(),event.getY());
-        try{            
-            if(shapeIsSelected.getValue() == true && changeDimensionsButton.defaultButtonProperty().getValue()){
-                OperationCommand c = new ChangeShapeDimensionsCommand(drawingArea,selectedShape.getStartPoint(),endPoint,selectedShape);
-                commandInvoker.execute(c);
-                shapeIsSelected.setValue(false);
+        // For all the warking area (except the drawingArea) when they are disabled automatically their visible  property is set to false
+        editingArea.visibleProperty().bind(editingArea.disableProperty().not());
+        insertionArea.visibleProperty().bind(insertionArea.disableProperty().not());
+        pasteArea.visibleProperty().bind(pasteArea.disableProperty().not());
+        moveArea.visibleProperty().bind(moveArea.disableProperty().not());
+        changeDimensionsArea.visibleProperty().bind(changeDimensionsArea.disableProperty().not());
+        
+        // When the insertionArea is enabled automatically the editingArea is set to disable
+        insertionArea.disableProperty().addListener((o,oldVal,newVal) -> {
+            System.out.println("insert area");
+            if(!newVal){
+                editingArea.setDisable(true);
             }
-            else if(moveButton.defaultButtonProperty().getValue() && selectedShape != null && selectShapeCheckBox.isSelected()){
-            moveButton.setDefaultButton(false);
-            MoveCommand mc = new MoveCommand(selectedShape, new Point2D(event.getX() - startPoint.getX(),event.getY()- startPoint.getY()));
-            commandInvoker.execute(mc);
-            shapeIsSelected.setValue(false);
+        });
+        
+        // When the  editingArea is enabled automatically the insertionArea is set to disable
+        editingArea.disableProperty().addListener((o,oldVal,newVal) -> {
+            if(!newVal){
+                insertionArea.setDisable(true);
             }
-            else{  
-                InsertCommand command = new InsertCommand(drawingArea, shapeToInsert,startPoint, endPoint, outlineColor.getValue(), fillingColor.getValue());
-                commandInvoker.execute(command);
-                drawingArea.getChildren().remove(toyShape);
-                shapeToInsert = shapeToInsert.nextDraw();
+        });
+        
+        // When the checkBox is selected, automatically the insertionArea and the editingArea are set to disable
+        selectShapeCheckBox.selectedProperty().addListener((o,oldVal,newVal) -> {
+            if(newVal){
+                insertionArea.setDisable(true);
+                editingArea.setDisable(true);
             }
-        }catch(ShapeNotSelectedDrawException ex){
-            //manage exception message
-        }
+        });
     }
     
     @FXML
     private void handleMousePressedOnDrawingArea(MouseEvent event) {
-        startPoint = new Point2D(event.getX(),event.getY());
-        if(toyShape != null)
-            toyShape.insert(drawingArea, startPoint, startPoint, Color.GREY, Color.TRANSPARENT);
-       
-        if(pasteButton.defaultButtonProperty().getValue()){
-            pasteButton.setDefaultButton(false);
-            OperationCommand pc = new PasteCommand(drawingArea, startPoint, temporaryShape);
-            commandInvoker.execute(pc);
-        }
-
+        System.out.println("drawingArea");
     }
 
     @FXML
     private void handleButtonActionRectangle(ActionEvent event) {
         shapeToInsert = new RectangleModel();
-        toyShape = new RectangleModel();
+        insertionShape = new RectangleModel();
         statusLabel.setText("Rectangle");
         moveButton.setDefaultButton(false);
        
@@ -191,7 +213,7 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private void handleButtonActionEllipse(ActionEvent event) {
         shapeToInsert = new EllipseModel();
-        toyShape = new EllipseModel();
+        insertionShape = new EllipseModel();
         statusLabel.setText("Ellipse");
         moveButton.setDefaultButton(false);
     }
@@ -199,7 +221,7 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private void handleButtonActionLine(ActionEvent event) {
         shapeToInsert = new LineModel();
-        toyShape = new LineModel();
+        insertionShape = new LineModel();
         statusLabel.setText("Line"); 
         moveButton.setDefaultButton(false);
     }
@@ -236,7 +258,8 @@ public class FXMLGuiDocumentController implements Initializable {
     private void handleClickedToolBox(MouseEvent event) {
         statusLabel.setText("");
         shapeToInsert = null;
-        toyShape = null;
+        insertionShape = null;
+        insertionArea.setDisable(true);
         moveButton.setDefaultButton(false);
     }
 
@@ -249,46 +272,25 @@ public class FXMLGuiDocumentController implements Initializable {
             statusLabel.setText("");
         shapeIsSelected.setValue(false);
         shapeToInsert = null;
-        toyShape = null;
+        insertionShape = null;
     }
 
     @FXML
     private void handleMouseClickeOnDrawingArea(MouseEvent event) {
-        if(selectShapeCheckBox.isSelected()){
-            Point2D selectPoint = new Point2D(event.getX(),event.getY());
-            selectShape(selectPoint);
-        }
-    }
-    
-    @FXML
-    private void handleMouseDraggedOnDrawingArea(MouseEvent event) {
-        
-        if(shapeIsSelected.getValue() == true && changeDimensionsButton.defaultButtonProperty().getValue()){
-            Point2D endPoint = new Point2D(event.getX(),event.getY());
-            startPoint = selectedShape.getStartPoint();
-            selectionRectangle.changeDimensions(startPoint, endPoint);
-        }
-        if(toyShape != null){
-            Point2D endPoint = new Point2D(event.getX(),event.getY());
-            toyShape.changeDimensions(startPoint, endPoint);
-        }
-        if(moveButton.defaultButtonProperty().getValue()){
-            Point2D translatePoint = new Point2D(event.getX()-startPoint.getX(),event.getY()-startPoint.getY());
-            ((Shape)selectionRectangle).setTranslateX(translatePoint.getX());
-            ((Shape)selectionRectangle).setTranslateY(translatePoint.getY());
-        }
+        Point2D selectPoint = new Point2D(event.getX(),event.getY());
+        selectShape(selectPoint);  
     }
     
     private void selectShape(Point2D selectPoint){
         Node actualNode = null;
+        if(!selectShapeCheckBox.selectedProperty().getValue())
+            return;
         shapeIsSelected.setValue(false);
         for(int i = drawingArea.getChildren().size()-1; i>=0; i--){
             actualNode = drawingArea.getChildren().get(i);
             if(actualNode.contains(selectPoint)){
-               //actualNode.setOpacity(0.5);
                selectedShape = (ShapeModel)actualNode; 
                shapeIsSelected.setValue(true);
-               //insertSelectionRectangle();
                return;
             }
         }
@@ -298,25 +300,42 @@ public class FXMLGuiDocumentController implements Initializable {
     private void insertSelectionRectangle(){
         selectionRectangle = new RectangleModel();
         ((Shape)selectionRectangle).getStrokeDashArray().addAll(5d);
-        selectionRectangle.insert(drawingArea, selectedShape.getStartPoint(), selectedShape.getEndPoint(), Color.GREY, Color.TRANSPARENT);
+        selectionRectangle.insert(editingArea, selectedShape.getStartPoint(), selectedShape.getEndPoint(), Color.GREY, Color.TRANSPARENT);
     }
     
     private void removeSelectionRectangle(){
-        drawingArea.getChildren().remove(selectionRectangle);
+        selectionRectangle.deleteShape(editingArea);
         selectionRectangle = null;
     }
 
     @FXML
     private void handleActionChangeDimensions(ActionEvent event) {
-        if(changeDimensionsButton.defaultButtonProperty().getValue())
+        if(changeDimensionsButton.defaultButtonProperty().getValue()){
+            changeDimensionsArea.setDisable(true);    
             changeDimensionsButton.setDefaultButton(false);
-        else
+        }
+        else{
+            editingArea.toBack();
+            drawingArea.toBack();
             changeDimensionsButton.setDefaultButton(true);
+            changeDimensionsArea.setDisable(false);
+        }
     }
 
     @FXML
     private void handleButtonActionMove(ActionEvent event) {
-        moveButton.setDefaultButton(true);
+        if(moveButton.defaultButtonProperty().getValue()){
+            moveButton.setDefaultButton(false);
+            moveArea.setDisable(true);
+        }
+        else{
+            moveButton.setDefaultButton(true);
+            moveArea.setDisable(false);
+            editingArea.toBack();
+            drawingArea.toBack();
+            System.out.println("moveArea enabled");
+        }
+        
     }
 
     @FXML
@@ -328,26 +347,33 @@ public class FXMLGuiDocumentController implements Initializable {
 
     @FXML
     private void handleButtonActionCut(ActionEvent event) {
-        if(selectShapeCheckBox.isSelected() && selectedShape!=null){
-            temporaryShape = selectedShape;
-            DeleteCommand command = new DeleteCommand(drawingArea, selectedShape);
-            commandInvoker.execute(command);  
-            shapeIsSelected.set(false);
-        }
+        clipboardShape = selectedShape;
+        DeleteCommand command = new DeleteCommand(drawingArea, selectedShape);
+        commandInvoker.execute(command);  
+        shapeIsSelected.set(false);
     }
 
     @FXML
     private void handleButtonActionCopy(ActionEvent event) {
-        if(selectShapeCheckBox.isSelected() && selectedShape!=null){
-             temporaryShape = selectedShape;
-             shapeIsSelected.set(false);
-        }
+        clipboardShape = selectedShape;
+        shapeIsSelected.set(false);
     }
 
     @FXML
     private void handleButtonActionPaste(ActionEvent event) {
-        if(selectShapeCheckBox.isSelected() && temporaryShape!=null){
-            pasteButton.setDefaultButton(true);
+        if(clipboardShape !=null){
+            
+            if(pasteButton.defaultButtonProperty().getValue()){
+                pasteArea.setDisable(true);    
+                editingArea.setDisable(false);
+                pasteButton.setDefaultButton(false);
+                drawingArea.toBack();
+            }
+            else{
+                pasteButton.setDefaultButton(true);
+                pasteArea.setDisable(false);
+                editingArea.setDisable(true);
+            }
         }
     }
 
@@ -356,6 +382,7 @@ public class FXMLGuiDocumentController implements Initializable {
         if(shapeIsSelected.getValue()){
             ChangeColorCommand colorCommand = new ChangeColorCommand(selectedShape, outlineColor.getValue(), fillingColor.getValue());
             commandInvoker.execute(colorCommand); 
+            shapeIsSelected.setValue(false);
         }
     }
 
@@ -364,6 +391,7 @@ public class FXMLGuiDocumentController implements Initializable {
         if(shapeIsSelected.getValue()){
             ChangeColorCommand colorCommand = new ChangeColorCommand(selectedShape, outlineColor.getValue(), fillingColor.getValue());
             commandInvoker.execute(colorCommand); 
+            shapeIsSelected.setValue(false);
         }
     }
 
@@ -371,21 +399,120 @@ public class FXMLGuiDocumentController implements Initializable {
     private void handleButtonActionFront(ActionEvent event) {
         ToFrontCommand tfc = new ToFrontCommand(selectedShape);
         commandInvoker.execute(tfc);
+        shapeIsSelected.set(false);
     }
 
     @FXML
     private void handleButtonActionBack(ActionEvent event) {
         ToBackCommand tbc = new ToBackCommand(selectedShape);
         commandInvoker.execute(tbc);
+        shapeIsSelected.set(false);
     }
 
     @FXML
     private void handleActionUndoButton(ActionEvent event) {
         if(commandInvoker.commandIsInserted()){
-            drawingArea.getChildren().remove(selectionRectangle);
+            shapeIsSelected.set(false);
             commandInvoker.undo();
         }
     }
+    
+    //INSERTION AREA
+    @FXML
+    private void handleMouseReleasedOnInsertionArea(MouseEvent event) {
+        endPoint = new Point2D(event.getX(),event.getY());  
+        InsertCommand command = new InsertCommand(drawingArea, shapeToInsert,startPoint, endPoint, outlineColor.getValue(), fillingColor.getValue());
+        commandInvoker.execute(command);
+        insertionShape.deleteShape(insertionArea);
+        shapeToInsert = shapeToInsert.nextDraw();
+    }
 
+    @FXML
+    private void handleMouseDraggedOnInsertionArea(MouseEvent event) {
+        endPoint = new Point2D(event.getX(),event.getY());
+        insertionShape.changeDimensions(startPoint, endPoint);
+    }
 
+    @FXML
+    private void handleMousePressedOnInsertionArea(MouseEvent event) {
+        System.out.println("insertArea");
+        startPoint = new Point2D(event.getX(),event.getY());
+        endPoint = startPoint;
+        insertionShape.insert(insertionArea, startPoint, endPoint, outlineColor.getValue(), fillingColor.getValue());
+    }
+    
+    
+    //EDITING AREA
+    @FXML
+    private void handleMouseReleasedOnEditingArea(MouseEvent event) {
+        Point2D selectPoint = new Point2D(event.getX(),event.getY());
+        selectShape(selectPoint); 
+        
+    }
+
+    @FXML
+    private void handleMousePressedOnEditingArea(MouseEvent event) {
+        System.out.println("editArea");
+        
+    }
+
+    @FXML
+    private void handleMouseReleasedOnCDArea(MouseEvent event) {
+        OperationCommand c = new ChangeShapeDimensionsCommand(drawingArea,selectedShape.getStartPoint(),new Point2D(event.getX(),event.getY()),selectedShape);
+        commandInvoker.execute(c);
+        shapeIsSelected.setValue(false);
+        changeDimensionsArea.setDisable(true);
+        changeDimensionsButton.defaultButtonProperty().setValue(false);
+        editingArea.toFront();
+    }
+
+    @FXML
+    private void handleMouseDraggedOnCDArea(MouseEvent event) {
+        Point2D endPoint = new Point2D(event.getX(),event.getY());
+        startPoint = selectedShape.getStartPoint();
+        selectionRectangle.changeDimensions(startPoint, endPoint);   
+    }
+
+    @FXML
+    private void handleMouseClickedOnPasteArea(MouseEvent event) {
+        System.out.println("pasteArea");
+        OperationCommand pasteCommand = new PasteCommand(drawingArea,new Point2D(event.getX(),event.getY()),clipboardShape);
+        commandInvoker.execute(pasteCommand);
+        shapeIsSelected.setValue(false);
+        pasteButton.defaultButtonProperty().setValue(false);
+        pasteArea.setDisable(true);
+        editingArea.toFront();
+    }
+
+    @FXML
+    private void handleMouseReleasedOnMoveArea(MouseEvent event) {
+        
+        Point2D endPoint = new Point2D(event.getX(),event.getY());
+        MoveCommand mc = new MoveCommand(selectedShape, new Point2D(event.getX() - startPoint.getX(),event.getY()- startPoint.getY()));
+        commandInvoker.execute(mc);
+        shapeIsSelected.setValue(false);
+        moveButton.defaultButtonProperty().setValue(false);
+        moveArea.setDisable(true);
+        editingArea.toFront();
+    }
+
+    @FXML
+    private void handleMouseDraggedOnMoveArea(MouseEvent event) {
+        
+        Point2D translatePoint = new Point2D(event.getX()-startPoint.getX(),event.getY()-startPoint.getY());
+        ((Shape)selectionRectangle).setTranslateX(translatePoint.getX());
+        ((Shape)selectionRectangle).setTranslateY(translatePoint.getY());
+    }
+
+    @FXML
+    private void handleMousePressedOnCDArea(MouseEvent event) {
+        System.out.println("cdArea");
+        startPoint = selectedShape.getStartPoint();
+    }
+
+    @FXML
+    private void handleMousePressedOnMoveArea(MouseEvent event) {
+        System.out.println("moveArea");
+        startPoint = new Point2D(event.getX(),event.getY());
+    }
 }

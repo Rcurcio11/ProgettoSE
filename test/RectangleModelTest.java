@@ -94,8 +94,8 @@ public class RectangleModelTest {
         assertEquals(oldEndPoint,testShapeRectangle.getEndPoint());
         
         testShapeRectangle.changeDimensions(newEndPoint, newStartPoint);
-        assertEquals(newStartPoint,testShapeRectangle.getEndPoint());
-        assertEquals(newEndPoint,testShapeRectangle.getStartPoint());
+        assertEquals(newStartPoint,testShapeRectangle.getStartPoint());
+        assertEquals(newEndPoint,testShapeRectangle.getEndPoint());
         
         testShapeRectangle.changeDimensions(newStartPoint, oldEndPoint);
         assertEquals(newStartPoint,testShapeRectangle.getStartPoint());
