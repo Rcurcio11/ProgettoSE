@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 
-<GridPane prefHeight="541.0" prefWidth="637.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seproject.FXMLGuiDocumentController">
+<GridPane prefHeight="541.0" prefWidth="637.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seproject.FXMLGuiDocumentController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
    </columnConstraints>
@@ -120,7 +120,7 @@
                </padding>
                <children>
                   <Button fx:id="gridButton" mnemonicParsing="false" onAction="#handleActionGridButton" text="Grid" />
-                  <Label text="Grid size">
+                  <Label fx:id="gridLabel" text="Grid size">
                      <padding>
                         <Insets top="5.0" />
                      </padding>

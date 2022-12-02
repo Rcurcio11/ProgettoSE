@@ -53,6 +53,7 @@ public class FXMLGuiDocumentController implements Initializable {
     private FileChooser fc;
     private ShapeModel selectedShape;
     private BooleanProperty shapeIsSelected;
+    private BooleanProperty gridIsOn;
     private RectangleModel selectionRectangle;
     private ShapeModel clipboardShape = null;
     private AnchorPane editingPane;
@@ -125,6 +126,8 @@ public class FXMLGuiDocumentController implements Initializable {
     private Button gridButton;
     @FXML
     private Slider gridSizeSlider;
+    @FXML
+    private Label gridLabel;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -134,6 +137,7 @@ public class FXMLGuiDocumentController implements Initializable {
         statusLabel.setText("Welcome");
         selectedShape = null;
         shapeIsSelected = new SimpleBooleanProperty(false);
+        gridIsOn = new SimpleBooleanProperty(false);
         selectionRectangle = null;
         shapeToInsert = null;
         insertionShape = null;
@@ -207,6 +211,10 @@ public class FXMLGuiDocumentController implements Initializable {
                 editingArea.setDisable(true);
             }
         });
+        
+        gridSizeSlider.disableProperty().bind(gridIsOn.not());
+        gridSizeSlider.visibleProperty().bind(gridSizeSlider.disableProperty().not());
+        gridLabel.visibleProperty().bind(gridIsOn);
     }
 
     @FXML
@@ -518,10 +526,12 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private void handleActionGridButton(ActionEvent event) {
         if(gridButton.defaultButtonProperty().getValue()){
-            gridButton.setDefaultButton(false);
+            gridIsOn.setValue(false);
+            gridButton.defaultButtonProperty().setValue(false);
             drawingArea.setBackground(Background.EMPTY);
         }else{
-            gridButton.setDefaultButton(true);
+            gridIsOn.setValue(true);
+            gridButton.defaultButtonProperty().setValue(true);
             drawingArea.setBackground(createGridBackground());
         }
     }
@@ -552,9 +562,7 @@ public class FXMLGuiDocumentController implements Initializable {
 
     @FXML
     private void handleActionGridSizeSlider(MouseEvent event) {
-        if(gridButton.defaultButtonProperty().getValue()){
             drawingArea.setBackground(createGridBackground());
-        }
     }
     
 }
