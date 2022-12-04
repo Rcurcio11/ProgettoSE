@@ -3,9 +3,10 @@ package seproject;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
-import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
@@ -18,13 +19,16 @@ import javafx.scene.paint.Color;
 public class LoadDrawingFromFileCommand implements OperationCommand{
     
     private AnchorPane drawingArea;
-    private ObservableList<Node> children;
+    private List<Node> children;
     private String filePath;
     
     public LoadDrawingFromFileCommand(AnchorPane drawingArea,String filePath){
         this.drawingArea = drawingArea;
         this.filePath = filePath;
-        children = drawingArea.getChildren();
+        this.children = new ArrayList<>();
+        for(Node n:drawingArea.getChildren()){
+            children.add(n);
+        }
     }
     
     @Override
@@ -63,7 +67,7 @@ public class LoadDrawingFromFileCommand implements OperationCommand{
 
     @Override
     public void undo() {
-        drawingArea.getChildren().removeAll();
+        drawingArea.getChildren().clear();
         for(Node n:children){
             drawingArea.getChildren().add(n);
         }
