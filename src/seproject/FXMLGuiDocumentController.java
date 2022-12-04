@@ -515,7 +515,7 @@ public class FXMLGuiDocumentController implements Initializable {
             gridButton.defaultButtonProperty().setValue(false);
             drawingArea.setBackground(Background.EMPTY);
         }else{
-            gridSizeSlider.setValue(gridSizeSlider.getMax()/2);
+            gridSizeSlider.setValue(gridSizeSlider.getMax()/3);
             gridIsOn.setValue(true);
             gridButton.defaultButtonProperty().setValue(true);
             drawingArea.setBackground(createGridBackground());
