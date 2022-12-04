@@ -85,8 +85,6 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private ColorPicker fillingColor;
     @FXML
-    private Label statusLabel;
-    @FXML
     private CheckBox selectShapeCheckBox;
     @FXML
     private HBox editBox;
@@ -134,7 +132,6 @@ public class FXMLGuiDocumentController implements Initializable {
         commandInvoker = new OperationExecutor();
         startPoint = new Point2D(0,0);
         endPoint = new Point2D(0,0);
-        statusLabel.setText("Welcome");
         selectedShape = null;
         shapeIsSelected = new SimpleBooleanProperty(false);
         gridIsOn = new SimpleBooleanProperty(false);
@@ -221,7 +218,6 @@ public class FXMLGuiDocumentController implements Initializable {
     private void handleButtonActionRectangle(ActionEvent event) {
         shapeToInsert = new RectangleModel();
         insertionShape = new RectangleModel();
-        statusLabel.setText("Rectangle");
         moveButton.setDefaultButton(false);
        
     }
@@ -230,7 +226,6 @@ public class FXMLGuiDocumentController implements Initializable {
     private void handleButtonActionEllipse(ActionEvent event) {
         shapeToInsert = new EllipseModel();
         insertionShape = new EllipseModel();
-        statusLabel.setText("Ellipse");
         moveButton.setDefaultButton(false);
     }
 
@@ -238,41 +233,35 @@ public class FXMLGuiDocumentController implements Initializable {
     private void handleButtonActionLine(ActionEvent event) {
         shapeToInsert = new LineModel();
         insertionShape = new LineModel();
-        statusLabel.setText("Line"); 
         moveButton.setDefaultButton(false);
     }
 
     @FXML
     private void handleActionSaveDrawing(ActionEvent event) {
-        statusLabel.setText("");
         fc = new FileChooser();
         File selectedFile = fc.showSaveDialog(null);
         if(selectedFile != null){
             try{
                 commandInvoker.execute(new SaveDrawingOnFileCommand(drawingArea,selectedFile.getAbsolutePath()));
             }catch(FileErrorDrawException ex){
-                statusLabel.setText("File error, try again");
             }
         }
     }
 
     @FXML
     private void handleActionLoadDrawing(ActionEvent event) {
-        statusLabel.setText("");
         fc = new FileChooser();
         File selectedFile = fc.showOpenDialog(null);
         if(selectedFile != null){
             try{
                 commandInvoker.execute(new LoadDrawingFromFileCommand(drawingArea,selectedFile.getAbsolutePath()));
             }catch(FileErrorDrawException | ShapeModelNotSupportedDrawException ex){
-                statusLabel.setText("File not supported");
             }
         }
     }    
 
     @FXML
     private void handleClickedToolBox(MouseEvent event) {
-        statusLabel.setText("");
         shapeToInsert = null;
         insertionShape = null;
         insertionArea.setDisable(true);
@@ -282,10 +271,6 @@ public class FXMLGuiDocumentController implements Initializable {
 
     @FXML
     private void handleSelectCheckBox(ActionEvent event) {
-        if(selectShapeCheckBox.isSelected())
-            statusLabel.setText("Select a shape");
-        else
-            statusLabel.setText("");
         shapeIsSelected.setValue(false);
         shapeToInsert = null;
         insertionShape = null;
@@ -530,6 +515,7 @@ public class FXMLGuiDocumentController implements Initializable {
             gridButton.defaultButtonProperty().setValue(false);
             drawingArea.setBackground(Background.EMPTY);
         }else{
+            gridSizeSlider.setValue(gridSizeSlider.getMax()/2);
             gridIsOn.setValue(true);
             gridButton.defaultButtonProperty().setValue(true);
             drawingArea.setBackground(createGridBackground());
