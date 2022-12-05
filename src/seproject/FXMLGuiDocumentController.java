@@ -126,6 +126,18 @@ public class FXMLGuiDocumentController implements Initializable {
     private Slider gridSizeSlider;
     @FXML
     private Label gridLabel;
+    @FXML
+    private Button polygonButton;
+    @FXML
+    private Button textButton;
+    @FXML
+    private Button rotateButton;
+    @FXML
+    private Button mirrorButton;
+    @FXML
+    private Button stretchButton;
+    @FXML
+    private Slider zoomSlider;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {

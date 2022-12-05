@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 
-<GridPane prefHeight="541.0" prefWidth="637.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seproject.FXMLGuiDocumentController">
+<GridPane prefHeight="541.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seproject.FXMLGuiDocumentController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
    </columnConstraints>
@@ -55,9 +55,15 @@
             </MenuBar>
             <HBox fx:id="toolBox" onMouseClicked="#handleClickedToolBox" prefHeight="105.0" prefWidth="589.0" spacing="10.0">
                <children>
-                  <Button fx:id="rectangleButton" mnemonicParsing="false" onAction="#handleButtonActionRectangle" text="Rectangle" />
-                  <Button fx:id="ellipseButton" mnemonicParsing="false" onAction="#handleButtonActionEllipse" text="Ellipse" />
-                  <Button fx:id="lineButton" mnemonicParsing="false" onAction="#handleButtonActionLine" text="Line" />
+                  <HBox prefHeight="52.0" prefWidth="307.0" spacing="10.0">
+                     <children>
+                        <Button fx:id="rectangleButton" mnemonicParsing="false" onAction="#handleButtonActionRectangle" text="Rectangle" />
+                        <Button fx:id="ellipseButton" mnemonicParsing="false" onAction="#handleButtonActionEllipse" text="Ellipse" />
+                        <Button fx:id="lineButton" mnemonicParsing="false" onAction="#handleButtonActionLine" text="Line" />
+                        <Button fx:id="polygonButton" mnemonicParsing="false" text="Polygon" />
+                        <Button fx:id="textButton" mnemonicParsing="false" text="Text" />
+                     </children>
+                  </HBox>
                   <Label prefHeight="25.0" prefWidth="69.0" text="Outline color">
                      <padding>
                         <Insets top="5.0" />
@@ -92,7 +98,7 @@
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
                   <Button fx:id="pasteButton" mnemonicParsing="false" onAction="#handleButtonActionPaste" text="Paste" />
-                  <HBox fx:id="editBox" prefHeight="40.0" prefWidth="569.0" spacing="10.0">
+                  <HBox fx:id="editBox" prefHeight="57.0" prefWidth="693.0" spacing="10.0">
                      <children>
                         <Button fx:id="copyButton" mnemonicParsing="false" onAction="#handleButtonActionCopy" text="Copy" />
                         <Button fx:id="cutButton" mnemonicParsing="false" onAction="#handleButtonActionCut" text="Cut" />
@@ -101,6 +107,9 @@
                         <Button fx:id="changeDimensionsButton" mnemonicParsing="false" onAction="#handleActionChangeDimensions" text="Change dimensions" />
                         <Button fx:id="frontButton" mnemonicParsing="false" onAction="#handleButtonActionFront" text="To front" />
                         <Button fx:id="backButton" mnemonicParsing="false" onAction="#handleButtonActionBack" text="To back" />
+                        <Button fx:id="rotateButton" mnemonicParsing="false" text="Rotate" />
+                        <Button fx:id="mirrorButton" mnemonicParsing="false" text="Mirror" />
+                        <Button fx:id="stretchButton" mnemonicParsing="false" text="Stretch" />
                      </children>
                      <padding>
                         <Insets left="10.0" />
@@ -116,7 +125,7 @@
                   <Insets />
                </VBox.margin>
                <padding>
-                  <Insets left="10.0" top="10.0" />
+                  <Insets left="10.0" />
                </padding>
                <children>
                   <Button fx:id="gridButton" mnemonicParsing="false" onAction="#handleActionGridButton" text="Grid" />
@@ -130,6 +139,20 @@
                         <Insets top="8.0" />
                      </padding>
                   </Slider>
+                  <HBox alignment="TOP_RIGHT" prefHeight="57.0" prefWidth="484.0">
+                     <children>
+                        <Label text="Zoom">
+                           <HBox.margin>
+                              <Insets right="10.0" top="5.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Slider fx:id="zoomSlider" min="10.0">
+                           <padding>
+                              <Insets right="5.0" top="8.0" />
+                           </padding>
+                        </Slider>
+                     </children>
+                  </HBox>
                </children>
             </HBox>
          </children>
