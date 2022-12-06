@@ -2,6 +2,7 @@
 package seproject;
 
 import static java.lang.Math.abs;
+import java.util.ArrayList;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -23,8 +24,8 @@ public class RectangleModel extends Rectangle implements ShapeModel{
     }
 
     @Override
-    public void insert(AnchorPane drawingPane, Point2D startPoint,Point2D endPoint, Color outlineColor, Color fillingColor) {
-        setShapeParameters(startPoint,endPoint);
+    public void insert(AnchorPane drawingPane, ArrayList<Point2D> points, Color outlineColor, Color fillingColor) {
+        setShapeParameters(points);
         
         this.setStroke(outlineColor);
         this.setFill(fillingColor);
@@ -35,16 +36,16 @@ public class RectangleModel extends Rectangle implements ShapeModel{
 
     @Override
     public String saveOnFileString(String separator) {
-        return this.getClass().getSimpleName() + separator + this.getX() + separator + this.getY() + separator + (this.getX() + this.getWidth()) + separator + (this.getY() + this.getHeight()) + separator + this.getStroke() + separator + this.getFill() + separator;
+        return this.getClass().getSimpleName() + separator + 2 + separator + this.getX() + separator + this.getY() + separator + (this.getX() + this.getWidth()) + separator + (this.getY() + this.getHeight()) + separator + this.getStroke() + separator + this.getFill() + separator;
     }
 
     @Override
-    public Point2D getStartPoint() {
+    public Point2D getLowerBound() {
         return new Point2D(this.getX(),this.getY());
     }
 
     @Override
-    public Point2D getEndPoint() {
+    public Point2D getUpperBound() {
         return new Point2D(this.getX() + this.getWidth(),this.getY() + this.getHeight());
     }
     
@@ -59,19 +60,19 @@ public class RectangleModel extends Rectangle implements ShapeModel{
     }
     
     @Override
-    public void setShapeParameters(Point2D startPoint, Point2D endPoint) {
-        if(startPoint.getX() > endPoint.getX())
-            this.setX(endPoint.getX());
+    public void setShapeParameters(ArrayList<Point2D> points) {
+        if(points.get(0).getX() > points.get(1).getX())
+            this.setX(points.get(1).getX());
         else
-            this.setX(startPoint.getX());
+            this.setX(points.get(0).getX());
        
-        if(startPoint.getY() > endPoint.getY())
-            this.setY(endPoint.getY());
+        if(points.get(0).getY() > points.get(1).getY())
+            this.setY(points.get(1).getY());
         else
-            this.setY(startPoint.getY());
+            this.setY(points.get(0).getY());
         
-        double width = abs(startPoint.getX()-endPoint.getX());
-        double height = abs(startPoint.getY()- endPoint.getY());
+        double width = abs(points.get(0).getX()-points.get(1).getX());
+        double height = abs(points.get(0).getY()- points.get(1).getY());
         
         this.setWidth(width);
         this.setHeight(height);
@@ -89,12 +90,14 @@ public class RectangleModel extends Rectangle implements ShapeModel{
 
     @Override
     public ShapeModel pasteShape(AnchorPane drawingArea, Point2D startPoint) {
+        ArrayList<Point2D> newPoints = new ArrayList<>();
+        newPoints.add(startPoint);
         RectangleModel toInsert = new RectangleModel();
         double newEndX = abs(startPoint.getX() + this.getWidth());
         double newEndY = abs(startPoint.getY()+ this.getHeight());
-        Point2D endPoint = new Point2D(newEndX, newEndY);
+        newPoints.add(new Point2D(newEndX, newEndY));
         
-        toInsert.setShapeParameters(startPoint, endPoint);
+        toInsert.setShapeParameters(newPoints);
         toInsert.setStroke(this.getStroke());
         toInsert.setFill(this.getFill());
         
@@ -106,5 +109,18 @@ public class RectangleModel extends Rectangle implements ShapeModel{
     public void changeColor(Color outlineColor, Color fillingColor) {
         this.setStroke(outlineColor);
         this.setFill(fillingColor);    
+    }
+
+    @Override
+    public ArrayList<Point2D> getAllPoints() {
+        ArrayList<Point2D> points = new ArrayList<>();
+        points.add(new Point2D(this.getX(),this.getY()));
+        points.add(new Point2D(this.getX() + this.getWidth(),this.getY() + this.getHeight()));
+        return points;
+    }
+
+    @Override
+    public ArrayList<Point2D> getBounds() {
+        return this.getAllPoints();
     }
 }

@@ -50,15 +50,20 @@ public class LoadDrawingFromFileCommand implements OperationCommand{
                 }
                 else
                     throw new ShapeModelNotSupportedDrawException();
-                double startX = loader.nextDouble();
-                double startY = loader.nextDouble();
-                double endX = loader.nextDouble();
-                double endY = loader.nextDouble();
+                
+                double pointsNumber = loader.nextDouble();
+                ArrayList<Point2D> points = new ArrayList<>();
+                double pointX;
+                double pointY;
+                
+                for(int i = 0; i<pointsNumber; i++){
+                    pointX = loader.nextDouble();
+                    pointY = loader.nextDouble();
+                    points.add(new Point2D(pointX, pointY));
+                }
                 String outlineColor = loader.next();
                 String fillingColor = loader.next();
-                Point2D startPoint = new Point2D(startX,startY);
-                Point2D endPoint = new Point2D(endX,endY);
-                shape.insert(drawingArea,startPoint,endPoint,Color.web(outlineColor), Color.web(fillingColor));
+                shape.insert(drawingArea,points,Color.web(outlineColor), Color.web(fillingColor));
              }
         }catch(FileNotFoundException ex){
             throw new FileErrorDrawException();

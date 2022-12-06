@@ -1,6 +1,7 @@
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
 import javafx.geometry.Point2D;
@@ -31,18 +32,19 @@ public class SaveDrawingOnFileCommandTest {
     
     @Before
     public void setUp() {
-        Point2D startPoint = new Point2D(10,12);
-        Point2D endPoint = new Point2D(14,16);
+        ArrayList<Point2D> points = new ArrayList<>();
+        points.add(new Point2D(10,12));
+        points.add(new Point2D(14,16)); 
         Color stroke = Color.BLACK;
         Color fill = Color.RED;
         ShapeModel line = new LineModel();
-        line.insert(testDrawingArea, startPoint, endPoint,stroke,fill);
+        line.insert(testDrawingArea, points,stroke,fill);
         ShapeModel rect = new RectangleModel();
-        rect.insert(testDrawingArea,startPoint,endPoint,stroke,fill);
+        rect.insert(testDrawingArea,points,stroke,fill);
         ShapeModel ellipse = new EllipseModel();
-        ellipse.insert(testDrawingArea,startPoint,endPoint,stroke,fill);
+        ellipse.insert(testDrawingArea,points,stroke,fill);
         line = new LineModel();
-        line.insert(testDrawingArea, startPoint, endPoint,stroke,fill);
+        line.insert(testDrawingArea, points,stroke,fill);
 
     }
    

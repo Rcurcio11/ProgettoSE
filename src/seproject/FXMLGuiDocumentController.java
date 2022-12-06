@@ -3,6 +3,7 @@ package seproject;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -45,22 +46,16 @@ public class FXMLGuiDocumentController implements Initializable {
     ///////////////// USER VARIABLES /////////////////
     
     private ShapeModel shapeToInsert;
-    private ShapeModel editingShape;
     private ShapeModel insertionShape;
     private OperationExecutor commandInvoker;
-    private Point2D startPoint;
-    private Point2D endPoint;
     private FileChooser fc;
     private ShapeModel selectedShape;
     private BooleanProperty shapeIsSelected;
     private BooleanProperty gridIsOn;
     private RectangleModel selectionRectangle;
     private ShapeModel clipboardShape = null;
-    private AnchorPane editingPane;
-    double startX, startY;
-    
-    private ShapeModel prova;
-    
+    private ArrayList<Point2D> points;
+    private ArrayList<Point2D> insertionPoints;
     
     //////////////////////////////////////////////////
     
@@ -142,16 +137,18 @@ public class FXMLGuiDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         commandInvoker = new OperationExecutor();
-        startPoint = new Point2D(0,0);
-        endPoint = new Point2D(0,0);
+        points = new ArrayList<>();
+        points.add(new Point2D(0,0));
+        points.add(new Point2D(0,0));
+        insertionPoints = new ArrayList<>();
+        insertionPoints.add(new Point2D(0,0));
+        insertionPoints.add(new Point2D(0,0));
         selectedShape = null;
         shapeIsSelected = new SimpleBooleanProperty(false);
         gridIsOn = new SimpleBooleanProperty(false);
         selectionRectangle = null;
         shapeToInsert = null;
         insertionShape = null;
-        editingShape = null;
-        editingPane = null;
         
         // BINDINGS
         
@@ -180,6 +177,8 @@ public class FXMLGuiDocumentController implements Initializable {
                 selectShapeCheckBox.setSelected(false);
                 shapeIsSelected.setValue(false);
                 insertionArea.setDisable(false);
+                moveButton.setDefaultButton(false);
+                points.clear();
             }
             
         };        
@@ -210,6 +209,9 @@ public class FXMLGuiDocumentController implements Initializable {
         editingArea.disableProperty().addListener((o,oldVal,newVal) -> {
             if(!newVal){
                 insertionArea.setDisable(true);
+                points.clear();
+                points.add(new Point2D(0,0));
+                points.add(new Point2D(0,0));
             }
         });
         
@@ -218,6 +220,9 @@ public class FXMLGuiDocumentController implements Initializable {
             if(newVal){
                 insertionArea.setDisable(true);
                 editingArea.setDisable(true);
+                points.clear();
+                points.add(new Point2D(0,0));
+                points.add(new Point2D(0,0));
             }
         });
         
@@ -230,22 +235,18 @@ public class FXMLGuiDocumentController implements Initializable {
     private void handleButtonActionRectangle(ActionEvent event) {
         shapeToInsert = new RectangleModel();
         insertionShape = new RectangleModel();
-        moveButton.setDefaultButton(false);
-       
     }
 
     @FXML
     private void handleButtonActionEllipse(ActionEvent event) {
         shapeToInsert = new EllipseModel();
         insertionShape = new EllipseModel();
-        moveButton.setDefaultButton(false);
     }
 
     @FXML
     private void handleButtonActionLine(ActionEvent event) {
         shapeToInsert = new LineModel();
         insertionShape = new LineModel();
-        moveButton.setDefaultButton(false);
     }
 
     @FXML
@@ -313,7 +314,7 @@ public class FXMLGuiDocumentController implements Initializable {
     private void insertSelectionRectangle(){
         selectionRectangle = new RectangleModel();
         ((Shape)selectionRectangle).getStrokeDashArray().addAll(5d);
-        selectionRectangle.insert(editingArea, selectedShape.getStartPoint(), selectedShape.getEndPoint(), Color.GREY, Color.TRANSPARENT);
+        selectionRectangle.insert(editingArea, selectedShape.getBounds(), Color.GREY, Color.TRANSPARENT);
     }
     
     private void removeSelectionRectangle(){
@@ -434,24 +435,26 @@ public class FXMLGuiDocumentController implements Initializable {
     //INSERTION AREA
     @FXML
     private void handleMouseReleasedOnInsertionArea(MouseEvent event) {
-        endPoint = new Point2D(event.getX(),event.getY());  
-        InsertCommand command = new InsertCommand(drawingArea, shapeToInsert,startPoint, endPoint, outlineColor.getValue(), fillingColor.getValue());
+        points.add(new Point2D(event.getX(),event.getY()));    
+        InsertCommand command = new InsertCommand(drawingArea, shapeToInsert,points, outlineColor.getValue(), fillingColor.getValue());
         commandInvoker.execute(command);
         insertionShape.deleteShape(insertionArea);
         shapeToInsert = shapeToInsert.nextDraw();
+        points.clear();
     }
 
     @FXML
     private void handleMouseDraggedOnInsertionArea(MouseEvent event) {
-        endPoint = new Point2D(event.getX(),event.getY());
-        insertionShape.changeDimensions(startPoint, endPoint);
+        insertionPoints.set(1, new Point2D(event.getX(),event.getY()));
+        insertionShape.changeDimensions(insertionPoints);
     }
 
     @FXML
     private void handleMousePressedOnInsertionArea(MouseEvent event) {
-        startPoint = new Point2D(event.getX(),event.getY());
-        endPoint = startPoint;
-        insertionShape.insert(insertionArea, startPoint, endPoint, outlineColor.getValue(), fillingColor.getValue());
+        points.add(new Point2D(event.getX(),event.getY()));
+        insertionPoints.set(0, points.get(0));
+        insertionPoints.set(1, points.get(0));
+        insertionShape.insert(insertionArea, insertionPoints, outlineColor.getValue(), fillingColor.getValue());
     }
     
     
@@ -465,7 +468,7 @@ public class FXMLGuiDocumentController implements Initializable {
 
     @FXML
     private void handleMouseReleasedOnCDArea(MouseEvent event) {
-        OperationCommand c = new ChangeShapeDimensionsCommand(drawingArea,selectedShape.getStartPoint(),new Point2D(event.getX(),event.getY()),selectedShape);
+        OperationCommand c = new ChangeShapeDimensionsCommand(drawingArea,selectedShape.getLowerBound(),new Point2D(event.getX(),event.getY()),selectedShape);
         commandInvoker.execute(c);
         shapeIsSelected.setValue(false);
         changeDimensionsArea.setDisable(true);
@@ -475,9 +478,9 @@ public class FXMLGuiDocumentController implements Initializable {
 
     @FXML
     private void handleMouseDraggedOnCDArea(MouseEvent event) {
-        Point2D endPoint = new Point2D(event.getX(),event.getY());
-        startPoint = selectedShape.getStartPoint();
-        selectionRectangle.changeDimensions(startPoint, endPoint);   
+        points.set(1, new Point2D(event.getX(),event.getY()));
+        points.set(0, selectedShape.getAllPoints().get(0));
+        selectionRectangle.changeDimensions(points);     
     }
 
     @FXML
@@ -494,7 +497,7 @@ public class FXMLGuiDocumentController implements Initializable {
     private void handleMouseReleasedOnMoveArea(MouseEvent event) {
         
         Point2D endPoint = new Point2D(event.getX(),event.getY());
-        MoveCommand mc = new MoveCommand(selectedShape, new Point2D(event.getX() - startPoint.getX(),event.getY()- startPoint.getY()));
+        MoveCommand mc = new MoveCommand(selectedShape, new Point2D(event.getX() - points.get(0).getX(),event.getY()- points.get(0).getY()));
         commandInvoker.execute(mc);
         shapeIsSelected.setValue(false);
         moveButton.defaultButtonProperty().setValue(false);
@@ -505,19 +508,19 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private void handleMouseDraggedOnMoveArea(MouseEvent event) {
         
-        Point2D translatePoint = new Point2D(event.getX()-startPoint.getX(),event.getY()-startPoint.getY());
+        Point2D translatePoint = new Point2D(event.getX()-points.get(0).getX(),event.getY()-points.get(0).getY());
         ((Shape)selectionRectangle).setTranslateX(translatePoint.getX());
         ((Shape)selectionRectangle).setTranslateY(translatePoint.getY());
     }
 
     @FXML
     private void handleMousePressedOnCDArea(MouseEvent event) {
-        startPoint = selectedShape.getStartPoint();
+        points.set(0, selectedShape.getAllPoints().get(0));
     }
 
     @FXML
     private void handleMousePressedOnMoveArea(MouseEvent event) {
-        startPoint = new Point2D(event.getX(),event.getY());
+        points.set(0, new Point2D(event.getX(),event.getY()));
     }
     
     @FXML

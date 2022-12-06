@@ -18,9 +18,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 
-<GridPane prefHeight="541.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seproject.FXMLGuiDocumentController">
+<GridPane prefHeight="541.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seproject.FXMLGuiDocumentController">
    <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="900.0" />
    </columnConstraints>
    <rowConstraints>
       <RowConstraints maxHeight="200.0" minHeight="10.0" vgrow="SOMETIMES" />
@@ -41,7 +41,7 @@
             </AnchorPane>
          </content>
       </ScrollPane>
-      <VBox fx:id="menuVBox" alignment="CENTER" prefHeight="127.0" prefWidth="637.0">
+      <VBox fx:id="menuVBox" alignment="CENTER" minWidth="900.0" prefHeight="127.0" prefWidth="637.0">
          <children>
             <MenuBar>
               <menus>
@@ -53,15 +53,15 @@
                 </Menu>
               </menus>
             </MenuBar>
-            <HBox fx:id="toolBox" onMouseClicked="#handleClickedToolBox" prefHeight="105.0" prefWidth="589.0" spacing="10.0">
+            <HBox fx:id="toolBox" minWidth="900.0" onMouseClicked="#handleClickedToolBox" prefHeight="105.0" prefWidth="589.0" spacing="10.0">
                <children>
-                  <HBox prefHeight="52.0" prefWidth="307.0" spacing="10.0">
+                  <HBox prefHeight="51.0" prefWidth="370.0" spacing="10.0">
                      <children>
-                        <Button fx:id="rectangleButton" mnemonicParsing="false" onAction="#handleButtonActionRectangle" text="Rectangle" />
-                        <Button fx:id="ellipseButton" mnemonicParsing="false" onAction="#handleButtonActionEllipse" text="Ellipse" />
-                        <Button fx:id="lineButton" mnemonicParsing="false" onAction="#handleButtonActionLine" text="Line" />
-                        <Button fx:id="polygonButton" mnemonicParsing="false" text="Polygon" />
-                        <Button fx:id="textButton" mnemonicParsing="false" text="Text" />
+                        <Button fx:id="rectangleButton" mnemonicParsing="false" onAction="#handleButtonActionRectangle" prefHeight="26.0" prefWidth="78.0" text="Rectangle" />
+                        <Button fx:id="ellipseButton" mnemonicParsing="false" onAction="#handleButtonActionEllipse" prefHeight="26.0" prefWidth="56.0" text="Ellipse" />
+                        <Button fx:id="lineButton" mnemonicParsing="false" onAction="#handleButtonActionLine" prefHeight="26.0" prefWidth="47.0" text="Line" />
+                        <Button fx:id="polygonButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" text="Polygon" />
+                        <Button fx:id="textButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="55.0" text="Text" />
                      </children>
                   </HBox>
                   <Label prefHeight="25.0" prefWidth="69.0" text="Outline color">
@@ -95,12 +95,12 @@
                   <Insets left="10.0" top="10.0" />
                </padding>
             </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <HBox minWidth="900.0" prefHeight="100.0" prefWidth="200.0">
                <children>
                   <Button fx:id="pasteButton" mnemonicParsing="false" onAction="#handleButtonActionPaste" text="Paste" />
-                  <HBox fx:id="editBox" prefHeight="57.0" prefWidth="693.0" spacing="10.0">
+                  <HBox fx:id="editBox" prefHeight="56.0" prefWidth="842.0" spacing="10.0">
                      <children>
-                        <Button fx:id="copyButton" mnemonicParsing="false" onAction="#handleButtonActionCopy" text="Copy" />
+                        <Button fx:id="copyButton" mnemonicParsing="false" onAction="#handleButtonActionCopy" prefHeight="26.0" prefWidth="50.0" text="Copy" />
                         <Button fx:id="cutButton" mnemonicParsing="false" onAction="#handleButtonActionCut" text="Cut" />
                         <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#handleButtonActionDelete" text="Delete" />
                         <Button fx:id="moveButton" mnemonicParsing="false" onAction="#handleButtonActionMove" text="Move" />
@@ -120,7 +120,7 @@
                   <Insets left="10.0" />
                </padding>
             </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+            <HBox minWidth="900.0" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <VBox.margin>
                   <Insets />
                </VBox.margin>

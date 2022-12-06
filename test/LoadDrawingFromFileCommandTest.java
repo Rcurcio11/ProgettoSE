@@ -4,24 +4,20 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import seproject.EllipseModel;
-import seproject.FileErrorDrawException;
 import seproject.LineModel;
 import seproject.LoadDrawingFromFileCommand;
 import seproject.RectangleModel;
-import seproject.SaveDrawingOnFileCommand;
 import seproject.ShapeModel;
 
 
@@ -44,19 +40,19 @@ public class LoadDrawingFromFileCommandTest {
   
     @Before
     public void setUp() throws FileNotFoundException {
-        
-        Point2D startPoint = new Point2D(10,12);
-        Point2D endPoint = new Point2D(14,16);
+        ArrayList<Point2D> points = new ArrayList<>();
+        points.add(new Point2D(10,12));
+        points.add(new Point2D(14,16)); 
         Color stroke = Color.BLACK;
         Color fill = Color.RED;
         ShapeModel line = new LineModel();
-        line.insert(testDrawingArea, startPoint, endPoint,stroke,fill);
+        line.insert(testDrawingArea, points,stroke,fill);
         ShapeModel rect = new RectangleModel();
-        rect.insert(testDrawingArea,startPoint,endPoint,stroke,fill);
+        rect.insert(testDrawingArea,points,stroke,fill);
         ShapeModel ellipse = new EllipseModel();
-        ellipse.insert(testDrawingArea,startPoint,endPoint,stroke,fill);
+        ellipse.insert(testDrawingArea,points,stroke,fill);
         line = new LineModel();
-        line.insert(testDrawingArea, startPoint, endPoint,stroke,fill);
+        line.insert(testDrawingArea, points,stroke,fill);
         
         PrintWriter saver = new PrintWriter(new FileOutputStream(testFilePath));
         for(Node n:testDrawingArea.getChildren()){

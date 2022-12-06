@@ -1,4 +1,5 @@
 
+import java.util.ArrayList;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -17,18 +18,19 @@ public class RectangleModelTest {
     
     @Before
     public void setup(){
-       testShapeRectangle = new RectangleModel();
-       testDrawingArea = new AnchorPane();     
-       double startX = Math.random()*663;
-       double startY = Math.random()*479;
-       double endX = Math.random()*663; 
-       double endY = Math.random()*479;
-       Point2D startPoint = new Point2D(startX,startY);
-       Point2D endPoint = new Point2D(endX,endY);
-       Color outlineColor = Color.color(Math.random(), Math.random(), Math.random());
-       Color fillingColor = Color.color(Math.random(), Math.random(), Math.random());
+        testShapeRectangle = new RectangleModel();
+        testDrawingArea = new AnchorPane();     
+        ArrayList<Point2D> points = new ArrayList<>();
+        double startX = Math.random()*663;
+        double startY = Math.random()*479;
+        double endX = Math.random()*663; 
+        double endY = Math.random()*479;
+        points.add(new Point2D(startX,startY));
+        points.add(new Point2D(endX,endY));
+        Color outlineColor = Color.color(Math.random(), Math.random(), Math.random());
+        Color fillingColor = Color.color(Math.random(), Math.random(), Math.random());
        
-       testShapeRectangle.insert(testDrawingArea, startPoint, endPoint, outlineColor, fillingColor);
+        testShapeRectangle.insert(testDrawingArea, points, outlineColor, fillingColor);
 
     }
     
@@ -46,13 +48,13 @@ public class RectangleModelTest {
     public void testMove(){
         
         Point2D translatePoint= new Point2D(12,34);
-        Point2D startPoint = testShapeRectangle.getStartPoint();
+        Point2D startPoint = testShapeRectangle.getLowerBound();
         
         testShapeRectangle.move(translatePoint);
         
         assertEquals(testShapeRectangle, testDrawingArea.getChildren().get(0));
-        assertEquals(startPoint.getX() + translatePoint.getX() , testShapeRectangle.getStartPoint().getX(),0.1);
-        assertEquals(startPoint.getY() + translatePoint.getY() , testShapeRectangle.getStartPoint().getY(), 0.1);
+        assertEquals(startPoint.getX() + translatePoint.getX() , testShapeRectangle.getLowerBound().getX(),0.1);
+        assertEquals(startPoint.getY() + translatePoint.getY() , testShapeRectangle.getLowerBound().getY(), 0.1);
         
     }
     
@@ -85,20 +87,29 @@ public class RectangleModelTest {
     
     @Test
     public void testChangeDimensions(){
-        Point2D oldEndPoint = testShapeRectangle.getEndPoint();
-        Point2D oldStartPoint = testShapeRectangle.getStartPoint();
+        Point2D oldEndPoint = testShapeRectangle.getUpperBound();
+        Point2D oldStartPoint = testShapeRectangle.getLowerBound();
         Point2D newEndPoint = new Point2D(100,100);
         Point2D newStartPoint = new Point2D(20,15);
+        ArrayList<Point2D> testPoints = new ArrayList<>();
         
-        testShapeRectangle.changeDimensions(oldStartPoint, oldEndPoint);
-        assertEquals(oldEndPoint,testShapeRectangle.getEndPoint());
+        testPoints.add(oldStartPoint);
+        testPoints.add(oldEndPoint);
         
-        testShapeRectangle.changeDimensions(newEndPoint, newStartPoint);
-        assertEquals(newStartPoint,testShapeRectangle.getStartPoint());
-        assertEquals(newEndPoint,testShapeRectangle.getEndPoint());
+        testShapeRectangle.changeDimensions(testPoints);
+        assertEquals(oldEndPoint,testShapeRectangle.getUpperBound());
         
-        testShapeRectangle.changeDimensions(newStartPoint, oldEndPoint);
-        assertEquals(newStartPoint,testShapeRectangle.getStartPoint());
+        testPoints.set(0, newStartPoint);
+        testPoints.set(1, newEndPoint);
+        
+        testShapeRectangle.changeDimensions(testPoints);
+        assertEquals(newStartPoint,testShapeRectangle.getLowerBound());
+        assertEquals(newEndPoint,testShapeRectangle.getUpperBound());
+        
+        testPoints.set(1, oldEndPoint);
+        
+        testShapeRectangle.changeDimensions(testPoints);
+        assertEquals(newStartPoint,testShapeRectangle.getLowerBound());
     }
 }
 

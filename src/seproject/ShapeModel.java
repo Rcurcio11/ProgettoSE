@@ -1,6 +1,7 @@
 
 package seproject;
 
+import java.util.ArrayList;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -11,24 +12,24 @@ import javafx.scene.paint.Color;
  */
 public interface ShapeModel {
     
-    public Point2D getStartPoint();
+    public Point2D getLowerBound();
     
-    public Point2D getEndPoint();
+    public Point2D getUpperBound();
     
     public Color getOutlineColor();
     
     public Color getFillingColor();
     
-    public void insert (AnchorPane drawingArea,Point2D starPoint, Point2D endPoint, Color outlineColor, Color fillingColor);
+    public void insert (AnchorPane drawingArea, ArrayList<Point2D> points, Color outlineColor, Color fillingColor);
     
     public ShapeModel nextDraw ();
     
     public String saveOnFileString(String separator);
     
-    public void setShapeParameters(Point2D startPoint,Point2D endPoint);
+    public void setShapeParameters(ArrayList<Point2D> points);
     
-    default void changeDimensions(Point2D startPoint,Point2D endPoint){
-        setShapeParameters(startPoint,endPoint);
+    default void changeDimensions(ArrayList<Point2D> points){
+        setShapeParameters(points);
     }
 
     public void move(Point2D translatePoint);
@@ -40,4 +41,8 @@ public interface ShapeModel {
     public void changeColor(Color outlineColor, Color fillingColor);
 
     public ShapeModel pasteShape(AnchorPane drawingArea, Point2D startPoint);
+    
+    public ArrayList<Point2D> getAllPoints();
+    
+    public ArrayList<Point2D> getBounds();
 }

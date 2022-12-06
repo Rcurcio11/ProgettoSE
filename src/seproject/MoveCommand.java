@@ -17,7 +17,7 @@ public class MoveCommand implements OperationCommand{
     public MoveCommand(ShapeModel selectedShape,Point2D translatePoint) {
         this.selectedShape = selectedShape;
         this.translatePoint = translatePoint;
-        Point2D startPoint = selectedShape.getStartPoint();
+        Point2D startPoint = selectedShape.getLowerBound();
         this.oldTranslatePoint = new Point2D(-translatePoint.getX(),-translatePoint.getY());
         
     }

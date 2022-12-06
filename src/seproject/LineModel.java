@@ -2,6 +2,7 @@
 package seproject;
 
 
+import java.util.ArrayList;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -25,14 +26,11 @@ public class LineModel extends Line implements ShapeModel {
     }
     
    @Override
-    public void insert(AnchorPane drawingPane, Point2D startPoint,Point2D endPoint, Color outlineColor, Color fillingColor) {
-        if(startPoint.getX() > endPoint.getX()){
-            setShapeParameters(endPoint,startPoint);
-        }else{
-            setShapeParameters(startPoint,endPoint);
-        }
+    public void insert(AnchorPane drawingPane, ArrayList<Point2D> points, Color outlineColor, Color fillingColor) {
+        setShapeParameters(points);
         
         this.setStroke(outlineColor);
+        this.setStrokeWidth(2.0);
 
         drawingPane.getChildren().add(this);
     }
@@ -40,16 +38,16 @@ public class LineModel extends Line implements ShapeModel {
 
     @Override
     public String saveOnFileString(String separator) {
-        return this.getClass().getSimpleName() + separator + this.getStartX() + separator + this.getStartY() + separator + this.getEndX() + separator + this.getEndY() + separator + this.getStroke() + separator + this.getStroke() + separator;
+        return this.getClass().getSimpleName() + separator + 2 + separator + this.getStartX() + separator + this.getStartY() + separator + this.getEndX() + separator + this.getEndY() + separator + this.getStroke() + separator + this.getStroke() + separator;
     }
 
     @Override
-    public Point2D getStartPoint() {
+    public Point2D getLowerBound() {
         return new Point2D(this.getStartX(),this.getStartY());
     }
 
     @Override
-    public Point2D getEndPoint() {
+    public Point2D getUpperBound() {
         return new Point2D(this.getEndX(),this.getEndY());
     }
      
@@ -64,12 +62,18 @@ public class LineModel extends Line implements ShapeModel {
     }
     
     @Override
-    public void setShapeParameters(Point2D startPoint, Point2D endPoint) {
-        this.setStartX(startPoint.getX());
-        this.setStartY(startPoint.getY());
-        this.setEndX(endPoint.getX());
-        this.setEndY(endPoint.getY());
-        this.setStrokeWidth(2.0);
+    public void setShapeParameters(ArrayList<Point2D> points) {
+        if(points.get(0).getX() > points.get(1).getX()){
+            this.setStartX(points.get(1).getX());
+            this.setStartY(points.get(1).getY());
+            this.setEndX(points.get(0).getX());
+            this.setEndY(points.get(0).getY());
+        }else{
+            this.setStartX(points.get(0).getX());
+            this.setStartY(points.get(0).getY());
+            this.setEndX(points.get(1).getX());
+            this.setEndY(points.get(1).getY());
+        }
     }
 
     @Override
@@ -93,7 +97,8 @@ public class LineModel extends Line implements ShapeModel {
 
     @Override
     public ShapeModel pasteShape(AnchorPane drawingArea, Point2D startPoint) {
-
+        ArrayList<Point2D> newPoints = new ArrayList<>();
+        newPoints.add(startPoint);
         double endX = startPoint.getX() + this.getLayoutBounds().getWidth();
         double endY;
         if(this.getStartY() > this.getEndY())
@@ -101,9 +106,9 @@ public class LineModel extends Line implements ShapeModel {
         else 
             endY = startPoint.getY() + this.getLayoutBounds().getHeight();
         
-        Point2D endPoint = new Point2D(endX, endY);
+        newPoints.add(new Point2D(endX, endY));
         LineModel toInsert = new LineModel();
-        toInsert.setShapeParameters(startPoint, endPoint);
+        toInsert.setShapeParameters(newPoints); 
         toInsert.setStroke(this.getStroke());
 
         drawingArea.getChildren().add(toInsert);
@@ -114,4 +119,17 @@ public class LineModel extends Line implements ShapeModel {
     public void changeColor(Color outlineColor, Color fillingColor) {
         this.setStroke(outlineColor);    
     }   
+
+    @Override
+    public ArrayList<Point2D> getAllPoints() {
+        ArrayList<Point2D> points = new ArrayList<>();
+        points.add(new Point2D(this.getStartX(),this.getStartY()));
+        points.add(new Point2D(this.getEndX(),this.getEndY()));
+        return points;
+    }
+
+    @Override
+    public ArrayList<Point2D> getBounds() {
+        return this.getAllPoints();
+    }
 }

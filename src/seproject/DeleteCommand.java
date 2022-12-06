@@ -23,7 +23,7 @@ public class DeleteCommand implements OperationCommand{
 
     @Override
     public void undo() {
-        shapeToDelete.insert(drawingArea, shapeToDelete.getStartPoint(), shapeToDelete.getEndPoint(), shapeToDelete.getOutlineColor(), shapeToDelete.getFillingColor());
+        shapeToDelete.insert(drawingArea, shapeToDelete.getAllPoints(), shapeToDelete.getOutlineColor(), shapeToDelete.getFillingColor());
     }
     
 }

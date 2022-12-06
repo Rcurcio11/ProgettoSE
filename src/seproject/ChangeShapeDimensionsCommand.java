@@ -1,6 +1,7 @@
 
 package seproject;
 
+import java.util.ArrayList;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
 
@@ -22,20 +23,26 @@ public class ChangeShapeDimensionsCommand implements OperationCommand{
         this.startPoint = startPoint;
         this.endPoint = endPoint;
         this.shape = shape;
-        this.oldStartPoint = shape.getStartPoint();
-        this.oldEndPoint = shape.getEndPoint();
+        this.oldStartPoint = shape.getLowerBound();
+        this.oldEndPoint = shape.getUpperBound();
     }
     
     @Override
     public void execute() throws GenericDrawException {
         if(shape == null)
             throw new ShapeNotSelectedDrawException();
-        shape.changeDimensions(startPoint, endPoint);
+        ArrayList<Point2D> points = new ArrayList<>();
+        points.add(startPoint);
+        points.add(endPoint);
+        shape.changeDimensions(points);
     }
 
     @Override
     public void undo() {
-        shape.changeDimensions(oldStartPoint, oldEndPoint);
+        ArrayList<Point2D> points = new ArrayList<>();
+        points.add(oldStartPoint);
+        points.add(oldEndPoint);
+        shape.changeDimensions(points);
     }
     
 }

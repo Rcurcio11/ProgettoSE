@@ -1,6 +1,7 @@
 
 package seproject;
 
+import java.util.ArrayList;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -12,16 +13,14 @@ import javafx.scene.paint.Color;
 public class InsertCommand implements OperationCommand{
     private AnchorPane drawingArea;
     private ShapeModel selectedShape;
-    private Point2D starPoint;
-    private Point2D endPoint;
+    private ArrayList<Point2D> points = new ArrayList<>();
     private Color outlineColor;
     private Color fillingColor;
 
-    public InsertCommand(AnchorPane drawingArea, ShapeModel selectedShape, Point2D starPoint, Point2D endPoint, Color outlineColor, Color fillingColor) {
+    public InsertCommand(AnchorPane drawingArea, ShapeModel selectedShape, ArrayList<Point2D> points, Color outlineColor, Color fillingColor) {
         this.drawingArea = drawingArea;
         this.selectedShape = selectedShape;
-        this.starPoint = starPoint;
-        this.endPoint = endPoint;
+        this.points = points;
         this.outlineColor = outlineColor;
         this.fillingColor = fillingColor;
     }
@@ -30,7 +29,7 @@ public class InsertCommand implements OperationCommand{
     public void execute() throws GenericDrawException{
         if(selectedShape == null)
             throw new ShapeNotSelectedDrawException();
-        selectedShape.insert(drawingArea,starPoint, endPoint, outlineColor, fillingColor);
+        selectedShape.insert(drawingArea,points, outlineColor, fillingColor);
         
     }
 

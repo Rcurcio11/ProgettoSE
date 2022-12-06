@@ -2,6 +2,7 @@
 package seproject;
 
 import static java.lang.Math.abs;
+import java.util.ArrayList;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -38,9 +39,9 @@ public class EllipseModel extends Ellipse implements ShapeModel{
     }
     
     @Override
-    public void insert(AnchorPane drawingPane, Point2D startPoint,Point2D endPoint, Color outlineColor, Color fillingColor) {
+    public void insert(AnchorPane drawingPane, ArrayList<Point2D> points, Color outlineColor, Color fillingColor) {
         
-        setShapeParameters(startPoint,endPoint);
+        setShapeParameters(points);
         this.setStroke(outlineColor);
         this.setFill(fillingColor);
         drawingPane.getChildren().add(this);
@@ -49,27 +50,27 @@ public class EllipseModel extends Ellipse implements ShapeModel{
 
     @Override
     public String saveOnFileString(String separator) {
-        return this.getClass().getSimpleName() + separator + startPoint.getX() + separator + startPoint.getY() + separator + endPoint.getX() + separator + endPoint.getY() + separator + this.getStroke() + separator + this.getFill() + separator;
+        return this.getClass().getSimpleName() + separator + 2 + separator + startPoint.getX() + separator + startPoint.getY() + separator + endPoint.getX() + separator + endPoint.getY() + separator + this.getStroke() + separator + this.getFill() + separator;
     }
 
     @Override
-    public Point2D getStartPoint() {
+    public Point2D getLowerBound() {
         return startPoint;
     }
 
     @Override
-    public Point2D getEndPoint() {
+    public Point2D getUpperBound() {
         return endPoint;
     }
 
     @Override
-    public void setShapeParameters(Point2D startPoint, Point2D endPoint) {
-        this.startPoint = startPoint;
-        this.endPoint = endPoint;
-        double width = abs(endPoint.getX()-startPoint.getX());
-        double height = abs(endPoint.getY()-startPoint.getY());
-        double centerX = (startPoint.getX()+endPoint.getX())/2;
-        double centerY = (startPoint.getY()+endPoint.getY())/2;
+    public void setShapeParameters(ArrayList<Point2D> points) {
+        this.startPoint = points.get(0);
+        this.endPoint = points.get(1);
+        double width = abs(this.endPoint.getX()-this.startPoint.getX());
+        double height = abs(this.endPoint.getY()-this.startPoint.getY());
+        double centerX = (this.startPoint.getX()+this.endPoint.getX())/2;
+        double centerY = (this.startPoint.getY()+this.endPoint.getY())/2;
 
         this.setCenterX(centerX);
         this.setCenterY(centerY);
@@ -80,8 +81,8 @@ public class EllipseModel extends Ellipse implements ShapeModel{
 
     @Override
     public void move(Point2D translatePoint) {
-        double newStartX = this.getStartPoint().getX() + translatePoint.getX();
-        double newStartY = this.getStartPoint().getY() + translatePoint.getY();
+        double newStartX = this.getLowerBound().getX() + translatePoint.getX();
+        double newStartY = this.getLowerBound().getY() + translatePoint.getY();
         double newEndX = abs(newStartX + this.getRadiusX()*2);
         double newEndY = abs(newStartY + this.getRadiusY()*2);
         this.setCenterX((newStartX + newEndX)/2);
@@ -95,11 +96,12 @@ public class EllipseModel extends Ellipse implements ShapeModel{
     @Override
     public ShapeModel pasteShape(AnchorPane drawingArea, Point2D startPoint) {
         EllipseModel toInsert = new EllipseModel();
-
+        ArrayList<Point2D> newPoints = new ArrayList<>();
+        newPoints.add(startPoint);
         double newEndX = abs(startPoint.getX() + this.getRadiusX()*2);
         double newEndY = abs(startPoint.getY()+ this.getRadiusY()*2);
-        Point2D endPoint = new Point2D(newEndX, newEndY);
-        toInsert.setShapeParameters(startPoint, endPoint);
+        newPoints.add(new Point2D(newEndX, newEndY));
+        toInsert.setShapeParameters(newPoints);
         toInsert.setStroke(this.getStroke());
         toInsert.setFill(this.getFill());
         drawingArea.getChildren().add(toInsert);
@@ -110,5 +112,19 @@ public class EllipseModel extends Ellipse implements ShapeModel{
     public void changeColor(Color outlineColor, Color fillingColor) {
         this.setStroke(outlineColor);
         this.setFill(fillingColor);    
+    }
+
+
+    @Override
+    public ArrayList<Point2D> getAllPoints() {
+        ArrayList<Point2D> points = new ArrayList<>();
+        points.add(this.getLowerBound());
+        points.add(this.getUpperBound());
+        return points;
+    }
+
+    @Override
+    public ArrayList<Point2D> getBounds() {
+        return this.getAllPoints();
     }
 }
