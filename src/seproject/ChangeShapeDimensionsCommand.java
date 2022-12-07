@@ -12,16 +12,14 @@ import javafx.scene.layout.AnchorPane;
 public class ChangeShapeDimensionsCommand implements OperationCommand{
 
     private AnchorPane drawingArea;
-    private Point2D startPoint;
-    private Point2D endPoint;
+    private ArrayList<Point2D> points;
     private ShapeModel shape;  
     private Point2D oldStartPoint;
     private Point2D oldEndPoint;
     
-    public ChangeShapeDimensionsCommand(AnchorPane drawingArea, Point2D startPoint, Point2D endPoint, ShapeModel shape) {
+    public ChangeShapeDimensionsCommand(AnchorPane drawingArea, ArrayList<Point2D> points, ShapeModel shape) {
         this.drawingArea = drawingArea;
-        this.startPoint = startPoint;
-        this.endPoint = endPoint;
+        this.points = points;
         this.shape = shape;
         this.oldStartPoint = shape.getLowerBound();
         this.oldEndPoint = shape.getUpperBound();
@@ -31,17 +29,11 @@ public class ChangeShapeDimensionsCommand implements OperationCommand{
     public void execute() throws GenericDrawException {
         if(shape == null)
             throw new ShapeNotSelectedDrawException();
-        ArrayList<Point2D> points = new ArrayList<>();
-        points.add(startPoint);
-        points.add(endPoint);
         shape.changeDimensions(points);
     }
 
     @Override
     public void undo() {
-        ArrayList<Point2D> points = new ArrayList<>();
-        points.add(oldStartPoint);
-        points.add(oldEndPoint);
         shape.changeDimensions(points);
     }
     

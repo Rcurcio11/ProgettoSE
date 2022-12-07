@@ -24,6 +24,7 @@ public class SaveDrawingOnFileCommandTest {
     private final SaveDrawingOnFileCommand testSaveDrawingOnFileCommand;
     private final AnchorPane testDrawingArea;
     private final String testFilePath;
+    
     public SaveDrawingOnFileCommandTest() {
         testFilePath = "SaveDrawingOnFileCommandTest.txt";
         testDrawingArea = new AnchorPane();

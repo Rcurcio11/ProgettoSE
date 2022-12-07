@@ -4,6 +4,7 @@ package seproject;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -23,6 +24,7 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
@@ -35,6 +37,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
+import javafx.scene.transform.Scale;
 import javafx.stage.FileChooser;
 
 /**
@@ -56,6 +59,10 @@ public class FXMLGuiDocumentController implements Initializable {
     private ShapeModel clipboardShape = null;
     private ArrayList<Point2D> points;
     private ArrayList<Point2D> insertionPoints;
+    private double zoomFactor;
+    private ChangeDimensionsBehaviour cdb;
+    private List<RectangleModel> cornerShapes;
+    private RectangleModel clickedVertex;
     
     //////////////////////////////////////////////////
     
@@ -133,6 +140,8 @@ public class FXMLGuiDocumentController implements Initializable {
     private Button stretchButton;
     @FXML
     private Slider zoomSlider;
+    @FXML
+    private ScrollPane scrollArea;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -149,6 +158,9 @@ public class FXMLGuiDocumentController implements Initializable {
         selectionRectangle = null;
         shapeToInsert = null;
         insertionShape = null;
+        zoomFactor = 1;
+        cdb = new ChangeDimensionsBehaviour();
+        clickedVertex = null;
         
         // BINDINGS
         
@@ -213,6 +225,10 @@ public class FXMLGuiDocumentController implements Initializable {
                 points.add(new Point2D(0,0));
                 points.add(new Point2D(0,0));
             }
+            else{
+                changeDimensionsButton.setDefaultButton(false);
+                moveButton.setDefaultButton(false);
+            }
         });
         
         // When the checkBox is selected, automatically the insertionArea and the editingArea are set to disable
@@ -226,9 +242,37 @@ public class FXMLGuiDocumentController implements Initializable {
             }
         });
         
+        changeDimensionsArea.disableProperty().addListener((o,oldVal,newVal) -> {
+            if(newVal){
+                //remove vertex
+                cdb.removeVertex(changeDimensionsArea,cornerShapes);
+            }
+            else{
+                cornerShapes = cdb.insertVertex(changeDimensionsArea,selectedShape);
+            }
+        });
+        
+        moveArea.disableProperty().bind(moveButton.defaultButtonProperty().not());
+        moveButton.defaultButtonProperty().addListener((o,oldVal,newVal) -> {
+            if(newVal)
+                changeDimensionsButton.setDefaultButton(false);
+        });
+        changeDimensionsArea.disableProperty().bind(changeDimensionsButton.defaultButtonProperty().not());
+        changeDimensionsButton.defaultButtonProperty().addListener((o,oldVal,newVal) -> {
+            if(newVal)
+                moveButton.setDefaultButton(false);
+        });
+        
         gridSizeSlider.disableProperty().bind(gridIsOn.not());
         gridSizeSlider.visibleProperty().bind(gridSizeSlider.disableProperty().not());
         gridLabel.visibleProperty().bind(gridIsOn);
+        
+        scrollArea.vvalueProperty().addListener((o,oldVal,newVal) -> {
+            parentArea.setTranslateY(-newVal.doubleValue() * (zoomFactor-1));
+        });
+        scrollArea.hvalueProperty().addListener((o,oldVal,newVal) -> {
+            parentArea.setTranslateX(-newVal.doubleValue() * (zoomFactor-1));
+        }); 
     }
 
     @FXML
@@ -325,14 +369,16 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private void handleActionChangeDimensions(ActionEvent event) {
         if(changeDimensionsButton.defaultButtonProperty().getValue()){
-            changeDimensionsArea.setDisable(true);    
+            //changeDimensionsArea.setDisable(true);    
             changeDimensionsButton.setDefaultButton(false);
+            //cdb.removeVertex(changeDimensionsArea, cornerShapes);
         }
         else{
+            //cornerShapes = cdb.insertVertex(changeDimensionsArea, selectedShape);
             editingArea.toBack();
             drawingArea.toBack();
             changeDimensionsButton.setDefaultButton(true);
-            changeDimensionsArea.setDisable(false);
+            //changeDimensionsArea.setDisable(false);
         }
     }
 
@@ -340,11 +386,11 @@ public class FXMLGuiDocumentController implements Initializable {
     private void handleButtonActionMove(ActionEvent event) {
         if(moveButton.defaultButtonProperty().getValue()){
             moveButton.setDefaultButton(false);
-            moveArea.setDisable(true);
+            //moveArea.setDisable(true);
         }
         else{
             moveButton.setDefaultButton(true);
-            moveArea.setDisable(false);
+            //moveArea.setDisable(false);
             editingArea.toBack();
             drawingArea.toBack();
         }
@@ -465,24 +511,60 @@ public class FXMLGuiDocumentController implements Initializable {
         selectShape(selectPoint); 
         
     }
-
+    
+    // CHANGE DIMENSIONS AREA
     @FXML
     private void handleMouseReleasedOnCDArea(MouseEvent event) {
-        OperationCommand c = new ChangeShapeDimensionsCommand(drawingArea,selectedShape.getLowerBound(),new Point2D(event.getX(),event.getY()),selectedShape);
+        Point2D endPoint = new Point2D(event.getX(),event.getY());
+
+        if(clickedVertex != null){
+            ArrayList<Point2D> vertexPoints = cdb.computePoints(clickedVertex,points.get(0),endPoint,selectedShape);
+            OperationCommand c = new ChangeShapeDimensionsCommand(drawingArea,vertexPoints,selectedShape);
+            commandInvoker.execute(c);
+            shapeIsSelected.setValue(false);
+            //changeDimensionsArea.setDisable(true);
+            changeDimensionsButton.defaultButtonProperty().setValue(false);
+            editingArea.toFront();
+            clickedVertex = null;
+        }
+        
+        /*OperationCommand c = new ChangeShapeDimensionsCommand(drawingArea,selectedShape.getLowerBound(),new Point2D(event.getX(),event.getY()),selectedShape);
         commandInvoker.execute(c);
         shapeIsSelected.setValue(false);
         changeDimensionsArea.setDisable(true);
         changeDimensionsButton.defaultButtonProperty().setValue(false);
-        editingArea.toFront();
+        editingArea.toFront();*/
     }
 
     @FXML
     private void handleMouseDraggedOnCDArea(MouseEvent event) {
-        points.set(1, new Point2D(event.getX(),event.getY()));
+        
+        Point2D endPoint = new Point2D(event.getX(),event.getY());
+        //startPoint = selectedShape.getStartPoint();
+        if(clickedVertex != null){
+            ArrayList<Point2D> vertexPoints = cdb.computePoints(clickedVertex,points.get(0),endPoint,selectedShape);
+            selectionRectangle.changeDimensions(vertexPoints);
+            cdb.moveVertex(changeDimensionsArea,clickedVertex,endPoint);
+        }
+        
+        /*points.set(1, new Point2D(event.getX(),event.getY()));
         points.set(0, selectedShape.getAllPoints().get(0));
-        selectionRectangle.changeDimensions(points);     
+        selectionRectangle.changeDimensions(points); 
+        */
     }
-
+    
+    @FXML
+    private void handleMousePressedOnCDArea(MouseEvent event) {
+        Point2D selectPoint = new Point2D(event.getX(),event.getY());
+        for(RectangleModel v:cornerShapes)
+            if(v.contains(selectPoint)){
+                clickedVertex = v;
+                points.set(0, selectedShape.getAllPoints().get(0));
+            }
+        
+    }
+    
+    // PASTE AREA
     @FXML
     private void handleMouseClickedOnPasteArea(MouseEvent event) {
         OperationCommand pasteCommand = new PasteCommand(drawingArea,new Point2D(event.getX(),event.getY()),clipboardShape);
@@ -492,7 +574,8 @@ public class FXMLGuiDocumentController implements Initializable {
         pasteArea.setDisable(true);
         editingArea.toFront();
     }
-
+    
+    // MOVE AREA
     @FXML
     private void handleMouseReleasedOnMoveArea(MouseEvent event) {
         
@@ -504,18 +587,13 @@ public class FXMLGuiDocumentController implements Initializable {
         moveArea.setDisable(true);
         editingArea.toFront();
     }
-
+    
     @FXML
     private void handleMouseDraggedOnMoveArea(MouseEvent event) {
         
         Point2D translatePoint = new Point2D(event.getX()-points.get(0).getX(),event.getY()-points.get(0).getY());
         ((Shape)selectionRectangle).setTranslateX(translatePoint.getX());
         ((Shape)selectionRectangle).setTranslateY(translatePoint.getY());
-    }
-
-    @FXML
-    private void handleMousePressedOnCDArea(MouseEvent event) {
-        points.set(0, selectedShape.getAllPoints().get(0));
     }
 
     @FXML
@@ -564,6 +642,25 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private void handleActionGridSizeSlider(MouseEvent event) {
             drawingArea.setBackground(createGridBackground());
+    }
+
+    @FXML
+    private void handleMouseDraggedOnZoomSlider(MouseEvent event) {
+        Scale s = new Scale();
+        s.setPivotX(0);
+        s.setPivotY(0);
+
+        double zoomLvl = zoomSlider.getValue();
+        zoomFactor = 1 + zoomLvl;
+
+        System.out.println(zoomLvl);
+        s.setX(zoomFactor);
+        s.setY(zoomFactor);
+        
+        parentArea.getTransforms().clear();
+        parentArea.getTransforms().add(s);
+        parentArea.setTranslateY(-scrollArea.getVvalue()*zoomSlider.getValue());
+        parentArea.setTranslateX(-scrollArea.getHvalue() * zoomSlider.getValue());
     }
     
 }
