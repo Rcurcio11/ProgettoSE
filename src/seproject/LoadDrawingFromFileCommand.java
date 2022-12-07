@@ -48,6 +48,9 @@ public class LoadDrawingFromFileCommand implements OperationCommand{
                 else if(className.equals(LineModel.class.getSimpleName())){
                     shape = new LineModel();
                 }
+                else if(className.equals(PolygonModel.class.getSimpleName())){
+                    shape = new PolygonModel();
+                }
                 else
                     throw new ShapeModelNotSupportedDrawException();
                 

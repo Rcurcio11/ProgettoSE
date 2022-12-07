@@ -36,6 +36,7 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polyline;
 import javafx.scene.shape.Shape;
 import javafx.scene.transform.Scale;
 import javafx.stage.FileChooser;
@@ -50,6 +51,7 @@ public class FXMLGuiDocumentController implements Initializable {
     
     private ShapeModel shapeToInsert;
     private ShapeModel insertionShape;
+    private Polyline insertionPoly;
     private OperationExecutor commandInvoker;
     private FileChooser fc;
     private ShapeModel selectedShape;
@@ -142,6 +144,12 @@ public class FXMLGuiDocumentController implements Initializable {
     private Slider zoomSlider;
     @FXML
     private ScrollPane scrollArea;
+    @FXML
+    private Button lessZoomButton;
+    @FXML
+    private Button addZoomButton;
+    @FXML
+    private AnchorPane insertPolygonArea;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -161,6 +169,9 @@ public class FXMLGuiDocumentController implements Initializable {
         zoomFactor = 1;
         cdb = new ChangeDimensionsBehaviour();
         clickedVertex = null;
+        insertionShape = null;
+        insertPolygonArea.setDisable(true);
+        zoomFactor = 1;
         
         // BINDINGS
         
@@ -189,6 +200,7 @@ public class FXMLGuiDocumentController implements Initializable {
                 selectShapeCheckBox.setSelected(false);
                 shapeIsSelected.setValue(false);
                 insertionArea.setDisable(false);
+                insertPolygonArea.setDisable(true);
                 moveButton.setDefaultButton(false);
                 points.clear();
             }
@@ -198,6 +210,21 @@ public class FXMLGuiDocumentController implements Initializable {
         rectangleButton.armedProperty().addListener(shapeButtonListener);
         ellipseButton.armedProperty().addListener(shapeButtonListener);
         lineButton.armedProperty().addListener(shapeButtonListener);
+        
+        // This listener enable the insertPolygonArea and automatically disable the checkBox and the shapeIsSelected property
+        ChangeListener<Boolean> polygonButtonListener = (o, oldVal, newVal) -> {
+            if(newVal.booleanValue()){
+                selectShapeCheckBox.setSelected(false);
+                shapeIsSelected.setValue(false);
+                insertionArea.setDisable(true);
+                insertPolygonArea.setDisable(false);
+                moveButton.setDefaultButton(false);
+                points.clear();
+            }
+            
+        };        
+        // when the polygon button is armed the polygonButtonListener kikcs in
+        polygonButton.armedProperty().addListener(polygonButtonListener);
         
         // If a shape is selected, then the paste button is disabled (automatically enabled when a there isn't a shape selected)
         pasteButton.disableProperty().bind(shapeIsSelected);
@@ -209,11 +236,21 @@ public class FXMLGuiDocumentController implements Initializable {
         pasteArea.visibleProperty().bind(pasteArea.disableProperty().not());
         moveArea.visibleProperty().bind(moveArea.disableProperty().not());
         changeDimensionsArea.visibleProperty().bind(changeDimensionsArea.disableProperty().not());
+        insertPolygonArea.visibleProperty().bind(insertPolygonArea.disableProperty().not());
         
-        // When the insertionArea is enabled automatically the editingArea is set to disable
+        // When the insertionArea is enabled automatically the editingArea and the insertPolygonArea are set to disable
         insertionArea.disableProperty().addListener((o,oldVal,newVal) -> {
             if(!newVal){
                 editingArea.setDisable(true);
+                insertPolygonArea.setDisable(true);
+            }
+        });
+        
+        // When the insertPolygonArea is enabled automatically the editingArea and the insertionArea are set to disable
+        insertPolygonArea.disableProperty().addListener((o,oldVal,newVal) -> {
+            if(!newVal){
+                editingArea.setDisable(true);
+                insertionArea.setDisable(true);
             }
         });
         
@@ -221,6 +258,7 @@ public class FXMLGuiDocumentController implements Initializable {
         editingArea.disableProperty().addListener((o,oldVal,newVal) -> {
             if(!newVal){
                 insertionArea.setDisable(true);
+                insertPolygonArea.setDisable(true);
                 points.clear();
                 points.add(new Point2D(0,0));
                 points.add(new Point2D(0,0));
@@ -235,6 +273,7 @@ public class FXMLGuiDocumentController implements Initializable {
         selectShapeCheckBox.selectedProperty().addListener((o,oldVal,newVal) -> {
             if(newVal){
                 insertionArea.setDisable(true);
+                insertPolygonArea.setDisable(true);
                 editingArea.setDisable(true);
                 points.clear();
                 points.add(new Point2D(0,0));
@@ -584,7 +623,7 @@ public class FXMLGuiDocumentController implements Initializable {
         commandInvoker.execute(mc);
         shapeIsSelected.setValue(false);
         moveButton.defaultButtonProperty().setValue(false);
-        moveArea.setDisable(true);
+        //moveArea.setDisable(true);
         editingArea.toFront();
     }
     
@@ -645,7 +684,23 @@ public class FXMLGuiDocumentController implements Initializable {
     }
 
     @FXML
-    private void handleMouseDraggedOnZoomSlider(MouseEvent event) {
+    private void handleMouseDraggedOnZoomArea(MouseEvent event) {
+        zoomManagement();
+    }
+
+    @FXML
+    private void handleButtonLessZoomButton(ActionEvent event) {
+        zoomSlider.setValue(zoomSlider.getValue()-1);
+        zoomManagement();
+    }
+
+    @FXML
+    private void handleButtonAddZoomButton(ActionEvent event) {
+        zoomSlider.setValue(zoomSlider.getValue()+1);
+        zoomManagement();
+    }
+    
+    private void zoomManagement(){
         Scale s = new Scale();
         s.setPivotX(0);
         s.setPivotY(0);
@@ -653,14 +708,57 @@ public class FXMLGuiDocumentController implements Initializable {
         double zoomLvl = zoomSlider.getValue();
         zoomFactor = 1 + zoomLvl;
 
-        System.out.println(zoomLvl);
         s.setX(zoomFactor);
         s.setY(zoomFactor);
         
         parentArea.getTransforms().clear();
         parentArea.getTransforms().add(s);
-        parentArea.setTranslateY(-scrollArea.getVvalue()*zoomSlider.getValue());
+        parentArea.setTranslateY(-scrollArea.getVvalue() * zoomSlider.getValue());
         parentArea.setTranslateX(-scrollArea.getHvalue() * zoomSlider.getValue());
+    }
+
+    @FXML
+    private void handleMouseClickedOnInsertPolygonArea(MouseEvent event) {
+        points.add(new Point2D(event.getX(),event.getY()));
+        
+        InsertCommand command = new InsertCommand(drawingArea, shapeToInsert,points, outlineColor.getValue(), fillingColor.getValue());
+        commandInvoker.execute(command);
+        
+        if(shapeToInsert.getAllPoints().isEmpty()){
+            if(insertionPoly.getPoints().isEmpty()){
+                setInsertionPoly(insertionPoly);
+                insertionPoly.getPoints().add(event.getX());
+                insertionPoly.getPoints().add(event.getY());
+            }
+            insertionPoly.getPoints().add(event.getX());
+            insertionPoly.getPoints().add(event.getY());
+        }else{
+            insertPolygonArea.getChildren().remove(insertionPoly);
+            insertionPoly = new Polyline();
+            points.clear();
+        }
+        shapeToInsert = shapeToInsert.nextDraw();
+    }
+
+    @FXML
+    private void handleMouseMovedOnInsertPolygonArea(MouseEvent event) {
+        if(!insertionPoly.getPoints().isEmpty()){
+            int index = insertionPoly.getPoints().size();
+            insertionPoly.getPoints().set(index-2, event.getX());
+            insertionPoly.getPoints().set(index-1, event.getY());
+        }
+    }
+
+    @FXML
+    private void handleActionPolygonButton(ActionEvent event) {
+        shapeToInsert = new PolygonModel();
+        insertionPoly = new Polyline();
+    }
+    
+    private void setInsertionPoly(Polyline insertionPoly){
+        insertionPoly.setStrokeWidth(2.0);
+        insertionPoly.setStroke(outlineColor.getValue());
+        insertPolygonArea.getChildren().add(insertionPoly);
     }
     
 }
