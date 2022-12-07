@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
- */
 
 import java.util.ArrayList;
 import javafx.geometry.Point2D;
@@ -27,13 +23,13 @@ public class PolygonModelTest {
         
         ArrayList<Point2D> points = new ArrayList<>();
         double sidesNumber = Math.random()*10 +2;
-        double pointX = Math.random()*663;
-        double pointY = Math.random()*479;
+        double pointX = Math.random()*653;
+        double pointY = Math.random()*469;
         Point2D startendPoint = new Point2D(pointX, pointY);
         points.add(startendPoint);
         for(int i = 1; i<sidesNumber; i++){
-            pointX = Math.random()*663;
-            pointY = Math.random()*479;
+            pointX = Math.random()*653;
+            pointY = Math.random()*469;
             points.add(new Point2D(pointX, pointY));
         }
         points.add(startendPoint);
@@ -77,8 +73,8 @@ public class PolygonModelTest {
     
     @Test
     public void testPasteShape(){
-        double newStartX = Math.random()*663;
-        double newStartY = Math.random()*479;
+        double newStartX = Math.random()*653;
+        double newStartY = Math.random()*469;
         
        Point2D newStart = new Point2D(newStartX, newStartY);
        testShapePolygon.pasteShape(testDrawingArea, newStart);
@@ -93,6 +89,33 @@ public class PolygonModelTest {
         testShapePolygon.changeColor(Color.ALICEBLUE, Color.GAINSBORO);
         assertEquals(Color.GAINSBORO, testShapePolygon.getFillingColor());
         assertEquals(Color.ALICEBLUE, testShapePolygon.getOutlineColor());
+    }
+    
+    @Test
+    public void testChangeDimensions(){
+        Point2D oldStartPoint = testShapePolygon.getBounds().get(0);
+        Point2D oldEndPoint = testShapePolygon.getBounds().get(1);
+        Point2D newStartPoint = new Point2D(oldStartPoint.getX()+ Math.random()*10,oldStartPoint.getY() + Math.random()*10);
+        Point2D newEndPoint = new Point2D(oldEndPoint.getX() + Math.random()*10, oldEndPoint.getY() + Math.random()*10);
+        ArrayList<Point2D> points = new ArrayList<>();
+        points.add(0,newStartPoint);
+        points.add(1,newEndPoint);
+        testShapePolygon.changeDimensions(points);
+        
+        assertEquals(newStartPoint.getX(),testShapePolygon.getBounds().get(0).getX(),0.1);
+        assertEquals(newEndPoint.getX(),testShapePolygon.getBounds().get(1).getX(),0.1);
+        assertEquals(newStartPoint.getY(),testShapePolygon.getBounds().get(0).getY(),0.1);
+        assertEquals(newEndPoint.getY(),testShapePolygon.getBounds().get(1).getY(),0.1);
+        
+        points.clear();
+        points.add(0,newStartPoint);
+        points.add(1,oldStartPoint);
+        testShapePolygon.changeDimensions(points);
+        assertEquals(oldStartPoint.getX(),testShapePolygon.getBounds().get(0).getX(),0.1);
+        assertEquals(newStartPoint.getX(),testShapePolygon.getBounds().get(1).getX(),0.1);
+        assertEquals(oldStartPoint.getY(),testShapePolygon.getBounds().get(0).getY(),0.1);
+        assertEquals(newStartPoint.getY(),testShapePolygon.getBounds().get(1).getY(),0.1);
+        
     }
 
 }

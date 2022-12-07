@@ -1,14 +1,11 @@
 
 package seproject;
 
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.scene.transform.Rotate;
 
 /**
  *
@@ -36,7 +33,6 @@ public class ChangeDimensionsBehaviour {
     }
     
     public List<RectangleModel> insertVertex(AnchorPane workingArea,ShapeModel selectedShape){
-        // Fare in modo che la ShapeModel abbia un metodo che restituisce il numero di vertici per quella shape
         /*double rotationDegree = selectedShape.getRotationDegree();
         double deg = selectedShape.getRotationDegree();
         
@@ -135,25 +131,25 @@ public class ChangeDimensionsBehaviour {
         Point2D fixedPoint;
         ArrayList<Point2D> points = new ArrayList<>();
         if(clickedVertex.equals(upperLeftVertex)){
-            System.out.println("ulv");
+            //System.out.println("ulv");
             fixedPoint = selectionRectangle.getBounds().get(1); //endPoint of selectionRectangle
             points.add(0, endPoint);
             points.add(1,fixedPoint);
         }
         else if(clickedVertex.equals(upperRightVertex)){
-            System.out.println("urv");
+            //System.out.println("urv");
             fixedPoint = new Point2D(selectionRectangle.getBounds().get(0).getX(),selectionRectangle.getBounds().get(1).getY());
             points.add(0, new Point2D(fixedPoint.getX(),endPoint.getY()));
             points.add(1, new Point2D(endPoint.getX(),fixedPoint.getY()));
         }
         else if(clickedVertex.equals(lowerLeftVertex)){
-            System.out.println("llv");
+            //System.out.println("llv");
             fixedPoint = new Point2D(selectionRectangle.getBounds().get(1).getX(),selectionRectangle.getBounds().get(0).getY());
             points.add(0, new Point2D(endPoint.getX(),fixedPoint.getY()));
             points.add(1, new Point2D(fixedPoint.getX(),endPoint.getY()));
         }
         else if(clickedVertex.equals(lowerRightVertex)){
-            System.out.println("lrv");
+            //System.out.println("lrv");
             fixedPoint = selectionRectangle.getBounds().get(0);
             points.add(0, fixedPoint);
             points.add(1, endPoint);

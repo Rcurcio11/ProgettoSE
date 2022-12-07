@@ -32,7 +32,7 @@ public class ChangeShapeDimensionsCommand implements OperationCommand{
 
     @Override
     public void undo() {
-        System.out.println("undo: " +oldPoints.size());
+        //System.out.println("undo: " +oldPoints.size());
         shape.setShapeParameters(oldPoints);
     }
     
