@@ -24,22 +24,42 @@ public class PolygonModel extends Polygon implements ShapeModel{
 
     @Override
     public Point2D getLowerBound() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        double minX = 663;
+        double minY = 479;
+        for(Point2D point : this.points){
+            if(point.getX()< minX)
+                minX = point.getX();
+            
+            if(point.getY()< minY)
+                minY = point.getY();
+            
+        }
+        return new Point2D(minX-1, minY-1);
     }
 
     @Override
     public Point2D getUpperBound() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        double maxX = -1;
+        double maxY = -1;
+        for(Point2D point : this.points){
+            if(point.getX()> maxX)
+                maxX = point.getX();
+            
+            if(point.getY()> maxY)
+                maxY = point.getY();
+            
+        }
+        return new Point2D(maxX+1, maxY+1);
     }
 
     @Override
     public Color getOutlineColor() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return (Color) this.getStroke();
     }
 
     @Override
     public Color getFillingColor() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return (Color) this.getFill();
     }
 
     @Override
@@ -66,7 +86,15 @@ public class PolygonModel extends Polygon implements ShapeModel{
 
     @Override
     public String saveOnFileString(String separator) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        int index = this.points.size()+1;
+        String fileString = this.getClass().getSimpleName() + separator + index + separator;
+        for(Point2D point : points){
+            fileString += point.getX() + separator;
+            fileString += point.getY() + separator;
+        }
+        fileString += points.get(0).getX() + separator + points.get(0).getY() + separator;
+        fileString += this.getStroke() + separator + this.getFill() + separator;
+        return fileString;
     }
 
     @Override
@@ -81,17 +109,41 @@ public class PolygonModel extends Polygon implements ShapeModel{
 
     @Override
     public void move(Point2D translatePoint) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        ArrayList<Point2D> newPoints = new ArrayList<>();
+        for(Point2D point : this.points){
+            double pointX = point.getX() + translatePoint.getX();
+            double pointY = point.getY() + translatePoint.getY();
+            newPoints.add(new Point2D(pointX, pointY));
+        }
+        newPoints.add(new Point2D((points.get(0).getX()+translatePoint.getX()), (points.get(0).getY()+translatePoint.getY())));
+        this.getPoints().clear();
+        this.points.clear();
+        this.setShapeParameters(newPoints);
     }
 
     @Override
     public void changeColor(Color outlineColor, Color fillingColor) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        this.setStroke(outlineColor);
+        this.setFill(fillingColor);
     }
 
     @Override
     public ShapeModel pasteShape(AnchorPane drawingArea, Point2D startPoint) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        PolygonModel toInsert = new PolygonModel();
+        ArrayList<Point2D> newPoints = new ArrayList<>();
+        double offsetX = startPoint.getX() - this.points.get(0).getX();
+        double offsetY = startPoint.getY() - this.points.get(0).getY();
+        for(Point2D point : this.points){
+            double pointX = point.getX() + offsetX;
+            double pointY = point.getY() + offsetY;
+            newPoints.add(new Point2D(pointX, pointY));
+        }
+        newPoints.add(startPoint);
+        toInsert.setShapeParameters(newPoints);
+        toInsert.setStroke(this.getStroke());
+        toInsert.setFill(this.getFill());
+        drawingArea.getChildren().add(toInsert);
+        return toInsert;
     }
 
     @Override
@@ -101,7 +153,10 @@ public class PolygonModel extends Polygon implements ShapeModel{
 
     @Override
     public ArrayList<Point2D> getBounds() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        ArrayList<Point2D> boundsPoint = new ArrayList<>();
+        boundsPoint.add(this.getLowerBound());
+        boundsPoint.add(this.getUpperBound());
+        return boundsPoint;
     }
     
 }
