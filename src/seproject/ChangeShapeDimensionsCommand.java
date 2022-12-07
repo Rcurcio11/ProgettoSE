@@ -14,15 +14,13 @@ public class ChangeShapeDimensionsCommand implements OperationCommand{
     private AnchorPane drawingArea;
     private ArrayList<Point2D> points;
     private ShapeModel shape;  
-    private Point2D oldStartPoint;
-    private Point2D oldEndPoint;
+    private ArrayList<Point2D> oldPoints;
     
     public ChangeShapeDimensionsCommand(AnchorPane drawingArea, ArrayList<Point2D> points, ShapeModel shape) {
         this.drawingArea = drawingArea;
         this.points = points;
         this.shape = shape;
-        this.oldStartPoint = shape.getLowerBound();
-        this.oldEndPoint = shape.getUpperBound();
+        this.oldPoints = shape.getAllPoints();
     }
     
     @Override
@@ -34,7 +32,8 @@ public class ChangeShapeDimensionsCommand implements OperationCommand{
 
     @Override
     public void undo() {
-        shape.changeDimensions(points);
+        System.out.println("undo: " +oldPoints.size());
+        shape.setShapeParameters(oldPoints);
     }
     
 }

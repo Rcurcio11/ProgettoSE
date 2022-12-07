@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package seproject;
 
 import static java.lang.Math.abs;
@@ -13,7 +10,7 @@ import javafx.scene.shape.Polygon;
 
 /**
  *
- * @author uondi
+ * @author Gruppo14
  */
 public class PolygonModel extends Polygon implements ShapeModel{
     private ArrayList<Point2D> points;
@@ -34,7 +31,7 @@ public class PolygonModel extends Polygon implements ShapeModel{
                 minY = point.getY();
             
         }
-        return new Point2D(minX-1, minY-1);
+        return new Point2D(minX, minY);
     }
 
     @Override
@@ -49,7 +46,7 @@ public class PolygonModel extends Polygon implements ShapeModel{
                 maxY = point.getY();
             
         }
-        return new Point2D(maxX+1, maxY+1);
+        return new Point2D(maxX, maxY);
     }
 
     @Override
@@ -64,15 +61,12 @@ public class PolygonModel extends Polygon implements ShapeModel{
 
     @Override
     public void insert(AnchorPane drawingArea, ArrayList<Point2D> points, Color outlineColor, Color fillingColor) {
+        //System.out.println(points.size());
         if(points.size() != 1){
-            if(abs(points.get(0).getX()-points.get(points.size()-1).getX())<20 && abs(points.get(0).getY()-points.get(points.size()-1).getY())<20){
-                setShapeParameters(points);
-                this.setStroke(outlineColor);
-                this.setFill(fillingColor);
-        
-                drawingArea.getChildren().add(this);
-                
-            }
+            setShapeParameters(points);
+            this.setStroke(outlineColor);
+            this.setFill(fillingColor);
+            drawingArea.getChildren().add(this);
         }
     }
 
@@ -99,12 +93,23 @@ public class PolygonModel extends Polygon implements ShapeModel{
 
     @Override
     public void setShapeParameters(ArrayList<Point2D> points) {
-        for(int i = 0; i < points.size()-1; i++){
-            this.points.add(points.get(i));
-            this.getPoints().add(points.get(i).getX());
-            this.getPoints().add(points.get(i).getY());
+        //System.out.println("polyup: " +points.size());
+        this.getPoints().clear();
+        this.points.clear();
+        //System.out.println("poly: " + points.size());
+        //System.out.println("size: "+ this.getPoints().size());
+        if(abs(points.get(0).getX()-points.get(points.size()-1).getX())<20 && abs(points.get(0).getY()-points.get(points.size()-1).getY())<20){
+            for(int i = 0; i < points.size()-1; i++){
+                //System.out.println("point: " + points.get(i));
+                this.points.add(points.get(i));
+                this.getPoints().add(points.get(i).getX());
+                this.getPoints().add(points.get(i).getY());
+            }
+            //System.out.println("point: " + points.get(0));
+            this.points.add(points.get(0));
+            this.setStrokeWidth(2.0);
+            //System.out.println("here");
         }
-        this.setStrokeWidth(2.0);
     }
 
     @Override
@@ -116,8 +121,8 @@ public class PolygonModel extends Polygon implements ShapeModel{
             newPoints.add(new Point2D(pointX, pointY));
         }
         newPoints.add(new Point2D((points.get(0).getX()+translatePoint.getX()), (points.get(0).getY()+translatePoint.getY())));
-        this.getPoints().clear();
-        this.points.clear();
+        //this.getPoints().clear();
+        //this.points.clear();
         this.setShapeParameters(newPoints);
     }
 
@@ -148,7 +153,7 @@ public class PolygonModel extends Polygon implements ShapeModel{
 
     @Override
     public ArrayList<Point2D> getAllPoints() {
-        return this.points;
+        return (ArrayList<Point2D>) this.points.clone();
     }
 
     @Override
@@ -159,4 +164,50 @@ public class PolygonModel extends Polygon implements ShapeModel{
         return boundsPoint;
     }
     
+    @Override
+    public void changeDimensions(ArrayList<Point2D> points){
+        /*
+        How to read
+        o: old, n: new, p: position, P: point, h: height, w: width
+        e.g. oh -> old height
+        */
+        ArrayList<Point2D> newPoints = new ArrayList<>();
+        Point2D newStartPoint = points.get(0);
+        Point2D newEndPoint = points.get(1);
+        ArrayList<Point2D> oldBounds = this.getBounds();        
+        double osX = oldBounds.get(0).getX();
+        double osY = oldBounds.get(0).getY();
+        double oeX = oldBounds.get(1).getX();
+        double oeY = oldBounds.get(1).getY();
+        
+        double oh = oeY - osY;
+        double ow = oeX - osX;
+        double nw = newEndPoint.getX() - newStartPoint.getX();
+        double nh = newEndPoint.getY() - newStartPoint.getY();
+        //System.out.println(points.get(0) + " " + points.get(1));
+        //System.out.println(newStartPoint + " " + newEndPoint);
+        //System.out.println(oldBounds.get(0) + " " + oldBounds.get(1)+"\n");
+                
+        //System.out.println(osX + " " + osY + " " + oeX + " " + oeY);
+        //System.out.println(oh + " " + ow + " " + nh + " " + nw);
+        for(Point2D p:this.getAllPoints()){
+            Point2D nP;
+            
+            double nX = p.getX(),nY = p.getY();
+            //System.out.println("before: " + nX + " " + nY);
+            double oxp = p.getX() - osX;
+            double oyp = p.getY() - osY;
+            //System.out.println(": " + oxp + " " + oyp);
+            
+            nX = (oxp*nw)/ow + newStartPoint.getX();
+            nY = (oyp*nh)/oh + newStartPoint.getY();
+            
+            //System.out.println("after: " + nX + " " + nY);
+            nP = new Point2D(nX,nY);
+            newPoints.add(nP);
+        }
+        
+        
+        this.setShapeParameters(newPoints);
+    }  
 }

@@ -2,6 +2,7 @@
 package seproject;
 
 import java.io.File;
+import static java.lang.Math.abs;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -720,12 +721,25 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private void handleMouseClickedOnInsertPolygonArea(MouseEvent event) {
         points.add(new Point2D(event.getX(),event.getY()));
+        insertionPoly.getPoints().add(event.getX());
+        insertionPoly.getPoints().add(event.getY());
+        if(points.size() > 1){
+            if(abs(points.get(0).getX()-points.get(points.size()-1).getX())<20 && abs(points.get(0).getY()-points.get(points.size()-1).getY())<20){
+                
+                InsertCommand command = new InsertCommand(drawingArea, shapeToInsert,points, outlineColor.getValue(), fillingColor.getValue());
+                commandInvoker.execute(command);
+                //System.out.println(shapeToInsert.getAllPoints().size());
+                shapeToInsert = shapeToInsert.nextDraw();
+                insertPolygonArea.getChildren().remove(insertionPoly);
+                insertionPoly = new Polyline();
+                setInsertionPoly(insertionPoly);
+                points.clear();
+            }
+        }
         
-        InsertCommand command = new InsertCommand(drawingArea, shapeToInsert,points, outlineColor.getValue(), fillingColor.getValue());
-        commandInvoker.execute(command);
         
-        if(shapeToInsert.getAllPoints().isEmpty()){
-            if(insertionPoly.getPoints().isEmpty()){
+        /*if(shapeToInsert.getAllPoints().isEmpty()){
+            /*if(insertionPoly.getPoints().isEmpty()){
                 setInsertionPoly(insertionPoly);
                 insertionPoly.getPoints().add(event.getX());
                 insertionPoly.getPoints().add(event.getY());
@@ -736,23 +750,26 @@ public class FXMLGuiDocumentController implements Initializable {
             insertPolygonArea.getChildren().remove(insertionPoly);
             insertionPoly = new Polyline();
             points.clear();
-        }
-        shapeToInsert = shapeToInsert.nextDraw();
+        }*/
+        
     }
 
     @FXML
     private void handleMouseMovedOnInsertPolygonArea(MouseEvent event) {
-        if(!insertionPoly.getPoints().isEmpty()){
-            int index = insertionPoly.getPoints().size();
-            insertionPoly.getPoints().set(index-2, event.getX());
-            insertionPoly.getPoints().set(index-1, event.getY());
+        if(insertionPoly.getPoints().size() > points.size()*2){
+            insertionPoly.getPoints().remove(insertionPoly.getPoints().size()-1);
+            insertionPoly.getPoints().remove(insertionPoly.getPoints().size()-1);            
         }
+        insertionPoly.getPoints().add(event.getX());
+        insertionPoly.getPoints().add(event.getY());
     }
 
     @FXML
     private void handleActionPolygonButton(ActionEvent event) {
         shapeToInsert = new PolygonModel();
         insertionPoly = new Polyline();
+        setInsertionPoly(insertionPoly);
+        points.clear();
     }
     
     private void setInsertionPoly(Polyline insertionPoly){

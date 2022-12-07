@@ -45,4 +45,5 @@ public interface ShapeModel {
     public ArrayList<Point2D> getAllPoints();
     
     public ArrayList<Point2D> getBounds();
+    
 }
