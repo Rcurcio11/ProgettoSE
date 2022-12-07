@@ -23,6 +23,7 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
@@ -35,6 +36,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
+import javafx.scene.transform.Scale;
 import javafx.stage.FileChooser;
 
 /**
@@ -56,6 +58,7 @@ public class FXMLGuiDocumentController implements Initializable {
     private ShapeModel clipboardShape = null;
     private ArrayList<Point2D> points;
     private ArrayList<Point2D> insertionPoints;
+    private double zoomFactor;
     
     //////////////////////////////////////////////////
     
@@ -133,6 +136,12 @@ public class FXMLGuiDocumentController implements Initializable {
     private Button stretchButton;
     @FXML
     private Slider zoomSlider;
+    @FXML
+    private ScrollPane scrollArea;
+    @FXML
+    private Button lessZoomButton;
+    @FXML
+    private Button addZoomButton;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -149,6 +158,7 @@ public class FXMLGuiDocumentController implements Initializable {
         selectionRectangle = null;
         shapeToInsert = null;
         insertionShape = null;
+        zoomFactor = 1;
         
         // BINDINGS
         
@@ -229,6 +239,13 @@ public class FXMLGuiDocumentController implements Initializable {
         gridSizeSlider.disableProperty().bind(gridIsOn.not());
         gridSizeSlider.visibleProperty().bind(gridSizeSlider.disableProperty().not());
         gridLabel.visibleProperty().bind(gridIsOn);
+        
+        scrollArea.vvalueProperty().addListener((o,oldVal,newVal) -> {
+            parentArea.setTranslateY(-newVal.doubleValue() * (zoomFactor-1));
+       });
+        scrollArea.hvalueProperty().addListener((o,oldVal,newVal) -> {
+            parentArea.setTranslateX(-newVal.doubleValue() * (zoomFactor-1));
+        }); 
     }
 
     @FXML
@@ -564,6 +581,41 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private void handleActionGridSizeSlider(MouseEvent event) {
             drawingArea.setBackground(createGridBackground());
+    }
+
+    @FXML
+    private void handleMouseDraggedOnZoomArea(MouseEvent event) {
+        zoomManagement();
+    }
+
+    @FXML
+    private void handleButtonLessZoomButton(ActionEvent event) {
+        zoomSlider.setValue(zoomSlider.getValue()-1);
+        zoomManagement();
+    }
+
+    @FXML
+    private void handleButtonAddZoomButton(ActionEvent event) {
+        zoomSlider.setValue(zoomSlider.getValue()+1);
+        zoomManagement();
+    }
+    
+    private void zoomManagement(){
+        Scale s = new Scale();
+        s.setPivotX(0);
+        s.setPivotY(0);
+
+        double zoomLvl = zoomSlider.getValue();
+        zoomFactor = 1 + zoomLvl;
+
+        System.out.println(zoomLvl);
+        s.setX(zoomFactor);
+        s.setY(zoomFactor);
+        
+        parentArea.getTransforms().clear();
+        parentArea.getTransforms().add(s);
+        parentArea.setTranslateY(-scrollArea.getVvalue() * zoomSlider.getValue());
+        parentArea.setTranslateX(-scrollArea.getHvalue() * zoomSlider.getValue());
     }
     
 }
