@@ -44,8 +44,8 @@ public class ChangeDimensionsBehaviour {
         r.setPivotX(selectedShape.getCenterPoint().getX());
         r.setPivotY(selectedShape.getCenterPoint().getY());
         r.setAngle(deg);*/
-        Point2D startPoint = selectedShape.getAllPoints().get(0);
-        Point2D endPoint = selectedShape.getAllPoints().get(1);
+        Point2D startPoint = selectedShape.getBounds().get(0);
+        Point2D endPoint = selectedShape.getBounds().get(1);
         
         Point2D upperLeftCorner = startPoint; 
         Point2D lowerRightCorner = endPoint;
@@ -108,7 +108,7 @@ public class ChangeDimensionsBehaviour {
         RectangleModel vertexX = null, vertexY = null;
         //for(RectangleModel rm:cornerShapes){
             //if(workingArea.getChildren().contains(clickedVertex)){
-                clickedVertex.move(new Point2D(draggingPoint.getX() - clickedVertex.getAllPoints().get(0).getX() - width/2,draggingPoint.getY() - clickedVertex.getAllPoints().get(0).getY() - height/2));
+                clickedVertex.move(new Point2D(draggingPoint.getX() - clickedVertex.getBounds().get(0).getX() - width/2,draggingPoint.getY() - clickedVertex.getBounds().get(0).getY() - height/2));
                 if(clickedVertex.equals(upperLeftVertex)){
                     vertexX = lowerLeftVertex;
                     vertexY = upperRightVertex;
@@ -125,8 +125,8 @@ public class ChangeDimensionsBehaviour {
                     vertexX = upperRightVertex;
                     vertexY = lowerLeftVertex;
                 }
-                vertexX.move(new Point2D(draggingPoint.getX() - vertexX.getAllPoints().get(0).getX() - width/2,0));
-                vertexY.move(new Point2D(0,draggingPoint.getY() - vertexY.getAllPoints().get(0).getY() - height/2));
+                vertexX.move(new Point2D(draggingPoint.getX() - vertexX.getBounds().get(0).getX() - width/2,0));
+                vertexY.move(new Point2D(0,draggingPoint.getY() - vertexY.getBounds().get(0).getY() - height/2));
             //}
         //}
     }
@@ -135,22 +135,22 @@ public class ChangeDimensionsBehaviour {
         Point2D fixedPoint;
         ArrayList<Point2D> points = new ArrayList<>();
         if(clickedVertex.equals(upperLeftVertex)){
-            fixedPoint = selectionRectangle.getAllPoints().get(1);
+            fixedPoint = selectionRectangle.getBounds().get(1);
             points.add(0, endPoint);
             points.add(1,fixedPoint);
         }
         else if(clickedVertex.equals(upperRightVertex)){
-            fixedPoint = new Point2D(selectionRectangle.getAllPoints().get(0).getX(),selectionRectangle.getAllPoints().get(1).getY());
+            fixedPoint = new Point2D(selectionRectangle.getBounds().get(0).getX(),selectionRectangle.getBounds().get(1).getY());
             points.add(0, new Point2D(fixedPoint.getX(),endPoint.getY()));
             points.add(1, new Point2D(endPoint.getX(),fixedPoint.getY()));
         }
         else if(clickedVertex.equals(lowerLeftVertex)){
-            fixedPoint = new Point2D(selectionRectangle.getAllPoints().get(1).getX(),selectionRectangle.getAllPoints().get(0).getY());
+            fixedPoint = new Point2D(selectionRectangle.getBounds().get(1).getX(),selectionRectangle.getBounds().get(0).getY());
             points.add(0, new Point2D(endPoint.getX(),fixedPoint.getY()));
             points.add(1, new Point2D(fixedPoint.getX(),endPoint.getY()));
         }
         else if(clickedVertex.equals(lowerRightVertex)){
-            fixedPoint = selectionRectangle.getAllPoints().get(0);
+            fixedPoint = selectionRectangle.getBounds().get(0);
             points.add(0, fixedPoint);
             points.add(1, endPoint);
         }

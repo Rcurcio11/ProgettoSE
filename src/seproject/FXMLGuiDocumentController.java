@@ -598,7 +598,7 @@ public class FXMLGuiDocumentController implements Initializable {
         for(RectangleModel v:cornerShapes)
             if(v.contains(selectPoint)){
                 clickedVertex = v;
-                points.set(0, selectedShape.getAllPoints().get(0));
+                points.set(0, selectedShape.getBounds().get(0));
             }
         
     }
