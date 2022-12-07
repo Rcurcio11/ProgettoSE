@@ -34,6 +34,7 @@
                <children>
                 <AnchorPane fx:id="drawingArea" layoutY="-1.0" minHeight="0.0" minWidth="0.0" onMouseClicked="#handleMouseClickeOnDrawingArea" prefHeight="2000.0" prefWidth="2000.0" />
                   <AnchorPane fx:id="insertionArea" disable="true" onMouseDragged="#handleMouseDraggedOnInsertionArea" onMousePressed="#handleMousePressedOnInsertionArea" onMouseReleased="#handleMouseReleasedOnInsertionArea" prefHeight="2000.0" prefWidth="2000.0" visible="false" />
+                  <AnchorPane fx:id="insertPolygonArea" layoutY="-1.0" onMouseClicked="#handleMouseClickedOnInsertPolygonArea" onMouseMoved="#handleMouseMovedOnInsertPolygonArea" prefHeight="2000.0" prefWidth="2000.0" />
                   <AnchorPane fx:id="changeDimensionsArea" disable="true" onMouseDragged="#handleMouseDraggedOnCDArea" onMousePressed="#handleMousePressedOnCDArea" onMouseReleased="#handleMouseReleasedOnCDArea" prefHeight="2000.0" prefWidth="2000.0" visible="false" />
                   <AnchorPane fx:id="moveArea" disable="true" onMouseDragged="#handleMouseDraggedOnMoveArea" onMousePressed="#handleMousePressedOnMoveArea" onMouseReleased="#handleMouseReleasedOnMoveArea" prefHeight="1997.0" prefWidth="1996.0" visible="false" />
                   <AnchorPane fx:id="editingArea" disable="true" onMouseReleased="#handleMouseReleasedOnEditingArea" prefHeight="2000.0" prefWidth="2000.0" visible="false" />
@@ -61,7 +62,7 @@
                         <Button fx:id="rectangleButton" mnemonicParsing="false" onAction="#handleButtonActionRectangle" prefHeight="26.0" prefWidth="78.0" text="Rectangle" />
                         <Button fx:id="ellipseButton" mnemonicParsing="false" onAction="#handleButtonActionEllipse" prefHeight="26.0" prefWidth="56.0" text="Ellipse" />
                         <Button fx:id="lineButton" mnemonicParsing="false" onAction="#handleButtonActionLine" prefHeight="26.0" prefWidth="47.0" text="Line" />
-                        <Button fx:id="polygonButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" text="Polygon" />
+                        <Button fx:id="polygonButton" mnemonicParsing="false" onAction="#handleActionPolygonButton" prefHeight="26.0" prefWidth="70.0" text="Polygon" />
                         <Button fx:id="textButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="55.0" text="Text" />
                      </children>
                   </HBox>
