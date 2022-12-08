@@ -132,4 +132,6 @@ public class LineModel extends Line implements ShapeModel {
     public ArrayList<Point2D> getBounds() {
         return this.getAllPoints();
     }
+    
+    
 }

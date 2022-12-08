@@ -112,5 +112,19 @@ public class LineModelTest {
         assertEquals(newStartPoint,testShapeLine.getLowerBound());
     }
 
+    
+    @Test 
+    public void testMirrorShape(){
+        Point2D startPoint = testShapeLine.getUpperBound();
+        Point2D endPoint = testShapeLine.getLowerBound();
+        System.out.println("b " + startPoint + " " + endPoint);
+        testShapeLine.mirrorShape();
+        System.out.println("a " + startPoint + " " + endPoint);
+        assertEquals(startPoint.getX(),testShapeLine.getUpperBound().getX(),0.1);
+        assertEquals(endPoint.getX(),testShapeLine.getLowerBound().getX(),0.1);
+        assertEquals(startPoint.getY(),testShapeLine.getLowerBound().getY(),0.1);
+        assertEquals(endPoint.getY(),testShapeLine.getUpperBound().getY(),0.1);
+        
+    }
 
 }

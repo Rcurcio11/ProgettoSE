@@ -107,6 +107,8 @@ public class PolygonModel extends Polygon implements ShapeModel{
             }
             //System.out.println("point: " + points.get(0));
             this.points.add(points.get(0));
+            this.getPoints().add(points.get(0).getX());
+            this.getPoints().add(points.get(0).getY());
             this.setStrokeWidth(2.0);
             //System.out.println("here");
         }
@@ -120,7 +122,8 @@ public class PolygonModel extends Polygon implements ShapeModel{
             double pointY = point.getY() + translatePoint.getY();
             newPoints.add(new Point2D(pointX, pointY));
         }
-        newPoints.add(new Point2D((points.get(0).getX()+translatePoint.getX()), (points.get(0).getY()+translatePoint.getY())));
+        //System.out.println(this.points.size() + " " + newPoints.size());
+        //newPoints.add(new Point2D((points.get(0).getX()+translatePoint.getX()), (points.get(0).getY()+translatePoint.getY())));
         //this.getPoints().clear();
         //this.points.clear();
         this.setShapeParameters(newPoints);
@@ -207,5 +210,6 @@ public class PolygonModel extends Polygon implements ShapeModel{
             newPoints.add(nP);
         }        
         this.setShapeParameters(newPoints);
+        //System.out.println("chdim: " + this.points.size());
     }  
 }

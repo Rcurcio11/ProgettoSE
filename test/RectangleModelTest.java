@@ -111,6 +111,19 @@ public class RectangleModelTest {
         testShapeRectangle.changeDimensions(testPoints);
         assertEquals(newStartPoint,testShapeRectangle.getLowerBound());
     }
+    
+    @Test 
+    public void testMirrorShape(){
+        Point2D startPoint = testShapeRectangle.getUpperBound();
+        Point2D endPoint = testShapeRectangle.getLowerBound();
+        testShapeRectangle.mirrorShape();
+        
+        assertEquals(startPoint.getX(),testShapeRectangle.getUpperBound().getX(),0.1);
+        assertEquals(endPoint.getX(),testShapeRectangle.getLowerBound().getX(),0.1);
+        assertEquals(startPoint.getY(),testShapeRectangle.getUpperBound().getY(),0.1);
+        assertEquals(endPoint.getY(),testShapeRectangle.getLowerBound().getY(),0.1);
+        
+    }
 }
 
 

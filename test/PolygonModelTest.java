@@ -117,6 +117,18 @@ public class PolygonModelTest {
         assertEquals(newStartPoint.getY(),testShapePolygon.getBounds().get(1).getY(),0.1);
         
     }
+    
+     @Test 
+    public void testMirrorShape(){
+        Point2D startPoint = testShapePolygon.getUpperBound();
+        Point2D endPoint = testShapePolygon.getLowerBound();
+        testShapePolygon.mirrorShape();
+        
+        assertEquals(startPoint.getX(),testShapePolygon.getUpperBound().getX(),0.1);
+        assertEquals(endPoint.getX(),testShapePolygon.getLowerBound().getX(),0.1);
+        assertEquals(startPoint.getY(),testShapePolygon.getUpperBound().getY(),0.1);
+        assertEquals(endPoint.getY(),testShapePolygon.getLowerBound().getY(),0.1);
+    }
 
 }
 

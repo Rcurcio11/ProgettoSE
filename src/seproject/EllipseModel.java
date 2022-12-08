@@ -55,12 +55,12 @@ public class EllipseModel extends Ellipse implements ShapeModel{
 
     @Override
     public Point2D getLowerBound() {
-        return startPoint;
+        return endPoint;
     }
 
     @Override
     public Point2D getUpperBound() {
-        return endPoint;
+        return startPoint;
     }
 
     @Override
@@ -81,16 +81,14 @@ public class EllipseModel extends Ellipse implements ShapeModel{
 
     @Override
     public void move(Point2D translatePoint) {
-        double newStartX = this.getLowerBound().getX() + translatePoint.getX();
-        double newStartY = this.getLowerBound().getY() + translatePoint.getY();
-        double newEndX = abs(newStartX + this.getRadiusX()*2);
-        double newEndY = abs(newStartY + this.getRadiusY()*2);
-        this.setCenterX((newStartX + newEndX)/2);
-        this.setCenterY((newStartY + newEndY)/2);
-        this.setTranslateX(0);
-        this.setTranslateY(0);
-        this.startPoint = new Point2D(newStartX, newStartY);
-        this.endPoint = new Point2D(newEndX, newEndY);
+        ArrayList<Point2D> points = new ArrayList<>();
+        double newStartX = this.getUpperBound().getX() + translatePoint.getX();
+        double newStartY = this.getUpperBound().getY() + translatePoint.getY();
+        double newEndX = this.getLowerBound().getX() + translatePoint.getX();
+        double newEndY = this.getLowerBound().getY() + translatePoint.getY();
+        points.add(new Point2D(newStartX,newStartY));
+        points.add(new Point2D(newEndX,newEndY));
+        this.setShapeParameters(points);
     }
 
     @Override

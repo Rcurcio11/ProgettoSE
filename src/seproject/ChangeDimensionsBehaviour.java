@@ -92,11 +92,10 @@ public class ChangeDimensionsBehaviour {
         return cornerShapes;
     }
     
-    public void removeVertex(AnchorPane workingArea,List<RectangleModel> cornerShapes){
+    public void removeVertex(AnchorPane workingArea){
         for(RectangleModel rm:cornerShapes)
             workingArea.getChildren().remove(rm);
         cornerShapes.clear();
-        this.cornerShapes.clear();
         
     }
     

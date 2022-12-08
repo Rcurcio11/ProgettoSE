@@ -71,8 +71,8 @@ public class EllipseModelTest {
        testShapeEllipse.pasteShape(testDrawingArea, newStart);
        
        EllipseModel actualLine = (EllipseModel)testDrawingArea.getChildren().get(1);
-       assertEquals(newStartX, actualLine.getLowerBound().getX(), 0.1);
-       assertEquals(newStartY, actualLine.getLowerBound().getY(), 0.1);
+       assertEquals(newStartX, actualLine.getUpperBound().getX(), 0.1);
+       assertEquals(newStartY, actualLine.getUpperBound().getY(), 0.1);
     }
     
     @Test 
@@ -84,8 +84,8 @@ public class EllipseModelTest {
     
     @Test
     public void testChangeDimensions(){
-        Point2D oldEndPoint = testShapeEllipse.getUpperBound();
-        Point2D oldStartPoint = testShapeEllipse.getLowerBound();
+        Point2D oldEndPoint = testShapeEllipse.getLowerBound();
+        Point2D oldStartPoint = testShapeEllipse.getUpperBound();
         Point2D newEndPoint = new Point2D(100,100);
         Point2D newStartPoint = new Point2D(20,15);
         ArrayList<Point2D> testPoints = new ArrayList<>();
@@ -94,19 +94,30 @@ public class EllipseModelTest {
         testPoints.add(oldEndPoint);
         
         testShapeEllipse.changeDimensions(testPoints);
-        assertEquals(oldEndPoint,testShapeEllipse.getUpperBound());
+        assertEquals(oldEndPoint,testShapeEllipse.getLowerBound());
         
         testPoints.set(0, newStartPoint);
         testPoints.set(1, newEndPoint);
         
         testShapeEllipse.changeDimensions(testPoints);
-        assertEquals(newStartPoint,testShapeEllipse.getLowerBound());
-        assertEquals(newEndPoint,testShapeEllipse.getUpperBound());
+        assertEquals(newStartPoint,testShapeEllipse.getUpperBound());
+        assertEquals(newEndPoint,testShapeEllipse.getLowerBound());
         
         testPoints.set(1, oldEndPoint);
         
         testShapeEllipse.changeDimensions(testPoints);
-        assertEquals(newStartPoint,testShapeEllipse.getLowerBound());
+        assertEquals(newStartPoint,testShapeEllipse.getUpperBound());
+        
+    }
+    
+    @Test 
+    public void testMirrorShape(){
+        Point2D startPoint = testShapeEllipse.getUpperBound();
+        Point2D endPoint = testShapeEllipse.getLowerBound();
+        testShapeEllipse.mirrorShape();
+        
+        assertEquals(new Point2D(startPoint.getX(),endPoint.getY()),testShapeEllipse.getUpperBound());
+        assertEquals(new Point2D(endPoint.getX(),startPoint.getY()),testShapeEllipse.getLowerBound());
         
     }
     

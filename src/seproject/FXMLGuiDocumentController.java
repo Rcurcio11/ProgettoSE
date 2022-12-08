@@ -285,7 +285,7 @@ public class FXMLGuiDocumentController implements Initializable {
         changeDimensionsArea.disableProperty().addListener((o,oldVal,newVal) -> {
             if(newVal){
                 //remove vertex
-                cdb.removeVertex(changeDimensionsArea,cornerShapes);
+                cdb.removeVertex(changeDimensionsArea);
             }
             else{
                 cornerShapes = cdb.insertVertex(changeDimensionsArea,selectedShape);
@@ -776,6 +776,17 @@ public class FXMLGuiDocumentController implements Initializable {
         insertionPoly.setStrokeWidth(2.0);
         insertionPoly.setStroke(outlineColor.getValue());
         insertPolygonArea.getChildren().add(insertionPoly);
+    }
+
+    @FXML
+    private void handleButtonActionMirror(ActionEvent event) {
+        ArrayList<Point2D> points = new ArrayList<>();
+        Point2D startPoint = selectedShape.getBounds().get(0);
+        Point2D endPoint = selectedShape.getBounds().get(1);
+        MirrorShapeCommand msc = new MirrorShapeCommand(drawingArea,selectedShape);
+        commandInvoker.execute(msc);
+        removeSelectionRectangle();
+        insertSelectionRectangle();
     }
     
 }

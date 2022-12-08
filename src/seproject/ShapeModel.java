@@ -46,4 +46,15 @@ public interface ShapeModel {
     
     public ArrayList<Point2D> getBounds();
     
+    default void mirrorShape(){
+        ArrayList<Point2D> points = new ArrayList<>();
+        Point2D startPoint = this.getBounds().get(0);
+        Point2D endPoint = this.getBounds().get(1);
+        double width = endPoint.getX() - startPoint.getX();
+        points.add(new Point2D(endPoint.getX() + width,startPoint.getY()));
+        points.add(new Point2D(endPoint.getX(),endPoint.getY()));
+        
+        this.changeDimensions(points);
+        this.move(new Point2D(-width,0));
+    }    
 }
