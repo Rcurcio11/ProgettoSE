@@ -21,21 +21,6 @@ public class PolygonModel extends Polygon implements ShapeModel{
 
     @Override
     public Point2D getLowerBound() {
-        double minX = 663;      //change
-        double minY = 479;      //change
-        for(Point2D point : this.points){
-            if(point.getX()< minX)
-                minX = point.getX();
-            
-            if(point.getY()< minY)
-                minY = point.getY();
-            
-        }
-        return new Point2D(minX, minY);
-    }
-
-    @Override
-    public Point2D getUpperBound() {
         double maxX = -1;
         double maxY = -1;
         for(Point2D point : this.points){
@@ -47,6 +32,21 @@ public class PolygonModel extends Polygon implements ShapeModel{
             
         }
         return new Point2D(maxX, maxY);
+    }
+
+    @Override
+    public Point2D getUpperBound() {
+        double minX = 663;      //change
+        double minY = 479;      //change
+        for(Point2D point : this.points){
+            if(point.getX()< minX)
+                minX = point.getX();
+            
+            if(point.getY()< minY)
+                minY = point.getY();
+            
+        }
+        return new Point2D(minX, minY);
     }
 
     @Override

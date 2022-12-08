@@ -41,12 +41,12 @@ public class RectangleModel extends Rectangle implements ShapeModel{
 
     @Override
     public Point2D getLowerBound() {
-        return new Point2D(this.getX(),this.getY());
+        return new Point2D(this.getX() + this.getWidth(),this.getY() + this.getHeight());
     }
 
     @Override
     public Point2D getUpperBound() {
-        return new Point2D(this.getX() + this.getWidth(),this.getY() + this.getHeight());
+        return new Point2D(this.getX(),this.getY());
     }
     
     @Override 

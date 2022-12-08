@@ -140,8 +140,6 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private Button mirrorButton;
     @FXML
-    private Button stretchButton;
-    @FXML
     private Slider zoomSlider;
     @FXML
     private ScrollPane scrollArea;
@@ -151,6 +149,10 @@ public class FXMLGuiDocumentController implements Initializable {
     private Button addZoomButton;
     @FXML
     private AnchorPane insertPolygonArea;
+    @FXML
+    private Button stretchHButton;
+    @FXML
+    private Button stretchVButton;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -785,6 +787,24 @@ public class FXMLGuiDocumentController implements Initializable {
         Point2D endPoint = selectedShape.getBounds().get(1);
         MirrorShapeCommand msc = new MirrorShapeCommand(drawingArea,selectedShape);
         commandInvoker.execute(msc);
+        removeSelectionRectangle();
+        insertSelectionRectangle();
+    }
+
+    @FXML
+    private void handleButtonActionStretchH(ActionEvent event) {
+        double increment = 25;
+        StretchHorizontalCommand shc = new StretchHorizontalCommand(selectedShape,increment); 
+        commandInvoker.execute(shc);
+        removeSelectionRectangle();
+        insertSelectionRectangle();
+    }
+
+    @FXML
+    private void handleButtonActionStretchV(ActionEvent event) {
+        double increment = 25;
+        StretchVerticalCommand svc = new StretchVerticalCommand(selectedShape,increment); 
+        commandInvoker.execute(svc);
         removeSelectionRectangle();
         insertSelectionRectangle();
     }

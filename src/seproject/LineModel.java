@@ -43,12 +43,12 @@ public class LineModel extends Line implements ShapeModel {
 
     @Override
     public Point2D getLowerBound() {
-        return new Point2D(this.getStartX(),this.getStartY());
+        return new Point2D(this.getEndX(),this.getEndY());
     }
 
     @Override
     public Point2D getUpperBound() {
-        return new Point2D(this.getEndX(),this.getEndY());
+        return new Point2D(this.getStartX(),this.getStartY());
     }
      
     @Override 

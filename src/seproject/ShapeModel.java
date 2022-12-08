@@ -57,4 +57,34 @@ public interface ShapeModel {
         this.changeDimensions(points);
         this.move(new Point2D(-width,0));
     }    
+    
+    default void stretchHorizontal(double increment){
+        ArrayList<Point2D> points = new ArrayList<>();
+        Point2D startPoint = new Point2D(this.getUpperBound().getX() - increment/2,this.getUpperBound().getY());
+        Point2D endPoint = new Point2D(this.getLowerBound().getX() + increment/2,this.getLowerBound().getY());
+        if(startPoint.getX() + increment/2 < endPoint.getX()){
+            points.add(startPoint);
+            points.add(this.getLowerBound());
+            this.changeDimensions(points);
+            points.clear();
+            points.add(this.getUpperBound());
+            points.add(endPoint);
+            this.changeDimensions(points);
+        }
+    }
+    
+    default void stretchVertical(double increment){
+        ArrayList<Point2D> points = new ArrayList<>();
+        Point2D startPoint = new Point2D(this.getUpperBound().getX(),this.getUpperBound().getY() - increment/2);
+        Point2D endPoint = new Point2D(this.getLowerBound().getX(),this.getLowerBound().getY() + increment/2);
+        if(startPoint.getY() + increment/2 < endPoint.getY()){
+            points.add(startPoint);
+            points.add(this.getLowerBound());
+            this.changeDimensions(points);
+            points.clear();
+            points.add(this.getUpperBound());
+            points.add(endPoint);
+            this.changeDimensions(points);
+        }
+    }
 }
