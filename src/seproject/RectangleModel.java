@@ -105,11 +105,6 @@ public class RectangleModel extends Rectangle implements ShapeModel{
         return toInsert;
     }
 
-    @Override
-    public void changeColor(Color outlineColor, Color fillingColor) {
-        this.setStroke(outlineColor);
-        this.setFill(fillingColor);    
-    }
 
     @Override
     public ArrayList<Point2D> getAllPoints() {
@@ -122,5 +117,15 @@ public class RectangleModel extends Rectangle implements ShapeModel{
     @Override
     public ArrayList<Point2D> getBounds() {
         return this.getAllPoints();
+    }
+
+    @Override
+    public void changeOutlineColor(Color outlineColor) {
+        this.setStroke(outlineColor);
+    }
+
+    @Override
+    public void changeFillingColor(Color fillingColor) {
+        this.setFill(fillingColor); 
     }
 }

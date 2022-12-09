@@ -38,7 +38,9 @@ public interface ShapeModel {
         drawingArea.getChildren().remove(this);
     }
     
-    public void changeColor(Color outlineColor, Color fillingColor);
+    public void changeOutlineColor(Color outlineColor);
+    
+    public void changeFillingColor(Color fillingColor);
 
     public ShapeModel pasteShape(AnchorPane drawingArea, Point2D startPoint);
     

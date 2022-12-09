@@ -394,6 +394,8 @@ public class FXMLGuiDocumentController implements Initializable {
             actualNode = drawingArea.getChildren().get(i);
             if(actualNode.contains(selectPoint)){
                selectedShape = (ShapeModel)actualNode; 
+               outlineColor.setValue(selectedShape.getOutlineColor());
+               fillingColor.setValue(selectedShape.getFillingColor());
                shapeIsSelected.setValue(true);
                return;
             }
@@ -485,18 +487,18 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private void handleActionChangeOutlineColor(ActionEvent event) {
         if(shapeIsSelected.getValue()){
-            ChangeColorCommand colorCommand = new ChangeColorCommand(selectedShape, outlineColor.getValue(), fillingColor.getValue());
-            commandInvoker.execute(colorCommand); 
-            shapeIsSelected.setValue(false);
+            ChangeOutlineColorCommand colorOutlineCommand = new ChangeOutlineColorCommand(selectedShape, outlineColor.getValue());
+            commandInvoker.execute(colorOutlineCommand); 
+            //shapeIsSelected.setValue(false);
         }
     }
 
     @FXML
     private void handleActionChangeFillingColor(ActionEvent event) {
         if(shapeIsSelected.getValue()){
-            ChangeColorCommand colorCommand = new ChangeColorCommand(selectedShape, outlineColor.getValue(), fillingColor.getValue());
-            commandInvoker.execute(colorCommand); 
-            shapeIsSelected.setValue(false);
+            ChangeFillingColorCommand colorFillingCommand = new ChangeFillingColorCommand(selectedShape, fillingColor.getValue());
+            commandInvoker.execute(colorFillingCommand); 
+            //shapeIsSelected.setValue(false);
         }
     }
 

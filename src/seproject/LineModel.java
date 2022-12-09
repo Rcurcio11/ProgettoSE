@@ -116,8 +116,13 @@ public class LineModel extends Line implements ShapeModel {
     }
 
     @Override
-    public void changeColor(Color outlineColor, Color fillingColor) {
-        this.setStroke(outlineColor);    
+    public void changeOutlineColor(Color outlineColor) {
+        this.setStroke(outlineColor);
+    }
+
+    @Override
+    public void changeFillingColor(Color fillingColor) {
+        
     }   
 
     @Override

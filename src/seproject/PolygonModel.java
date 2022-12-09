@@ -130,9 +130,13 @@ public class PolygonModel extends Polygon implements ShapeModel{
     }
 
     @Override
-    public void changeColor(Color outlineColor, Color fillingColor) {
+    public void changeOutlineColor(Color outlineColor) {
         this.setStroke(outlineColor);
-        this.setFill(fillingColor);
+    }
+
+    @Override
+    public void changeFillingColor(Color fillingColor) {
+        this.setFill(fillingColor); 
     }
 
     @Override

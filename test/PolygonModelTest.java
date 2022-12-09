@@ -23,13 +23,13 @@ public class PolygonModelTest {
         
         ArrayList<Point2D> points = new ArrayList<>();
         double sidesNumber = Math.random()*10 +2;
-        double pointX = Math.random()*653;
-        double pointY = Math.random()*469;
+        double pointX = Math.random()*2000;
+        double pointY = Math.random()*2000;
         Point2D startendPoint = new Point2D(pointX, pointY);
         points.add(startendPoint);
         for(int i = 1; i<sidesNumber; i++){
-            pointX = Math.random()*653;
-            pointY = Math.random()*469;
+            pointX = Math.random()*2000;
+            pointY = Math.random()*2000;
             points.add(new Point2D(pointX, pointY));
         }
         points.add(startendPoint);
@@ -53,7 +53,7 @@ public class PolygonModelTest {
     @Test
     public void testMove(){
         
-        Point2D translatePoint= new Point2D(12,34);
+        Point2D translatePoint= new Point2D(Math.random()*2000,Math.random()*2000);
         Point2D startPoint = testShapePolygon.getAllPoints().get(0);
         
         testShapePolygon.move(translatePoint);
@@ -73,8 +73,8 @@ public class PolygonModelTest {
     
     @Test
     public void testPasteShape(){
-        double newStartX = Math.random()*653;
-        double newStartY = Math.random()*469;
+        double newStartX = Math.random()*2000;
+        double newStartY = Math.random()*2000;
         
        Point2D newStart = new Point2D(newStartX, newStartY);
        testShapePolygon.pasteShape(testDrawingArea, newStart);
@@ -84,11 +84,18 @@ public class PolygonModelTest {
        assertEquals(newStartY, actualPoly.getPoints().get(1), 0.1);
     }
     
+     @Test 
+    public void testChangeOutlineColor(){
+        Color testOutline = Color.color(Math.random(), Math.random(), Math.random());
+        testShapePolygon.changeOutlineColor(testOutline);
+        assertEquals(testOutline, testShapePolygon.getOutlineColor());
+    }
+    
     @Test 
-    public void testChangeColor(){
-        testShapePolygon.changeColor(Color.ALICEBLUE, Color.GAINSBORO);
-        assertEquals(Color.GAINSBORO, testShapePolygon.getFillingColor());
-        assertEquals(Color.ALICEBLUE, testShapePolygon.getOutlineColor());
+    public void testChangeFillingColor(){
+        Color testFilling = Color.color(Math.random(), Math.random(), Math.random());
+        testShapePolygon.changeFillingColor(testFilling);
+        assertEquals(testFilling, testShapePolygon.getFillingColor());
     }
     
     @Test

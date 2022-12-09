@@ -21,10 +21,10 @@ public class RectangleModelTest {
         testShapeRectangle = new RectangleModel();
         testDrawingArea = new AnchorPane();     
         ArrayList<Point2D> points = new ArrayList<>();
-        double startX = Math.random()*663;
-        double startY = Math.random()*479;
-        double endX = Math.random()*663; 
-        double endY = Math.random()*479;
+        double startX = Math.random()*2000;
+        double startY = Math.random()*2000;
+        double endX = Math.random()*2000; 
+        double endY = Math.random()*2000;
         points.add(new Point2D(startX,startY));
         points.add(new Point2D(endX,endY));
         Color outlineColor = Color.color(Math.random(), Math.random(), Math.random());
@@ -47,7 +47,7 @@ public class RectangleModelTest {
     @Test
     public void testMove(){
         
-        Point2D translatePoint= new Point2D(12,34);
+        Point2D translatePoint= new Point2D(Math.random()*2000,Math.random()*2000);
         Point2D startPoint = testShapeRectangle.getLowerBound();
         
         testShapeRectangle.move(translatePoint);
@@ -67,8 +67,8 @@ public class RectangleModelTest {
     
     @Test
     public void testPasteShape(){
-        double newStartX = Math.random()*663;
-        double newStartY = Math.random()*479;
+        double newStartX = Math.random()*2000;
+        double newStartY = Math.random()*2000;
         
        Point2D newStart = new Point2D(newStartX, newStartY);
        testShapeRectangle.pasteShape(testDrawingArea, newStart);
@@ -78,19 +78,26 @@ public class RectangleModelTest {
        assertEquals(newStartY, actualLine.getY(), 0.1);
     }
     
+      @Test 
+    public void testChangeOutlineColor(){
+        Color testOutline = Color.color(Math.random(), Math.random(), Math.random());
+        testShapeRectangle.changeOutlineColor(testOutline);
+        assertEquals(testOutline, testShapeRectangle.getOutlineColor());
+    }
+    
     @Test 
-    public void testChangeColor(){
-        testShapeRectangle.changeColor(Color.ALICEBLUE, Color.GAINSBORO);
-        assertEquals(Color.GAINSBORO, testShapeRectangle.getFillingColor());
-        assertEquals(Color.ALICEBLUE, testShapeRectangle.getOutlineColor());
+    public void testChangeFillingColor(){
+        Color testFilling = Color.color(Math.random(), Math.random(), Math.random());
+        testShapeRectangle.changeFillingColor(testFilling);
+        assertEquals(testFilling, testShapeRectangle.getFillingColor());
     }
     
     @Test
     public void testChangeDimensions(){
         Point2D oldEndPoint = testShapeRectangle.getUpperBound();
         Point2D oldStartPoint = testShapeRectangle.getLowerBound();
-        Point2D newEndPoint = new Point2D(100,100);
-        Point2D newStartPoint = new Point2D(20,15);
+        Point2D newEndPoint = new Point2D(Math.random()*2000,Math.random()*2000);
+        Point2D newStartPoint = new Point2D(Math.random()*2000,Math.random()*2000);
         ArrayList<Point2D> testPoints = new ArrayList<>();
         
         testPoints.add(oldStartPoint);

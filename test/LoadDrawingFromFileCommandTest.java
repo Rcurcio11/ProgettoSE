@@ -1,12 +1,8 @@
-
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Scanner;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
@@ -17,6 +13,7 @@ import static org.junit.Assert.*;
 import seproject.EllipseModel;
 import seproject.LineModel;
 import seproject.LoadDrawingFromFileCommand;
+import seproject.PolygonModel;
 import seproject.RectangleModel;
 import seproject.ShapeModel;
 
@@ -40,19 +37,30 @@ public class LoadDrawingFromFileCommandTest {
   
     @Before
     public void setUp() throws FileNotFoundException {
+        
+       
+
+    }
+
+    @Test
+    public void testExecute() throws FileNotFoundException{
         ArrayList<Point2D> points = new ArrayList<>();
         points.add(new Point2D(10,12));
         points.add(new Point2D(14,16)); 
         Color stroke = Color.BLACK;
         Color fill = Color.RED;
+        
         ShapeModel line = new LineModel();
         line.insert(testDrawingArea, points,stroke,fill);
         ShapeModel rect = new RectangleModel();
         rect.insert(testDrawingArea,points,stroke,fill);
         ShapeModel ellipse = new EllipseModel();
         ellipse.insert(testDrawingArea,points,stroke,fill);
-        line = new LineModel();
-        line.insert(testDrawingArea, points,stroke,fill);
+        points.add(new Point2D(20,26)); 
+        points.add(new Point2D(10,12));
+        ShapeModel polygon = new PolygonModel();
+        polygon.insert(testDrawingArea,points,stroke,fill);
+        
         
         PrintWriter saver = new PrintWriter(new FileOutputStream(testFilePath));
         for(Node n:testDrawingArea.getChildren()){
@@ -60,66 +68,38 @@ public class LoadDrawingFromFileCommandTest {
             saver.print(shape.saveOnFileString(";"));
         }
         saver.close();
-
-    }
-
-    @Test
-    public void testExecute() throws FileNotFoundException{
+        testDrawingArea.getChildren().clear();
         
-                
         testLoadDrawingFromFileCommand.execute();
+        assertEquals(testDrawingArea.getChildren().size(),4);
         
-        Scanner loader = new Scanner(new FileInputStream(testFilePath)).useDelimiter(";").useLocale(Locale.US);
+        ShapeModel check = null;
+        int counter = 0;
         
-        String className = loader.next();
-        ShapeModel shape = new LineModel();
-        double startX = loader.nextDouble();
-        double startY = loader.nextDouble();
-        double endX = loader.nextDouble();
-        double endY = loader.nextDouble();
-        String stroke = loader.next();
-        String fill = loader.next();
-
-        Point2D startPoint = new Point2D(startX,startY);
-        Point2D endPoint = new Point2D(endX,endY);
+        for(Node n :testDrawingArea.getChildren()){
+            if(n.getClass().equals(RectangleModel.class)){
+                check = (ShapeModel)n;
+                assertEquals(check.getLowerBound(), rect.getLowerBound());
+                counter++;
+            }
+            if(n.getClass().equals(EllipseModel.class)){
+                check = (ShapeModel)n;
+                assertEquals(check.getLowerBound(), ellipse.getLowerBound());
+                counter++;
+            }
+            if(n.getClass().equals(LineModel.class)){
+                check = (ShapeModel)n;
+                assertEquals(check.getLowerBound(), line.getLowerBound());
+                counter++;
+            }
+            if(n.getClass().equals(PolygonModel.class)){
+                check = (ShapeModel)n;
+                assertEquals(check.getLowerBound(), polygon.getLowerBound());
+                counter++;
+            }
+        }
+        assertEquals(counter,4);
         
-        assertEquals(className,LineModel.class.getSimpleName());
-        assertEquals(startPoint,new Point2D(10,12));
-        assertEquals(endPoint,new Point2D(14,16));
-        assertEquals(stroke,Color.BLACK.toString());
-        assertEquals(fill,Color.BLACK.toString());
-        
-        className = loader.next();
-        shape = new RectangleModel();
-        startX = loader.nextDouble();
-        startY = loader.nextDouble();
-        endX = loader.nextDouble();
-        endY = loader.nextDouble();
-        stroke = loader.next();
-        fill = loader.next();
-        startPoint = new Point2D(startX,startY);
-        endPoint = new Point2D(endX,endY);
-        assertEquals(className,RectangleModel.class.getSimpleName());
-        assertEquals(startPoint,new Point2D(10,12));
-        assertEquals(endPoint,new Point2D(14,16));
-        assertEquals(stroke,Color.BLACK.toString());
-        assertEquals(fill,Color.RED.toString());
-        
-        className = loader.next();
-        shape = new EllipseModel();
-        startX = loader.nextDouble();
-        startY = loader.nextDouble();
-        endX = loader.nextDouble();
-        endY = loader.nextDouble();
-        stroke = loader.next();
-        fill = loader.next();
-        startPoint = new Point2D(startX,startY);
-        endPoint = new Point2D(endX,endY);
-        assertEquals(className,EllipseModel.class.getSimpleName());
-        assertEquals(startPoint,new Point2D(10,12));
-        assertEquals(endPoint,new Point2D(14,16));
-        assertEquals(stroke,Color.BLACK.toString());
-        assertEquals(fill,Color.RED.toString());
 
     }
 }
