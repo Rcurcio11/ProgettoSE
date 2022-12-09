@@ -150,9 +150,13 @@ public class FXMLGuiDocumentController implements Initializable {
     @FXML
     private AnchorPane insertPolygonArea;
     @FXML
-    private Button stretchHButton;
+    private Button moreStretchHButton;
     @FXML
-    private Button stretchVButton;
+    private Button lessStretchHButton;
+    @FXML
+    private Button moreStretchVButton;
+    @FXML
+    private Button lessStretchVButton;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -708,7 +712,7 @@ public class FXMLGuiDocumentController implements Initializable {
         s.setPivotX(0);
         s.setPivotY(0);
 
-        double zoomLvl = zoomSlider.getValue();
+        double zoomLvl = zoomSlider.getValue()/8;
         zoomFactor = 1 + zoomLvl;
 
         s.setX(zoomFactor);
@@ -716,8 +720,8 @@ public class FXMLGuiDocumentController implements Initializable {
         
         parentArea.getTransforms().clear();
         parentArea.getTransforms().add(s);
-        parentArea.setTranslateY(-scrollArea.getVvalue() * zoomSlider.getValue());
-        parentArea.setTranslateX(-scrollArea.getHvalue() * zoomSlider.getValue());
+        parentArea.setTranslateY(-scrollArea.getVvalue() * zoomSlider.getValue()/8);
+        parentArea.setTranslateX(-scrollArea.getHvalue() * zoomSlider.getValue()/8);
     }
 
     @FXML
@@ -792,7 +796,7 @@ public class FXMLGuiDocumentController implements Initializable {
     }
 
     @FXML
-    private void handleButtonActionStretchH(ActionEvent event) {
+    private void handleButtonActionMoreStretchH(ActionEvent event) {
         double increment = 25;
         StretchHorizontalCommand shc = new StretchHorizontalCommand(selectedShape,increment); 
         commandInvoker.execute(shc);
@@ -801,8 +805,27 @@ public class FXMLGuiDocumentController implements Initializable {
     }
 
     @FXML
-    private void handleButtonActionStretchV(ActionEvent event) {
+    private void handleButtonActionLessStretchH(ActionEvent event) {
+        double increment = -25;
+        StretchHorizontalCommand shc = new StretchHorizontalCommand(selectedShape,increment); 
+        commandInvoker.execute(shc);
+        removeSelectionRectangle();
+        insertSelectionRectangle();
+        
+    }
+
+    @FXML
+    private void handleButtonActionMoreStretchV(ActionEvent event) {
         double increment = 25;
+        StretchVerticalCommand svc = new StretchVerticalCommand(selectedShape,increment); 
+        commandInvoker.execute(svc);
+        removeSelectionRectangle();
+        insertSelectionRectangle();
+    }
+
+    @FXML
+    private void handleButtonActionLessStretchV(ActionEvent event) {
+        double increment = -25;
         StretchVerticalCommand svc = new StretchVerticalCommand(selectedShape,increment); 
         commandInvoker.execute(svc);
         removeSelectionRectangle();

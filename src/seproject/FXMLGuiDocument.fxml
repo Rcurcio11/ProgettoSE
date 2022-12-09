@@ -111,8 +111,24 @@
                         <Button fx:id="backButton" mnemonicParsing="false" onAction="#handleButtonActionBack" text="To back" />
                         <Button fx:id="rotateButton" mnemonicParsing="false" text="Rotate" />
                         <Button fx:id="mirrorButton" mnemonicParsing="false" onAction="#handleButtonActionMirror" text="Mirror" />
-                        <Button fx:id="stretchHButton" mnemonicParsing="false" onAction="#handleButtonActionStretchH" text="Stretch H" />
-                        <Button fx:id="stretchVButton" mnemonicParsing="false" onAction="#handleButtonActionStretchV" text="Stretch V" />
+                        <VBox alignment="TOP_CENTER" prefHeight="68.0" prefWidth="53.0" spacing="3.0">
+                           <children>
+                              <Button fx:id="moreStretchVButton" mnemonicParsing="false" onAction="#handleButtonActionMoreStretchV" text="+" />
+                              <Label text="Stretch V" />
+                              <Button fx:id="lessStretchVButton" mnemonicParsing="false" onAction="#handleButtonActionLessStretchV" text="-" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="68.0" prefWidth="102.0">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="68.0" prefWidth="0.0" spacing="3.0">
+                                 <children>
+                                    <Button fx:id="lessStretchHButton" mnemonicParsing="false" onAction="#handleButtonActionLessStretchH" text="-" />
+                                    <Label text="Stretch H" />
+                                    <Button fx:id="moreStretchHButton" mnemonicParsing="false" onAction="#handleButtonActionMoreStretchH" text="+" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
                      </children>
                      <padding>
                         <Insets left="10.0" />

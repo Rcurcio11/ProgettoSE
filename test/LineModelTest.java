@@ -126,5 +126,42 @@ public class LineModelTest {
         assertEquals(endPoint.getY(),testShapeLine.getUpperBound().getY(),0.1);
         
     }
+    
+    @Test
+    public void testStretchVertical(){
+        Point2D startPoint = testShapeLine.getUpperBound();
+        Point2D endPoint = testShapeLine.getLowerBound();
+        
+        double height = endPoint.getY() - startPoint.getY();
+        testShapeLine.stretchVertical(-height);
+        assertEquals(startPoint,testShapeLine.getUpperBound());
+        assertEquals(endPoint,testShapeLine.getLowerBound());
+        
+        
+        testShapeLine.stretchVertical(height/2);
+        assertEquals(startPoint.getY() - height/4,testShapeLine.getUpperBound().getY(),0.1);
+        assertEquals(endPoint.getY() + height/4,testShapeLine.getLowerBound().getY(),0.1);
+        assertEquals(startPoint.getX(),testShapeLine.getUpperBound().getX(),0);
+        assertEquals(endPoint.getX(),testShapeLine.getLowerBound().getX(),0);
+        
+    }
+    
+    @Test
+    public void testStretchHorizontal(){
+        Point2D startPoint = testShapeLine.getUpperBound();
+        Point2D endPoint = testShapeLine.getLowerBound();
+        
+        double width = endPoint.getX() - startPoint.getX();
+        testShapeLine.stretchHorizontal(-width);
+        assertEquals(startPoint,testShapeLine.getUpperBound());
+        assertEquals(endPoint,testShapeLine.getLowerBound());
+        
+        
+        testShapeLine.stretchHorizontal(width/2);
+        assertEquals(startPoint.getX() - width/4,testShapeLine.getUpperBound().getX(),0.1);
+        assertEquals(endPoint.getX() + width/4,testShapeLine.getLowerBound().getX(),0.1);
+        assertEquals(startPoint.getY(),testShapeLine.getUpperBound().getY(),0);
+        assertEquals(endPoint.getY(),testShapeLine.getLowerBound().getY(),0);
+    }
 
 }

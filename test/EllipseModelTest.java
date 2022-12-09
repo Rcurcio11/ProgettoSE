@@ -121,5 +121,41 @@ public class EllipseModelTest {
         
     }
     
+    @Test
+    public void testStretchVertical(){
+        Point2D startPoint = testShapeEllipse.getUpperBound();
+        Point2D endPoint = testShapeEllipse.getLowerBound();
+        
+        double height = endPoint.getY() - startPoint.getY();
+        testShapeEllipse.stretchVertical(-height);
+        assertEquals(startPoint,testShapeEllipse.getUpperBound());
+        assertEquals(endPoint,testShapeEllipse.getLowerBound());
+        
+        
+        testShapeEllipse.stretchVertical(height/2);
+        assertEquals(startPoint.getY() - height/4,testShapeEllipse.getUpperBound().getY(),0.1);
+        assertEquals(endPoint.getY() + height/4,testShapeEllipse.getLowerBound().getY(),0.1);
+        assertEquals(startPoint.getX(),testShapeEllipse.getUpperBound().getX(),0);
+        assertEquals(endPoint.getX(),testShapeEllipse.getLowerBound().getX(),0);
+        
+    }
+    
+    @Test
+    public void testStretchHorizontal(){
+        Point2D startPoint = testShapeEllipse.getUpperBound();
+        Point2D endPoint = testShapeEllipse.getLowerBound();
+        
+        double width = endPoint.getX() - startPoint.getX();
+        testShapeEllipse.stretchHorizontal(-width);
+        assertEquals(startPoint,testShapeEllipse.getUpperBound());
+        assertEquals(endPoint,testShapeEllipse.getLowerBound());
+        
+        
+        testShapeEllipse.stretchHorizontal(width/2);
+        assertEquals(startPoint.getX() - width/4,testShapeEllipse.getUpperBound().getX(),0.1);
+        assertEquals(endPoint.getX() + width/4,testShapeEllipse.getLowerBound().getX(),0.1);
+        assertEquals(startPoint.getY(),testShapeEllipse.getUpperBound().getY(),0);
+        assertEquals(endPoint.getY(),testShapeEllipse.getLowerBound().getY(),0);
+    }
 
 }
