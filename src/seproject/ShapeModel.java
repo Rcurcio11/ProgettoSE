@@ -2,6 +2,7 @@
 package seproject;
 
 import java.util.ArrayList;
+import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -29,7 +30,13 @@ public interface ShapeModel {
     public void setShapeParameters(ArrayList<Point2D> points);
     
     default void changeDimensions(ArrayList<Point2D> points){
-        setShapeParameters(points);
+        double deg = this.getRotation() % 360;
+        this.rotate(-deg);
+        //System.out.println("chdm" +deg);
+        if(deg == 0 || deg == 90 || deg == 180 || deg == 270)
+            setShapeParameters(points);
+        else
+            this.rotate(deg);
     }
 
     public void move(Point2D translatePoint);
@@ -49,15 +56,24 @@ public interface ShapeModel {
     public ArrayList<Point2D> getBounds();
     
     default void mirrorShape(){
+        double deg = this.getRotation() % 360;
+        this.rotate(-deg);
         ArrayList<Point2D> points = new ArrayList<>();
         Point2D startPoint = this.getBounds().get(0);
         Point2D endPoint = this.getBounds().get(1);
-        double width = endPoint.getX() - startPoint.getX();
-        points.add(new Point2D(endPoint.getX() + width,startPoint.getY()));
-        points.add(new Point2D(endPoint.getX(),endPoint.getY()));
+        double width = 0;
+        double height = 0;
+        if(deg == 180 || deg == 0){
+            width = endPoint.getX() - startPoint.getX();
+            points.add(new Point2D(endPoint.getX() + width,startPoint.getY()));
+            points.add(new Point2D(endPoint.getX(),endPoint.getY()));
         
-        this.changeDimensions(points);
-        this.move(new Point2D(-width,0));
+            this.changeDimensions(points);
+            this.move(new Point2D(-width,-height));
+        }
+        
+        this.rotate(deg);
+        
     }    
     
     default void stretchHorizontal(double increment){
@@ -89,4 +105,15 @@ public interface ShapeModel {
             this.changeDimensions(points);
         }
     }
+    
+    default Point2D getCenterPoint() {
+        double width = this.getLowerBound().getX() - this.getUpperBound().getX();
+        double height = this.getLowerBound().getY() - this.getUpperBound().getX();
+        
+        return new Point2D(this.getUpperBound().getX() + width/2, this.getUpperBound().getY() + height/2);
+    }
+    
+    public void rotate(double angle);
+    
+    public double getRotation();
 }

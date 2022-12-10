@@ -6,6 +6,8 @@ import java.util.List;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Shape;
+import javafx.scene.transform.Rotate;
 
 /**
  *
@@ -33,8 +35,8 @@ public class ChangeDimensionsBehaviour {
     }
     
     public List<RectangleModel> insertVertex(AnchorPane workingArea,ShapeModel selectedShape){
-        /*double rotationDegree = selectedShape.getRotationDegree();
-        double deg = selectedShape.getRotationDegree();
+        /*double rotationDegree = selectedShape.getRotation();
+        double deg = selectedShape.getRotation();
         
         Rotate r = new Rotate();
         r.setPivotX(selectedShape.getCenterPoint().getX());
@@ -73,22 +75,16 @@ public class ChangeDimensionsBehaviour {
         lowerLeftVertex = new RectangleModel();
         lowerRightVertex = new RectangleModel();
         
-        upperLeftVertex.insert(workingArea,ulPoints , Color.BLACK, Color.WHITE);
-        lowerRightVertex.insert(workingArea,lrPoints, Color.BLACK, Color.WHITE);
-        //upperLeftVertex.getTransforms().add(r);
-        //System.out.println(upperLeftVertex.getCenterPoint());
-        //lowerRightVertex.getTransforms().add(r);
-        if(!selectedShape.getClass().getSimpleName().equals(LineModel.class.getSimpleName())){
-            lowerLeftVertex.insert(workingArea, llPoints, Color.BLACK, Color.WHITE);
-            //lowerLeftVertex.getTransforms().add(r);
-            upperRightVertex.insert(workingArea, urPoints, Color.BLACK, Color.WHITE);
-            //upperRightVertex.getTransforms().add(r);
-        }
-        
         cornerShapes.add(upperLeftVertex);
         cornerShapes.add(upperRightVertex);
         cornerShapes.add(lowerLeftVertex);
         cornerShapes.add(lowerRightVertex);
+       
+        upperLeftVertex.insert(workingArea,ulPoints , Color.BLACK, Color.WHITE);
+        lowerRightVertex.insert(workingArea,lrPoints, Color.BLACK, Color.WHITE);
+        lowerLeftVertex.insert(workingArea, llPoints, Color.BLACK, Color.WHITE);
+        upperRightVertex.insert(workingArea, urPoints, Color.BLACK, Color.WHITE);
+        
         return cornerShapes;
     }
     
@@ -129,30 +125,35 @@ public class ChangeDimensionsBehaviour {
     public ArrayList<Point2D> computePoints(RectangleModel clickedVertex,Point2D startPoint,Point2D endPoint, ShapeModel selectionRectangle){
         Point2D fixedPoint;
         ArrayList<Point2D> points = new ArrayList<>();
+        Point2D up = new Point2D(((Shape)selectionRectangle).getBoundsInParent().getMinX(),((Shape)selectionRectangle).getBoundsInParent().getMinY());
+        
+        Point2D down = new Point2D(((Shape)selectionRectangle).getBoundsInParent().getMaxX(),((Shape)selectionRectangle).getBoundsInParent().getMaxY());
+        
         if(clickedVertex.equals(upperLeftVertex)){
             //System.out.println("ulv");
-            fixedPoint = selectionRectangle.getBounds().get(1); //endPoint of selectionRectangle
+            fixedPoint = down; //endPoint of selectionRectangle
             points.add(0, endPoint);
             points.add(1,fixedPoint);
         }
         else if(clickedVertex.equals(upperRightVertex)){
             //System.out.println("urv");
-            fixedPoint = new Point2D(selectionRectangle.getBounds().get(0).getX(),selectionRectangle.getBounds().get(1).getY());
+            fixedPoint = new Point2D(up.getX(),down.getY());
             points.add(0, new Point2D(fixedPoint.getX(),endPoint.getY()));
             points.add(1, new Point2D(endPoint.getX(),fixedPoint.getY()));
         }
         else if(clickedVertex.equals(lowerLeftVertex)){
             //System.out.println("llv");
-            fixedPoint = new Point2D(selectionRectangle.getBounds().get(1).getX(),selectionRectangle.getBounds().get(0).getY());
+            fixedPoint = new Point2D(down.getX(),up.getY());
             points.add(0, new Point2D(endPoint.getX(),fixedPoint.getY()));
             points.add(1, new Point2D(fixedPoint.getX(),endPoint.getY()));
         }
         else if(clickedVertex.equals(lowerRightVertex)){
             //System.out.println("lrv");
-            fixedPoint = selectionRectangle.getBounds().get(0);
+            fixedPoint = up;
             points.add(0, fixedPoint);
             points.add(1, endPoint);
         }
+        //System.out.println("cdb: " + points + "\n" + selectionRectangle.getBounds() + "\n");
         return points;
     }
 }

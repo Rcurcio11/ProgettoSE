@@ -109,7 +109,7 @@
                         <Button fx:id="changeDimensionsButton" mnemonicParsing="false" onAction="#handleActionChangeDimensions" text="Change dimensions" />
                         <Button fx:id="frontButton" mnemonicParsing="false" onAction="#handleButtonActionFront" text="To front" />
                         <Button fx:id="backButton" mnemonicParsing="false" onAction="#handleButtonActionBack" text="To back" />
-                        <Button fx:id="rotateButton" mnemonicParsing="false" text="Rotate" />
+                        <Button fx:id="rotateButton" mnemonicParsing="false" onAction="#handleButtonActionRotate" text="Rotate" />
                         <Button fx:id="mirrorButton" mnemonicParsing="false" onAction="#handleButtonActionMirror" text="Mirror" />
                         <VBox alignment="TOP_CENTER" prefHeight="68.0" prefWidth="53.0" spacing="3.0">
                            <children>

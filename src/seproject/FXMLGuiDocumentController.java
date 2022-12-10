@@ -13,6 +13,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
@@ -294,7 +295,7 @@ public class FXMLGuiDocumentController implements Initializable {
                 cdb.removeVertex(changeDimensionsArea);
             }
             else{
-                cornerShapes = cdb.insertVertex(changeDimensionsArea,selectedShape);
+                cornerShapes = cdb.insertVertex(changeDimensionsArea,selectionRectangle);
             }
         });
         
@@ -392,7 +393,7 @@ public class FXMLGuiDocumentController implements Initializable {
         shapeIsSelected.setValue(false);
         for(int i = drawingArea.getChildren().size()-1; i>=0; i--){
             actualNode = drawingArea.getChildren().get(i);
-            if(actualNode.contains(selectPoint)){
+            if(actualNode.getBoundsInParent().contains(selectPoint)){
                selectedShape = (ShapeModel)actualNode; 
                outlineColor.setValue(selectedShape.getOutlineColor());
                fillingColor.setValue(selectedShape.getFillingColor());
@@ -406,7 +407,11 @@ public class FXMLGuiDocumentController implements Initializable {
     private void insertSelectionRectangle(){
         selectionRectangle = new RectangleModel();
         ((Shape)selectionRectangle).getStrokeDashArray().addAll(5d);
-        selectionRectangle.insert(editingArea, selectedShape.getBounds(), Color.GREY, Color.TRANSPARENT);
+        ArrayList<Point2D> points = new ArrayList<>();
+        Bounds b = ((Shape)selectedShape).getBoundsInParent();
+        points.add(new Point2D(b.getMinX(),b.getMinY()));
+        points.add(new Point2D(b.getMaxX(),b.getMaxY()));
+        selectionRectangle.insert(editingArea, points, Color.GREY, Color.TRANSPARENT);
     }
     
     private void removeSelectionRectangle(){
@@ -527,28 +532,44 @@ public class FXMLGuiDocumentController implements Initializable {
     
     
     //INSERTION AREA
+    private ShapeModel tempShape = null;
     @FXML
     private void handleMouseReleasedOnInsertionArea(MouseEvent event) {
-        points.add(new Point2D(event.getX(),event.getY()));    
+        points.add(new Point2D(event.getX(),event.getY()));  
+        shapeToInsert.deleteShape(insertionArea);
         InsertCommand command = new InsertCommand(drawingArea, shapeToInsert,points, outlineColor.getValue(), fillingColor.getValue());
         commandInvoker.execute(command);
         insertionShape.deleteShape(insertionArea);
+        selectionRectangle.deleteShape(insertionArea);
         shapeToInsert = shapeToInsert.nextDraw();
         points.clear();
+        cdb.removeVertex(insertionArea);
+        cornerShapes = null;
     }
 
     @FXML
     private void handleMouseDraggedOnInsertionArea(MouseEvent event) {
         insertionPoints.set(1, new Point2D(event.getX(),event.getY()));
-        insertionShape.changeDimensions(insertionPoints);
+        ArrayList<Point2D> vertexPoints = cdb.computePoints(cornerShapes.get(3), insertionPoints.get(0), insertionPoints.get(1), shapeToInsert);
+        insertionShape.deleteShape(insertionArea);
+        selectionRectangle.changeDimensions(vertexPoints);
+        //insertionShape.changeDimensions(vertexPoints);
+        insertionShape.insert(insertionArea, insertionPoints,outlineColor.getValue(), fillingColor.getValue());
+        cdb.moveVertex(insertionArea, cornerShapes.get(3), insertionPoints.get(1));
     }
 
     @FXML
     private void handleMousePressedOnInsertionArea(MouseEvent event) {
+        points.clear();
+        selectionRectangle = new RectangleModel();
         points.add(new Point2D(event.getX(),event.getY()));
         insertionPoints.set(0, points.get(0));
-        insertionPoints.set(1, points.get(0));
+        insertionPoints.set(1, new Point2D(points.get(0).getX() +1, points.get(0).getY() +1));
+        selectionRectangle.insert(insertionArea, insertionPoints, Color.LIGHTGREY, Color.TRANSPARENT);
         insertionShape.insert(insertionArea, insertionPoints, outlineColor.getValue(), fillingColor.getValue());
+        shapeToInsert.insert(insertionArea, insertionPoints, Color.TRANSPARENT, Color.TRANSPARENT);
+        cornerShapes = cdb.insertVertex(insertionArea, shapeToInsert);
+        
     }
     
     
@@ -605,7 +626,7 @@ public class FXMLGuiDocumentController implements Initializable {
     private void handleMousePressedOnCDArea(MouseEvent event) {
         Point2D selectPoint = new Point2D(event.getX(),event.getY());
         for(RectangleModel v:cornerShapes)
-            if(v.contains(selectPoint)){
+            if(v.getBoundsInParent().contains(selectPoint)){
                 clickedVertex = v;
                 points.set(0, selectedShape.getBounds().get(0));
             }
@@ -830,6 +851,16 @@ public class FXMLGuiDocumentController implements Initializable {
         double increment = -25;
         StretchVerticalCommand svc = new StretchVerticalCommand(selectedShape,increment); 
         commandInvoker.execute(svc);
+        removeSelectionRectangle();
+        insertSelectionRectangle();
+    }
+
+    @FXML
+    private void handleButtonActionRotate(ActionEvent event) {
+        double angle = 45;
+        changeDimensionsButton.setDefaultButton(false);
+        RotateCommand r = new RotateCommand(selectedShape,angle);
+        commandInvoker.execute(r);
         removeSelectionRectangle();
         insertSelectionRectangle();
     }

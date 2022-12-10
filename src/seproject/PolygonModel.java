@@ -166,8 +166,8 @@ public class PolygonModel extends Polygon implements ShapeModel{
     @Override
     public ArrayList<Point2D> getBounds() {
         ArrayList<Point2D> boundsPoint = new ArrayList<>();
-        boundsPoint.add(this.getLowerBound());
         boundsPoint.add(this.getUpperBound());
+        boundsPoint.add(this.getLowerBound());
         return boundsPoint;
     }
     
@@ -178,6 +178,12 @@ public class PolygonModel extends Polygon implements ShapeModel{
         o: old, n: new, p: position, P: point, h: height, w: width
         e.g. oh -> old height
         */
+        double deg = this.getRotation();       
+        if(!(deg == 0 || deg == 180)){
+            //this.rotate(deg);
+            return;
+        }
+        this.rotate(-deg);
         ArrayList<Point2D> newPoints = new ArrayList<>();
         Point2D newStartPoint = points.get(0);
         Point2D newEndPoint = points.get(1);
@@ -215,5 +221,16 @@ public class PolygonModel extends Polygon implements ShapeModel{
         }        
         this.setShapeParameters(newPoints);
         //System.out.println("chdim: " + this.points.size());
+        this.rotate(deg);
     }  
+
+     @Override
+    public void rotate(double angle) {
+        this.setRotate((this.getRotate() + angle) % 360);
+    }
+
+    @Override
+    public double getRotation() {
+        return this.getRotate();
+    }
 }

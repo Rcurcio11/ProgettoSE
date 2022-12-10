@@ -137,6 +137,33 @@ public class LineModel extends Line implements ShapeModel {
     public ArrayList<Point2D> getBounds() {
         return this.getAllPoints();
     }
+
+     @Override
+    public void rotate(double angle) {
+        this.setRotate((this.getRotate() + angle) % 360);
+    }
+
+    @Override
+    public double getRotation() {
+        return this.getRotate();
+    }
     
-    
+    @Override
+    public void changeDimensions(ArrayList<Point2D> points){
+        //System.out.println("line: " + points);
+        double deg = this.getRotation()%360;
+        //System.out.println(deg);
+        if(!(deg == 0 || deg == 180))
+            return;
+        if(this.getStartY() <= this.getEndY())
+            this.setShapeParameters(points);
+        else{
+            ArrayList<Point2D> p = new ArrayList<>();
+            p.add(new Point2D(points.get(0).getX(),points.get(1).getY()));
+            p.add(new Point2D(points.get(1).getX(),points.get(0).getY()));
+            this.setShapeParameters(p);
+        }
+        //System.out.println(this.getAllPoints());
+        
+    }
 }

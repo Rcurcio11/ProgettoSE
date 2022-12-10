@@ -129,4 +129,14 @@ public class EllipseModel extends Ellipse implements ShapeModel{
     public ArrayList<Point2D> getBounds() {
         return this.getAllPoints();
     }
+
+    @Override
+    public void rotate(double angle) {
+        this.setRotate((this.getRotate() + angle) % 360);
+    }
+
+    @Override
+    public double getRotation() {
+        return this.getRotate();
+    }
 }

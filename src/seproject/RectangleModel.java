@@ -3,6 +3,7 @@ package seproject;
 
 import static java.lang.Math.abs;
 import java.util.ArrayList;
+import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -127,5 +128,15 @@ public class RectangleModel extends Rectangle implements ShapeModel{
     @Override
     public void changeFillingColor(Color fillingColor) {
         this.setFill(fillingColor); 
+    }
+
+     @Override
+    public void rotate(double angle) {
+        this.setRotate((this.getRotate() + angle) % 360);
+    }
+
+    @Override
+    public double getRotation() {
+        return this.getRotate();
     }
 }
