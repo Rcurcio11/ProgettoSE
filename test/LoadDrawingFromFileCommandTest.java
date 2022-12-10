@@ -37,8 +37,6 @@ public class LoadDrawingFromFileCommandTest {
   
     @Before
     public void setUp() throws FileNotFoundException {
-        
-       
 
     }
 

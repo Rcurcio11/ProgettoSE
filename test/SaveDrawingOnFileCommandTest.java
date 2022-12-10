@@ -73,7 +73,7 @@ public class SaveDrawingOnFileCommandTest {
         
         int points = loader.nextInt();
         assertEquals(points,2);
-        
+        double deg = loader.nextDouble();
         double startX = loader.nextDouble();
         double startY = loader.nextDouble();
         double endX = loader.nextDouble();
@@ -87,14 +87,15 @@ public class SaveDrawingOnFileCommandTest {
         assertEquals(endPoint,new Point2D(14,16));
         assertEquals(stroke,Color.BLACK.toString());
         assertEquals(fill,Color.BLACK.toString());
-
+        assertEquals(0,deg,0.1);
+        
         className = loader.next();
         //shape = new RectangleModel();
         assertEquals(className,RectangleModel.class.getSimpleName());
         
         points = loader.nextInt();
         assertEquals(points,2);
-        
+        deg = loader.nextDouble();
         startX = loader.nextDouble();
         startY = loader.nextDouble();
         endX = loader.nextDouble();
@@ -108,14 +109,15 @@ public class SaveDrawingOnFileCommandTest {
         assertEquals(endPoint,new Point2D(14,16));
         assertEquals(stroke,Color.BLACK.toString());
         assertEquals(fill,Color.RED.toString());
-
+        assertEquals(0,deg,0.1);
+        
         className = loader.next();
         assertEquals(className,EllipseModel.class.getSimpleName());
         
         //shape = new EllipseModel();
         points = loader.nextInt();
         assertEquals(points,2);
-        
+        deg = loader.nextDouble();
         startX = loader.nextDouble();
         startY = loader.nextDouble();
         endX = loader.nextDouble();
@@ -129,13 +131,14 @@ public class SaveDrawingOnFileCommandTest {
         assertEquals(endPoint,new Point2D(14,16));
         assertEquals(stroke,Color.BLACK.toString());
         assertEquals(fill,Color.RED.toString());
+        assertEquals(0,deg,0.1);
         
         className = loader.next();
         assertEquals(className,PolygonModel.class.getSimpleName());
         
         points = loader.nextInt();
         assertEquals(5,points);
-        
+        deg = loader.nextDouble();
         for(int i=0; i<points; i++){
             double X = loader.nextDouble();
             double Y = loader.nextDouble();
@@ -146,5 +149,6 @@ public class SaveDrawingOnFileCommandTest {
         fill = loader.next();
         assertEquals(stroke,Color.BLACK.toString());
         assertEquals(fill,Color.RED.toString());
+        assertEquals(0,deg,0.1);
     }
 }

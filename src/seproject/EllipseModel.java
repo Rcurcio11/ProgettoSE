@@ -50,7 +50,7 @@ public class EllipseModel extends Ellipse implements ShapeModel{
 
     @Override
     public String saveOnFileString(String separator) {
-        return this.getClass().getSimpleName() + separator + 2 + separator + startPoint.getX() + separator + startPoint.getY() + separator + endPoint.getX() + separator + endPoint.getY() + separator + this.getStroke() + separator + this.getFill() + separator;
+        return this.getClass().getSimpleName() + separator + 2 + separator + this.getRotation() + separator + startPoint.getX() + separator + startPoint.getY() + separator + endPoint.getX() + separator + endPoint.getY() + separator + this.getStroke() + separator + this.getFill() + separator;
     }
 
     @Override

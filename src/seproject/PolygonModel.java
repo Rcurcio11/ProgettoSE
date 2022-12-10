@@ -81,7 +81,7 @@ public class PolygonModel extends Polygon implements ShapeModel{
     @Override
     public String saveOnFileString(String separator) {
         int index = this.points.size();
-        String fileString = this.getClass().getSimpleName() + separator + index + separator;
+        String fileString = this.getClass().getSimpleName() + separator + index + separator + this.getRotation() + separator;
         for(Point2D point : points){
             fileString += point.getX() + separator;
             fileString += point.getY() + separator;

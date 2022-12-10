@@ -37,7 +37,7 @@ public class RectangleModel extends Rectangle implements ShapeModel{
 
     @Override
     public String saveOnFileString(String separator) {
-        return this.getClass().getSimpleName() + separator + 2 + separator + this.getX() + separator + this.getY() + separator + (this.getX() + this.getWidth()) + separator + (this.getY() + this.getHeight()) + separator + this.getStroke() + separator + this.getFill() + separator;
+        return this.getClass().getSimpleName() + separator + 2 + separator + this.getRotation() + separator + this.getX() + separator + this.getY() + separator + (this.getX() + this.getWidth()) + separator + (this.getY() + this.getHeight()) + separator + this.getStroke() + separator + this.getFill() + separator;
     }
 
     @Override

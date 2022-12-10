@@ -38,7 +38,7 @@ public class LineModel extends Line implements ShapeModel {
 
     @Override
     public String saveOnFileString(String separator) {
-        return this.getClass().getSimpleName() + separator + 2 + separator + this.getStartX() + separator + this.getStartY() + separator + this.getEndX() + separator + this.getEndY() + separator + this.getStroke() + separator + this.getStroke() + separator;
+        return this.getClass().getSimpleName() + separator + 2 + separator + this.getRotation() + separator + this.getStartX() + separator + this.getStartY() + separator + this.getEndX() + separator + this.getEndY() + separator + this.getStroke() + separator + this.getStroke() + separator;
     }
 
     @Override

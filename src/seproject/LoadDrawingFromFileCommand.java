@@ -55,6 +55,7 @@ public class LoadDrawingFromFileCommand implements OperationCommand{
                     throw new ShapeModelNotSupportedDrawException();
                 
                 double pointsNumber = loader.nextDouble();
+                double deg = loader.nextDouble();
                 ArrayList<Point2D> points = new ArrayList<>();
                 double pointX;
                 double pointY;
@@ -67,7 +68,8 @@ public class LoadDrawingFromFileCommand implements OperationCommand{
                 String outlineColor = loader.next();
                 String fillingColor = loader.next();
                 shape.insert(drawingArea,points,Color.web(outlineColor), Color.web(fillingColor));
-             }
+                shape.rotate(deg);
+            }
         }catch(FileNotFoundException ex){
             throw new FileErrorDrawException();
         }
