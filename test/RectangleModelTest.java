@@ -144,9 +144,54 @@ public class RectangleModelTest {
     }
     
     @Test
-    public void testRotate(){
+    public void testStretchVertical(){
+        Point2D startPoint = testShapeRectangle.getUpperBound();
+        Point2D endPoint = testShapeRectangle.getLowerBound();
+        
+        double height = endPoint.getY() - startPoint.getY();
+        testShapeRectangle.stretchVertical(-2*height);
+        assertEquals(startPoint,testShapeRectangle.getUpperBound());
+        assertEquals(endPoint,testShapeRectangle.getLowerBound());
+        
+        
+        testShapeRectangle.stretchVertical(height/2);
+        assertEquals(startPoint.getY() - height/4,testShapeRectangle.getUpperBound().getY(),0.1);
+        assertEquals(endPoint.getY() + height/4,testShapeRectangle.getLowerBound().getY(),0.1);
+        assertEquals(startPoint.getX(),testShapeRectangle.getUpperBound().getX(),0);
+        assertEquals(endPoint.getX(),testShapeRectangle.getLowerBound().getX(),0);
         
     }
+    
+    @Test
+    public void testStretchHorizontal(){
+        Point2D startPoint = testShapeRectangle.getUpperBound();
+        Point2D endPoint = testShapeRectangle.getLowerBound();
+        
+        double width = endPoint.getX() - startPoint.getX();
+        testShapeRectangle.stretchHorizontal(-2*width);
+        assertEquals(startPoint,testShapeRectangle.getUpperBound());
+        assertEquals(endPoint,testShapeRectangle.getLowerBound());
+        
+        
+        testShapeRectangle.stretchHorizontal(width/2);
+        assertEquals(startPoint.getX() - width/4,testShapeRectangle.getUpperBound().getX(),0.1);
+        assertEquals(endPoint.getX() + width/4,testShapeRectangle.getLowerBound().getX(),0.1);
+        assertEquals(startPoint.getY(),testShapeRectangle.getUpperBound().getY(),0);
+        assertEquals(endPoint.getY(),testShapeRectangle.getLowerBound().getY(),0);
+    }
+    
+    @Test
+    public void testRotate(){
+        double deg = 10;
+        testShapeRectangle.rotate(deg);
+        
+        assertEquals(deg,testShapeRectangle.getRotation(),0.01);
+       
+        testShapeRectangle.rotate(-deg);
+        assertEquals(0,testShapeRectangle.getRotation(),0.01);
+    }
+    
+    
 }
 
 

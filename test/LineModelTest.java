@@ -162,4 +162,14 @@ public class LineModelTest {
         assertEquals(endPoint.getY(),testShapeLine.getLowerBound().getY(),0);
     }
 
+    @Test
+    public void testRotate(){
+        double deg = 10;
+        testShapeLine.rotate(deg);
+        
+        assertEquals(deg,testShapeLine.getRotation(),0.01);
+        
+        testShapeLine.rotate(-deg);
+        assertEquals(0,testShapeLine.getRotation(),0.01);
+    }
 }

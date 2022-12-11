@@ -23,13 +23,13 @@ public class PolygonModelTest {
         
         ArrayList<Point2D> points = new ArrayList<>();
         double sidesNumber = Math.random()*10 +2;
-        double pointX = Math.random()*2000;
-        double pointY = Math.random()*2000;
+        double pointX = 10 + Math.random()*10;
+        double pointY = 10 + Math.random()*10;
         Point2D startendPoint = new Point2D(pointX, pointY);
         points.add(startendPoint);
         for(int i = 1; i<sidesNumber; i++){
-            pointX = Math.random()*2000;
-            pointY = Math.random()*2000;
+            pointX = 200 + Math.random()*100;
+            pointY = 200 + Math.random()*100;
             points.add(new Point2D(pointX, pointY));
         }
         points.add(startendPoint);
@@ -109,19 +109,19 @@ public class PolygonModelTest {
         points.add(1,newEndPoint);
         testShapePolygon.changeDimensions(points);
         
-        assertEquals(newStartPoint.getX(),testShapePolygon.getBounds().get(0).getX(),0.1);
-        assertEquals(newEndPoint.getX(),testShapePolygon.getBounds().get(1).getX(),0.1);
-        assertEquals(newStartPoint.getY(),testShapePolygon.getBounds().get(0).getY(),0.1);
-        assertEquals(newEndPoint.getY(),testShapePolygon.getBounds().get(1).getY(),0.1);
+        assertEquals(newStartPoint.getX(),testShapePolygon.getUpperBound().getX(),0.1);
+        assertEquals(newEndPoint.getX(),testShapePolygon.getLowerBound().getX(),0.1);
+        assertEquals(newStartPoint.getY(),testShapePolygon.getUpperBound().getY(),0.1);
+        assertEquals(newEndPoint.getY(),testShapePolygon.getLowerBound().getY(),0.1);
         
         points.clear();
         points.add(0,newStartPoint);
         points.add(1,oldStartPoint);
         testShapePolygon.changeDimensions(points);
-        assertEquals(oldStartPoint.getX(),testShapePolygon.getBounds().get(0).getX(),0.1);
-        assertEquals(newStartPoint.getX(),testShapePolygon.getBounds().get(1).getX(),0.1);
-        assertEquals(oldStartPoint.getY(),testShapePolygon.getBounds().get(0).getY(),0.1);
-        assertEquals(newStartPoint.getY(),testShapePolygon.getBounds().get(1).getY(),0.1);
+        assertEquals(oldStartPoint.getX(),testShapePolygon.getUpperBound().getX(),0.1);
+        assertEquals(newStartPoint.getX(),testShapePolygon.getLowerBound().getX(),0.1);
+        assertEquals(oldStartPoint.getY(),testShapePolygon.getUpperBound().getY(),0.1);
+        assertEquals(newStartPoint.getY(),testShapePolygon.getLowerBound().getY(),0.1);
         
     }
     
@@ -136,7 +136,54 @@ public class PolygonModelTest {
         assertEquals(startPoint.getY(),testShapePolygon.getUpperBound().getY(),0.1);
         assertEquals(endPoint.getY(),testShapePolygon.getLowerBound().getY(),0.1);
     }
+    
+    @Test
+    public void testStretchVertical(){
+        Point2D startPoint = testShapePolygon.getUpperBound();
+        Point2D endPoint = testShapePolygon.getLowerBound();
+        
+        double height = endPoint.getY() - startPoint.getY();
+        testShapePolygon.stretchVertical(-2*height);
+        assertEquals(startPoint,testShapePolygon.getUpperBound());
+        assertEquals(endPoint,testShapePolygon.getLowerBound());
+        
+        
+        testShapePolygon.stretchVertical(height/2);
+        assertEquals(startPoint.getY() - height/4,testShapePolygon.getUpperBound().getY(),0.1);
+        assertEquals(endPoint.getY() + height/4,testShapePolygon.getLowerBound().getY(),0.1);
+        assertEquals(startPoint.getX(),testShapePolygon.getUpperBound().getX(),0);
+        assertEquals(endPoint.getX(),testShapePolygon.getLowerBound().getX(),0);
+        
+    }
+    
+    @Test
+    public void testStretchHorizontal(){
+        Point2D startPoint = testShapePolygon.getUpperBound();
+        Point2D endPoint = testShapePolygon.getLowerBound();
+        
+        double width = endPoint.getX() - startPoint.getX();
+        testShapePolygon.stretchHorizontal(-2*width);
+        assertEquals(startPoint,testShapePolygon.getUpperBound());
+        assertEquals(endPoint,testShapePolygon.getLowerBound());
+        
+        
+        testShapePolygon.stretchHorizontal(width/2);
+        assertEquals(startPoint.getX() - width/4,testShapePolygon.getUpperBound().getX(),0.1);
+        assertEquals(endPoint.getX() + width/4,testShapePolygon.getLowerBound().getX(),0.1);
+        assertEquals(startPoint.getY(),testShapePolygon.getUpperBound().getY(),0);
+        assertEquals(endPoint.getY(),testShapePolygon.getLowerBound().getY(),0);
+    }
 
+    @Test
+    public void testRotate(){
+        double deg = 10;
+        testShapePolygon.rotate(deg);
+        
+        assertEquals(deg,testShapePolygon.getRotation(),0.01);
+        
+        testShapePolygon.rotate(-deg);
+        assertEquals(0,testShapePolygon.getRotation(),0.01);
+    }
 }
 
 

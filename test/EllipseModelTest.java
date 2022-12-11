@@ -166,5 +166,16 @@ public class EllipseModelTest {
         assertEquals(startPoint.getY(),testShapeEllipse.getUpperBound().getY(),0);
         assertEquals(endPoint.getY(),testShapeEllipse.getLowerBound().getY(),0);
     }
+    
+    @Test
+    public void testRotate(){
+        double deg = 10;
+        testShapeEllipse.rotate(deg);
+        
+        assertEquals(deg,testShapeEllipse.getRotation(),0.01);
+        
+        testShapeEllipse.rotate(-deg);
+        assertEquals(0,testShapeEllipse.getRotation(),0.01);
+    }
 
 }

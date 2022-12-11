@@ -23,19 +23,19 @@ import seproject.ShapeModel;
  */
 public class LoadDrawingFromFileCommandTest {
     
-    private final LoadDrawingFromFileCommand testLoadDrawingFromFileCommand;
-    private final AnchorPane testDrawingArea;
-    private final String testFilePath;
+    private LoadDrawingFromFileCommand testLoadDrawingFromFileCommand;
+    private AnchorPane testDrawingArea;
+    private String testFilePath;
     
     
     public LoadDrawingFromFileCommandTest() {
-        testFilePath="LoadDrawingOnFileCommandTest.txt";
-        testDrawingArea = new AnchorPane();
-        testLoadDrawingFromFileCommand=new LoadDrawingFromFileCommand(testDrawingArea, testFilePath);
     }
   
     @Before
     public void setUp() throws FileNotFoundException {
+        testFilePath="LoadDrawingOnFileCommandTest.txt";
+        testDrawingArea = new AnchorPane();
+        testLoadDrawingFromFileCommand=new LoadDrawingFromFileCommand(testDrawingArea, testFilePath);
 
     }
 
