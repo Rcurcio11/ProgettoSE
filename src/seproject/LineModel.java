@@ -164,6 +164,15 @@ public class LineModel extends Line implements ShapeModel {
             this.setShapeParameters(p);
         }
         //System.out.println(this.getAllPoints());
-        
+    }
+    
+    @Override
+    public void mirrorShape(){
+        double deg = this.getRotation() % 360; 
+        if(deg == 180 || deg == 0 || deg == 90 || deg == 270){
+            double y = this.getStartY();
+            this.setStartY(this.getEndY());
+            this.setEndY(y);
+        }
     }
 }

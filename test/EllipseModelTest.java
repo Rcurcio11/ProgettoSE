@@ -93,8 +93,8 @@ public class EllipseModelTest {
     public void testChangeDimensions(){
         Point2D oldEndPoint = testShapeEllipse.getLowerBound();
         Point2D oldStartPoint = testShapeEllipse.getUpperBound();
-        Point2D newEndPoint = new Point2D(Math.random()*2000,Math.random()*2000);
-        Point2D newStartPoint = new Point2D(Math.random()*2000,Math.random()*2000);
+        Point2D newEndPoint = new Point2D(oldEndPoint.getX() + Math.random()*10,oldEndPoint.getY() + Math.random()*10);
+        Point2D newStartPoint = new Point2D(oldStartPoint.getX() + Math.random()*10,oldStartPoint.getY() + Math.random()*10);
         ArrayList<Point2D> testPoints = new ArrayList<>();
         
         testPoints.add(oldStartPoint);
@@ -123,8 +123,10 @@ public class EllipseModelTest {
         Point2D endPoint = testShapeEllipse.getLowerBound();
         testShapeEllipse.mirrorShape();
         
-        assertEquals(new Point2D(startPoint.getX(),endPoint.getY()),testShapeEllipse.getUpperBound());
-        assertEquals(new Point2D(endPoint.getX(),startPoint.getY()),testShapeEllipse.getLowerBound());
+        assertEquals(startPoint.getX(),testShapeEllipse.getUpperBound().getX(),0.1);
+        assertEquals(startPoint.getY(),testShapeEllipse.getUpperBound().getY(),0.1);
+        assertEquals(endPoint.getX(),testShapeEllipse.getLowerBound().getX(),0.1);
+        assertEquals(endPoint.getY(),testShapeEllipse.getLowerBound().getY(),0.1);
         
     }
     
@@ -134,7 +136,7 @@ public class EllipseModelTest {
         Point2D endPoint = testShapeEllipse.getLowerBound();
         
         double height = endPoint.getY() - startPoint.getY();
-        testShapeEllipse.stretchVertical(-height);
+        testShapeEllipse.stretchVertical(-2*height);
         assertEquals(startPoint,testShapeEllipse.getUpperBound());
         assertEquals(endPoint,testShapeEllipse.getLowerBound());
         
@@ -153,7 +155,7 @@ public class EllipseModelTest {
         Point2D endPoint = testShapeEllipse.getLowerBound();
         
         double width = endPoint.getX() - startPoint.getX();
-        testShapeEllipse.stretchHorizontal(-width);
+        testShapeEllipse.stretchHorizontal(-2*width);
         assertEquals(startPoint,testShapeEllipse.getUpperBound());
         assertEquals(endPoint,testShapeEllipse.getLowerBound());
         

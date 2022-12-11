@@ -22,10 +22,10 @@ public class LineModelTest {
         testShapeLine = new LineModel();
         testDrawingArea = new AnchorPane();
         ArrayList<Point2D> points = new ArrayList<>();
-        double startX = Math.random()*2000;
-        double startY = Math.random()*2000;
-        double endX = Math.random()*2000; 
-        double endY = Math.random()*2000;
+        double startX = 10 + Math.random()*10;
+        double startY = 10 + Math.random()*10;
+        double endX = 50 + Math.random()*10; 
+        double endY = 50 + Math.random()*10;
         points.add(new Point2D(startX,startY));
         points.add(new Point2D(endX,endY));
         
@@ -33,9 +33,6 @@ public class LineModelTest {
         Color fillingColor = Color.color(Math.random(), Math.random(), Math.random());
         
         testShapeLine.insert(testDrawingArea, points, outlineColor, fillingColor);
-    }
-    
-    public LineModelTest() {
     }
 
     @Test
@@ -89,10 +86,10 @@ public class LineModelTest {
 
     
     @Test public void testChangeDimensions(){
-        Point2D oldEndPoint = testShapeLine.getUpperBound();
-        Point2D oldStartPoint = testShapeLine.getLowerBound();
-        Point2D newEndPoint = new Point2D(Math.random()*2000,Math.random()*2000);
-        Point2D newStartPoint = new Point2D(Math.random()*2000,Math.random()*2000);
+        Point2D oldEndPoint = testShapeLine.getLowerBound();
+        Point2D oldStartPoint = testShapeLine.getUpperBound();
+        Point2D newEndPoint = new Point2D(oldEndPoint.getX() + Math.random()*10,oldEndPoint.getY() + Math.random()*10);
+        Point2D newStartPoint = new Point2D(oldStartPoint.getX() + Math.random()*10,oldStartPoint.getY() + Math.random()*10);
         
         ArrayList<Point2D> testPoints = new ArrayList<>();
         
@@ -100,19 +97,17 @@ public class LineModelTest {
         testPoints.add(oldEndPoint);
         
         testShapeLine.changeDimensions(testPoints);
-        assertEquals(oldEndPoint,testShapeLine.getUpperBound());
+        assertEquals(oldEndPoint,testShapeLine.getLowerBound());
+        assertEquals(oldStartPoint,testShapeLine.getUpperBound());
         
         testPoints.set(0, newStartPoint);
         testPoints.set(1, newEndPoint);
         
         testShapeLine.changeDimensions(testPoints);
-        assertEquals(newStartPoint,testShapeLine.getLowerBound());
-        assertEquals(newEndPoint,testShapeLine.getUpperBound());
+        assertEquals(newStartPoint,testShapeLine.getUpperBound());
+        assertEquals(newEndPoint,testShapeLine.getLowerBound());
         
-        testPoints.set(1, oldEndPoint);
-        
-        testShapeLine.changeDimensions(testPoints);
-        assertEquals(newStartPoint,testShapeLine.getLowerBound());
+       
     }
 
     
@@ -136,7 +131,7 @@ public class LineModelTest {
         Point2D endPoint = testShapeLine.getLowerBound();
         
         double height = endPoint.getY() - startPoint.getY();
-        testShapeLine.stretchVertical(-height);
+        testShapeLine.stretchVertical(-2*height);
         assertEquals(startPoint,testShapeLine.getUpperBound());
         assertEquals(endPoint,testShapeLine.getLowerBound());
         
@@ -155,7 +150,7 @@ public class LineModelTest {
         Point2D endPoint = testShapeLine.getLowerBound();
         
         double width = endPoint.getX() - startPoint.getX();
-        testShapeLine.stretchHorizontal(-width);
+        testShapeLine.stretchHorizontal(-2*width);
         assertEquals(startPoint,testShapeLine.getUpperBound());
         assertEquals(endPoint,testShapeLine.getLowerBound());
         

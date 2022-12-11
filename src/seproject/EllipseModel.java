@@ -65,8 +65,15 @@ public class EllipseModel extends Ellipse implements ShapeModel{
 
     @Override
     public void setShapeParameters(ArrayList<Point2D> points) {
-        this.startPoint = points.get(0);
-        this.endPoint = points.get(1);
+        
+        double newStartX = points.get(0).getX();
+        double newStartY = points.get(0).getY();
+        double newEndX = points.get(1).getX();
+        double newEndY = points.get(1).getY();
+        
+        this.startPoint = new Point2D((newStartX < newEndX ? newStartX : newEndX),(newStartY < newEndY ? newStartY : newEndY));
+        this.endPoint = new Point2D((newStartX > newEndX ? newStartX : newEndX),(newStartY > newEndY ? newStartY : newEndY));
+        
         double width = abs(this.endPoint.getX()-this.startPoint.getX());
         double height = abs(this.endPoint.getY()-this.startPoint.getY());
         double centerX = (this.startPoint.getX()+this.endPoint.getX())/2;
@@ -119,8 +126,8 @@ public class EllipseModel extends Ellipse implements ShapeModel{
     @Override
     public ArrayList<Point2D> getAllPoints() {
         ArrayList<Point2D> points = new ArrayList<>();
-        points.add(this.getLowerBound());
         points.add(this.getUpperBound());
+        points.add(this.getLowerBound());
         return points;
     }
 

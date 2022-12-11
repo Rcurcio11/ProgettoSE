@@ -94,29 +94,41 @@ public class RectangleModelTest {
     
     @Test
     public void testChangeDimensions(){
-        Point2D oldEndPoint = testShapeRectangle.getUpperBound();
-        Point2D oldStartPoint = testShapeRectangle.getLowerBound();
-        Point2D newEndPoint = new Point2D(Math.random()*2000,Math.random()*2000);
-        Point2D newStartPoint = new Point2D(Math.random()*2000,Math.random()*2000);
+        Point2D oldEndPoint = testShapeRectangle.getLowerBound();
+        Point2D oldStartPoint = testShapeRectangle.getUpperBound();
+        Point2D newEndPoint = new Point2D(oldEndPoint.getX() + Math.random()*10,oldEndPoint.getY() + Math.random()*10);
+        Point2D newStartPoint = new Point2D(oldStartPoint.getX() + Math.random()*10,oldStartPoint.getY() + Math.random()*10);
         ArrayList<Point2D> testPoints = new ArrayList<>();
         
         testPoints.add(oldStartPoint);
         testPoints.add(oldEndPoint);
         
         testShapeRectangle.changeDimensions(testPoints);
-        assertEquals(oldEndPoint,testShapeRectangle.getUpperBound());
+        
+        assertEquals(oldEndPoint.getX(),testShapeRectangle.getLowerBound().getX(),0.1);
+        assertEquals(oldEndPoint.getY(),testShapeRectangle.getLowerBound().getY(),0.1);
+        assertEquals(oldStartPoint.getX(),testShapeRectangle.getUpperBound().getX(),0.1);
+        assertEquals(oldStartPoint.getY(),testShapeRectangle.getUpperBound().getY(),0.1);
         
         testPoints.set(0, newStartPoint);
         testPoints.set(1, newEndPoint);
         
         testShapeRectangle.changeDimensions(testPoints);
-        assertEquals(newStartPoint,testShapeRectangle.getLowerBound());
-        assertEquals(newEndPoint,testShapeRectangle.getUpperBound());
         
-        testPoints.set(1, oldEndPoint);
+        assertEquals(newEndPoint.getX(),testShapeRectangle.getLowerBound().getX(),0.1);
+        assertEquals(newEndPoint.getY(),testShapeRectangle.getLowerBound().getY(),0.1);
+        assertEquals(newStartPoint.getX(),testShapeRectangle.getUpperBound().getX(),0.1);
+        assertEquals(newStartPoint.getY(),testShapeRectangle.getUpperBound().getY(),0.1);
+        
+        testPoints.set(0, oldEndPoint);
+        testPoints.set(1, oldStartPoint);
         
         testShapeRectangle.changeDimensions(testPoints);
-        assertEquals(newStartPoint,testShapeRectangle.getLowerBound());
+        
+        assertEquals(oldEndPoint.getX(),testShapeRectangle.getLowerBound().getX(),0.1);
+        assertEquals(oldEndPoint.getY(),testShapeRectangle.getLowerBound().getY(),0.1);
+        assertEquals(oldStartPoint.getX(),testShapeRectangle.getUpperBound().getX(),0.1);
+        assertEquals(oldStartPoint.getY(),testShapeRectangle.getUpperBound().getY(),0.1);
     }
     
     @Test 
@@ -128,7 +140,11 @@ public class RectangleModelTest {
         assertEquals(startPoint.getX(),testShapeRectangle.getUpperBound().getX(),0.1);
         assertEquals(endPoint.getX(),testShapeRectangle.getLowerBound().getX(),0.1);
         assertEquals(startPoint.getY(),testShapeRectangle.getUpperBound().getY(),0.1);
-        assertEquals(endPoint.getY(),testShapeRectangle.getLowerBound().getY(),0.1);
+        assertEquals(endPoint.getY(),testShapeRectangle.getLowerBound().getY(),0.1);   
+    }
+    
+    @Test
+    public void testRotate(){
         
     }
 }
