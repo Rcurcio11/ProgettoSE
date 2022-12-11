@@ -20,7 +20,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<GridPane prefHeight="541.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seproject.FXMLGuiDocumentController">
+<GridPane prefHeight="541.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seproject.FXMLGuiDocumentController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="900.0" />
    </columnConstraints>
@@ -44,19 +44,19 @@
             </AnchorPane>
          </content>
       </ScrollPane>
-      <VBox fx:id="menuVBox" alignment="CENTER" minWidth="900.0" prefHeight="127.0" prefWidth="637.0">
+      <VBox alignment="CENTER" minWidth="900.0" prefHeight="127.0" prefWidth="637.0">
          <children>
             <MenuBar>
               <menus>
-                <Menu fx:id="fileMenu" mnemonicParsing="false" text="File">
+                <Menu mnemonicParsing="false" text="File">
                   <items>
-                    <MenuItem fx:id="saveMenu" mnemonicParsing="false" onAction="#handleActionSaveDrawing" text="Save" />
-                        <MenuItem fx:id="loadMenu" mnemonicParsing="false" onAction="#handleActionLoadDrawing" text="Load" />
+                    <MenuItem mnemonicParsing="false" onAction="#handleActionSaveDrawing" text="Save" />
+                        <MenuItem mnemonicParsing="false" onAction="#handleActionLoadDrawing" text="Load" />
                   </items>
                 </Menu>
               </menus>
             </MenuBar>
-            <HBox fx:id="toolBox" minWidth="900.0" onMouseClicked="#handleClickedToolBox" prefHeight="105.0" prefWidth="589.0" spacing="10.0">
+            <HBox minWidth="900.0" onMouseClicked="#handleClickedToolBox" prefHeight="105.0" prefWidth="589.0" spacing="10.0">
                <children>
                   <HBox prefHeight="51.0" prefWidth="370.0" spacing="10.0">
                      <children>
@@ -100,17 +100,20 @@
             </HBox>
             <HBox minWidth="900.0" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="pasteButton" mnemonicParsing="false" onAction="#handleButtonActionPaste" text="Paste" />
+                  <Button fx:id="pasteButton" mnemonicParsing="false" onAction="#handleButtonActionPaste" text="Paste">
+                     <HBox.margin>
+                        <Insets top="10.0" />
+                     </HBox.margin></Button>
                   <HBox fx:id="editBox" prefHeight="56.0" prefWidth="842.0" spacing="10.0">
                      <children>
-                        <Button fx:id="copyButton" mnemonicParsing="false" onAction="#handleButtonActionCopy" prefHeight="26.0" prefWidth="50.0" text="Copy" />
-                        <Button fx:id="cutButton" mnemonicParsing="false" onAction="#handleButtonActionCut" text="Cut" />
-                        <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#handleButtonActionDelete" text="Delete" />
+                        <Button mnemonicParsing="false" onAction="#handleButtonActionCopy" prefHeight="26.0" prefWidth="50.0" text="Copy" />
+                        <Button mnemonicParsing="false" onAction="#handleButtonActionCut" text="Cut" />
+                        <Button mnemonicParsing="false" onAction="#handleButtonActionDelete" text="Delete" />
                         <Button fx:id="moveButton" mnemonicParsing="false" onAction="#handleButtonActionMove" text="Move" />
                         <Button fx:id="changeDimensionsButton" mnemonicParsing="false" onAction="#handleActionChangeDimensions" text="Change dimensions" />
-                        <Button fx:id="frontButton" mnemonicParsing="false" onAction="#handleButtonActionFront" text="To front" />
-                        <Button fx:id="backButton" mnemonicParsing="false" onAction="#handleButtonActionBack" text="To back" />
-                        <Button fx:id="rotateButton" mnemonicParsing="false" onAction="#handleButtonActionRotate" text="Rotate" />
+                        <Button mnemonicParsing="false" onAction="#handleButtonActionFront" text="To front" />
+                        <Button mnemonicParsing="false" onAction="#handleButtonActionBack" text="To back" />
+                        <Button mnemonicParsing="false" onAction="#handleButtonActionRotate" text="Rotate" />
                         <Button fx:id="mirrorButton" mnemonicParsing="false" onAction="#handleButtonActionMirror" text="Mirror" />
                         <VBox alignment="TOP_CENTER" prefHeight="68.0" prefWidth="53.0" spacing="3.0">
                            <children>
@@ -132,7 +135,7 @@
                         </VBox>
                      </children>
                      <padding>
-                        <Insets left="10.0" />
+                        <Insets left="10.0" top="10.0" />
                      </padding>
                   </HBox>
                </children>
@@ -161,7 +164,7 @@
                   </Slider>
                   <VBox fx:id="textBox" alignment="TOP_CENTER" disable="true" prefHeight="56.0" prefWidth="305.0" spacing="5.0" visible="false">
                      <children>
-                        <Button fx:id="insertTextButton" mnemonicParsing="false" onAction="#handleButtonActionInsertText" text="Insert" />
+                        <Button mnemonicParsing="false" onAction="#handleButtonActionInsertText" text="Insert" />
                         <TextField fx:id="textField" prefHeight="25.0" prefWidth="191.0" />
                      </children>
                   </VBox>
@@ -172,7 +175,7 @@
                               <Insets right="20.0" top="5.0" />
                            </HBox.margin>
                         </Label>
-                        <Button fx:id="lessZoomButton" mnemonicParsing="false" onAction="#handleButtonLessZoomButton" text="-">
+                        <Button mnemonicParsing="false" onAction="#handleButtonLessZoomButton" text="-">
                            <font>
                               <Font size="9.0" />
                            </font>
@@ -185,7 +188,7 @@
                               <Insets right="5.0" top="8.0" />
                            </padding>
                         </Slider>
-                        <Button fx:id="addZoomButton" mnemonicParsing="false" onAction="#handleButtonAddZoomButton" text="+">
+                        <Button mnemonicParsing="false" onAction="#handleButtonAddZoomButton" text="+">
                            <font>
                               <Font size="9.0" />
                            </font>

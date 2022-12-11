@@ -1,5 +1,5 @@
 
-package seproject;
+package seproject.shapes;
 
 import static java.lang.Math.abs;
 import java.util.ArrayList;
@@ -22,12 +22,17 @@ public class EllipseModel extends Ellipse implements ShapeModel{
         startPoint = new Point2D(0,0);
         endPoint = new Point2D(0,0);
     }
+    
+     @Override
+    public Point2D getLowerBound() {
+        return endPoint;
+    }
 
     @Override
-    public ShapeModel nextDraw() {
-        return new EllipseModel();
+    public Point2D getUpperBound() {
+        return startPoint;
     }
-   
+
     @Override 
     public Color getOutlineColor(){
         return (Color) this.getStroke();
@@ -39,28 +44,21 @@ public class EllipseModel extends Ellipse implements ShapeModel{
     }
     
     @Override
-    public void insert(AnchorPane drawingPane, ArrayList<Point2D> points, Color outlineColor, Color fillingColor) {
-        
+    public void insert(AnchorPane drawingArea, ArrayList<Point2D> points, Color outlineColor, Color fillingColor) {
         setShapeParameters(points);
         this.setStroke(outlineColor);
         this.setFill(fillingColor);
-        drawingPane.getChildren().add(this);
+        drawingArea.getChildren().add(this);
     }
-
+    
+    @Override
+    public ShapeModel nextDraw() {
+        return new EllipseModel();
+    }
 
     @Override
     public String saveOnFileString(String separator) {
         return this.getClass().getSimpleName() + separator + 2 + separator + this.getRotation() + separator + startPoint.getX() + separator + startPoint.getY() + separator + endPoint.getX() + separator + endPoint.getY() + separator + this.getStroke() + separator + this.getFill() + separator;
-    }
-
-    @Override
-    public Point2D getLowerBound() {
-        return endPoint;
-    }
-
-    @Override
-    public Point2D getUpperBound() {
-        return startPoint;
     }
 
     @Override
@@ -99,6 +97,16 @@ public class EllipseModel extends Ellipse implements ShapeModel{
     }
 
     @Override
+    public void changeOutlineColor(Color outlineColor) {
+        this.setStroke(outlineColor);
+    }
+
+    @Override
+    public void changeFillingColor(Color fillingColor) {
+        this.setFill(fillingColor); 
+    }
+    
+    @Override
     public ShapeModel pasteShape(AnchorPane drawingArea, Point2D startPoint) {
         EllipseModel toInsert = new EllipseModel();
         ArrayList<Point2D> newPoints = new ArrayList<>();
@@ -111,16 +119,6 @@ public class EllipseModel extends Ellipse implements ShapeModel{
         toInsert.setFill(this.getFill());
         drawingArea.getChildren().add(toInsert);
         return toInsert;
-    }
-
-    @Override
-    public void changeOutlineColor(Color outlineColor) {
-        this.setStroke(outlineColor);
-    }
-
-    @Override
-    public void changeFillingColor(Color fillingColor) {
-        this.setFill(fillingColor); 
     }
 
     @Override

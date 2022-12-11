@@ -1,6 +1,7 @@
 
-package seproject;
+package seproject.commands;
 
+import seproject.shapes.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -11,6 +12,9 @@ import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import seproject.exceptions.FileErrorDrawException;
+import seproject.exceptions.GenericDrawException;
+import seproject.exceptions.ShapeModelNotSupportedDrawException;
 
 /**
  *

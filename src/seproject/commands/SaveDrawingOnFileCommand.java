@@ -1,12 +1,15 @@
 
-package seproject;
+package seproject.commands;
 
 
+import seproject.shapes.ShapeModel;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
+import seproject.exceptions.FileErrorDrawException;
+import seproject.exceptions.GenericDrawException;
 
 /**
  *

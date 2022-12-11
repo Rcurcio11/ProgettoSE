@@ -1,7 +1,9 @@
 
-package seproject;
+package seproject.commands;
 
+import seproject.shapes.ShapeModel;
 import javafx.geometry.Point2D;
+import seproject.exceptions.GenericDrawException;
 
 /**
  *

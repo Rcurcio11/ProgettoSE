@@ -1,5 +1,5 @@
 
-package seproject;
+package seproject.exceptions;
 
 /**
  *

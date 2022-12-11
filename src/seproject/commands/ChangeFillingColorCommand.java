@@ -2,13 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package seproject;
+package seproject.commands;
 
+import seproject.shapes.ShapeModel;
 import javafx.scene.paint.Color;
+import seproject.exceptions.GenericDrawException;
 
 /**
  *
- * @author giuseppefusco
+ * @author Group14
  */
 public class ChangeFillingColorCommand implements OperationCommand{
 

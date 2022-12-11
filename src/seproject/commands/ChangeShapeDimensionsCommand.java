@@ -1,9 +1,12 @@
 
-package seproject;
+package seproject.commands;
 
+import seproject.shapes.ShapeModel;
 import java.util.ArrayList;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
+import seproject.exceptions.GenericDrawException;
+import seproject.exceptions.ShapeNotSelectedDrawException;
 
 /**
  *
@@ -32,7 +35,6 @@ public class ChangeShapeDimensionsCommand implements OperationCommand{
 
     @Override
     public void undo() {
-        //System.out.println("undo: " +oldPoints.size());
         shape.setShapeParameters(oldPoints);
     }
     

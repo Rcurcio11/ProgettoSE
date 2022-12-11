@@ -1,5 +1,5 @@
 
-package seproject;
+package seproject.shapes;
 
 import java.util.ArrayList;
 import javafx.geometry.Bounds;
@@ -12,9 +12,12 @@ import javafx.scene.paint.Color;
  * @author Group14
  */
 public interface ShapeModel {
+    //this interface represents all the possible figures that can be inserted in the drawing area
     
+    //method to get the point that represents the ending point of the figure
     public Point2D getLowerBound();
     
+    //method to get the point that represents the starting point of the figure
     public Point2D getUpperBound();
     
     public Color getOutlineColor();
@@ -23,6 +26,7 @@ public interface ShapeModel {
     
     public void insert (AnchorPane drawingArea, ArrayList<Point2D> points, Color outlineColor, Color fillingColor);
     
+    //method that allows to insert more shapes of the same type without reconfirming the decision to insert that specific shape
     public ShapeModel nextDraw ();
     
     public String saveOnFileString(String separator);
@@ -51,8 +55,10 @@ public interface ShapeModel {
 
     public ShapeModel pasteShape(AnchorPane drawingArea, Point2D startPoint);
     
+    //method that returns the most important points of the figure that allow to represent it completely
     public ArrayList<Point2D> getAllPoints();
     
+    //method that returns the points that enclose the figure
     public ArrayList<Point2D> getBounds();
     
     default void mirrorShape(){
@@ -106,6 +112,7 @@ public interface ShapeModel {
         }
     }
     
+    //method that returns the central point of the figure on which it is rotated
     default Point2D getCenterPoint() {
         double width = this.getLowerBound().getX() - this.getUpperBound().getX();
         double height = this.getLowerBound().getY() - this.getUpperBound().getY();

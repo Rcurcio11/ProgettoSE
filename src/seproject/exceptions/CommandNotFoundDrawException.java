@@ -1,10 +1,10 @@
 
 
-package seproject;
+package seproject.exceptions;
 
 /**
  *
- * @author Gruppo14
+ * @author Group14
  */
 public class CommandNotFoundDrawException extends GenericDrawException{
     

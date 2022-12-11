@@ -1,5 +1,5 @@
 
-package seproject;
+package seproject.shapes;
 
 import java.util.ArrayList;
 import javafx.geometry.Point2D;
@@ -43,18 +43,8 @@ public class TextModel extends Text implements ShapeModel {
     public void insert(AnchorPane drawingArea, ArrayList<Point2D> points, Color outlineColor, Color fillingColor) {
         this.setFill(fillingColor);
         this.setStroke(outlineColor);
-        //System.out.println("txt insert " +points);
-        //  this.setText();
-        //this.setBackground(Background.EMPTY);
-        //Point2D endPoint = points.remove(1);
         drawingArea.getChildren().add(this);
-        this.setShapeParameters(points);
-        
-        //System.out.println("insert: "+this.getBounds());
-        //System.out.println(this.getBoundsInParent());
-        //this.setEditable(true);
-        //Text t = new Text();    }
-        
+        this.setShapeParameters(points);   
     }
     
     @Override
@@ -69,37 +59,30 @@ public class TextModel extends Text implements ShapeModel {
 
     @Override
     public void setShapeParameters(ArrayList<Point2D> points) {
-        //double scaleX = this.getScaleX();
-        //double scaleY = this.getScaleY();
-        //this.setScaleX(1);
-        //this.setScaleY(1);
         double nX = points.get(0).getX();
         double nY = points.get(0).getY();
-        //System.out.println("points\n"+points);
         if(points.size() > 1){
             Point2D endPoint = points.get(1);
-            
-            double scale = this.getScaleX();
             double width = this.getBoundsInParent().getWidth();
             double newWidth = endPoint.getX() - this.getX();
             double newFont = (this.getFont().getSize()*newWidth)/width;
-            //System.out.println("width&font" + newWidth + " " + width + " " + this.getFont().getSize() + " " + newFont);
-            scale = (newWidth/width);
-            /*if(newWidth < 0 && scale > 1)
-                this.setScaleX(-scale);
-            else
-                this.setScaleX(+scale);*/
-            //this.setScaleX(newFont/this.getFont().getSize());
+            double scale = (newWidth/width);
             this.setFont(new Font(newFont));
-            //this.setScaleY(((this.getBoundsInParent().getHeight())/(points.get(1).getY() - this.getY())));
         }
         this.setX(nX);
         this.setY(nY);
-        //this.setFont(new Font((points.get(1).getX() - this.getX())/10));
         this.setTextOrigin(VPos.TOP);
-        //System.out.println("font: " + this.getBounds());
-        //this.setScaleX(scaleX);
-        //this.setScaleY(scaleY);
+    }
+    
+    @Override
+    public void changeDimensions(ArrayList<Point2D> points){
+        double deg = this.getRotation() % 360;
+        this.rotate(-deg);
+        //System.out.println("chdm" +deg);
+        if(deg == 0)
+            setShapeParameters(points);
+        else
+            this.rotate(deg);
     }
 
     @Override
@@ -125,12 +108,7 @@ public class TextModel extends Text implements ShapeModel {
         ArrayList<Point2D> newPoints = new ArrayList<>();
         newPoints.add(0,startPoint);
         TextModel toInsert = new TextModel();
-        //double newEndX = abs(startPoint.getX() + this.getWidth());
-        //double newEndY = abs(startPoint.getY()+ this.getHeight());
-        //newPoints.add(new Point2D(newEndX, newEndY));
         toInsert.setShapeParameters(newPoints);
-        //toInsert.setX(startPoint.getX());
-        //toInsert.setY(startPoint.getY());
         toInsert.setStroke(this.getStroke());
         toInsert.setFill(this.getFill());
         toInsert.setText(this.getText());
@@ -151,6 +129,25 @@ public class TextModel extends Text implements ShapeModel {
         points.add(this.getLowerBound());
         return points;
     }
+    
+    @Override 
+    public void mirrorShape(){
+        this.setScaleX(this.getScaleX()*-1);
+    }
+    
+    @Override
+    public void stretchHorizontal(double increment){
+     /*double scaleX = this.getScaleX() + increment/20;
+        if(scaleX > 0)
+            this.setScaleX(scaleX); */  
+    }
+    
+    @Override
+    public void stretchVertical(double increment){
+        /*double scaleY = this.getScaleY() + increment/20;
+        if(scaleY > 0)
+            this.setScaleY(scaleY);*/
+    }
 
     @Override
     public void rotate(double angle) {
@@ -162,41 +159,13 @@ public class TextModel extends Text implements ShapeModel {
         return this.getRotate();
     }
     
+    //// Additional methods specific to the TextModel 
+    
     public void setContent(String text){
         this.setText(text);
     }
     
     public void setFont(double fontSize){
         this.setFont(new Font(fontSize));
-    }
-    
-    @Override 
-    public void mirrorShape(){
-        this.setScaleX(this.getScaleX()*-1);
-    }
-    
-    @Override
-    public void stretchVertical(double increment){
-        /*double scaleY = this.getScaleY() + increment/20;
-        if(scaleY > 0)
-            this.setScaleY(scaleY);*/
-    }
-    
-    @Override
-    public void stretchHorizontal(double increment){
-     /*double scaleX = this.getScaleX() + increment/20;
-        if(scaleX > 0)
-            this.setScaleX(scaleX); */  
-    }
-    
-    @Override
-    public void changeDimensions(ArrayList<Point2D> points){
-        double deg = this.getRotation() % 360;
-        this.rotate(-deg);
-        //System.out.println("chdm" +deg);
-        if(deg == 0)
-            setShapeParameters(points);
-        else
-            this.rotate(deg);
     }
 }

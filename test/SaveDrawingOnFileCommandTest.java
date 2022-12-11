@@ -10,12 +10,12 @@ import javafx.scene.paint.Color;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import seproject.EllipseModel;
-import seproject.LineModel;
-import seproject.PolygonModel;
-import seproject.RectangleModel;
-import seproject.SaveDrawingOnFileCommand;
-import seproject.ShapeModel;
+import seproject.shapes.EllipseModel;
+import seproject.shapes.LineModel;
+import seproject.shapes.PolygonModel;
+import seproject.shapes.RectangleModel;
+import seproject.commands.SaveDrawingOnFileCommand;
+import seproject.shapes.ShapeModel;
 
 /**
  *

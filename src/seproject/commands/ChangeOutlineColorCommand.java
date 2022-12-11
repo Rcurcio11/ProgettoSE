@@ -1,7 +1,9 @@
 
-package seproject;
+package seproject.commands;
 
+import seproject.shapes.ShapeModel;
 import javafx.scene.paint.Color;
+import seproject.exceptions.GenericDrawException;
 
 /**
  *

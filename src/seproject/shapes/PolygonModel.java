@@ -1,5 +1,5 @@
 
-package seproject;
+package seproject.shapes;
 
 import static java.lang.Math.abs;
 import java.util.ArrayList;
@@ -21,30 +21,28 @@ public class PolygonModel extends Polygon implements ShapeModel{
 
     @Override
     public Point2D getLowerBound() {
-        double maxX = -1;
-        double maxY = -1;
+        double maxX = points.get(0).getX();
+        double maxY = points.get(0).getY();
         for(Point2D point : this.points){
             if(point.getX()> maxX)
                 maxX = point.getX();
             
             if(point.getY()> maxY)
-                maxY = point.getY();
-            
+                maxY = point.getY();      
         }
         return new Point2D(maxX, maxY);
     }
 
     @Override
     public Point2D getUpperBound() {
-        double minX = 663;      //change
-        double minY = 479;      //change
+        double minX = points.get(0).getX();
+        double minY = points.get(0).getY();
         for(Point2D point : this.points){
             if(point.getX()< minX)
                 minX = point.getX();
             
             if(point.getY()< minY)
-                minY = point.getY();
-            
+                minY = point.getY();    
         }
         return new Point2D(minX, minY);
     }
@@ -61,7 +59,7 @@ public class PolygonModel extends Polygon implements ShapeModel{
 
     @Override
     public void insert(AnchorPane drawingArea, ArrayList<Point2D> points, Color outlineColor, Color fillingColor) {
-        //System.out.println(points.size());
+        //checking if there are enough points to build the polygon
         if(points.size() != 1){
             setShapeParameters(points);
             this.setStroke(outlineColor);
@@ -86,31 +84,26 @@ public class PolygonModel extends Polygon implements ShapeModel{
             fileString += point.getX() + separator;
             fileString += point.getY() + separator;
         }
-        //fileString += points.get(0).getX() + separator + points.get(0).getY() + separator;
         fileString += this.getStroke() + separator + this.getFill() + separator;
         return fileString;
     }
 
     @Override
     public void setShapeParameters(ArrayList<Point2D> points) {
-        //System.out.println("polyup: " +points.size());
         this.getPoints().clear();
         this.points.clear();
-        //System.out.println("poly: " + points.size());
-        //System.out.println("size: "+ this.getPoints().size());
+        
+        //checking if the end of the polygon has been reached
         if(abs(points.get(0).getX()-points.get(points.size()-1).getX())<20 && abs(points.get(0).getY()-points.get(points.size()-1).getY())<20){
             for(int i = 0; i < points.size()-1; i++){
-                //System.out.println("point: " + points.get(i));
                 this.points.add(points.get(i));
                 this.getPoints().add(points.get(i).getX());
                 this.getPoints().add(points.get(i).getY());
             }
-            //System.out.println("point: " + points.get(0));
             this.points.add(points.get(0));
             this.getPoints().add(points.get(0).getX());
             this.getPoints().add(points.get(0).getY());
             this.setStrokeWidth(2.0);
-            //System.out.println("here");
         }
     }
 
@@ -122,10 +115,6 @@ public class PolygonModel extends Polygon implements ShapeModel{
             double pointY = point.getY() + translatePoint.getY();
             newPoints.add(new Point2D(pointX, pointY));
         }
-        //System.out.println(this.points.size() + " " + newPoints.size());
-        //newPoints.add(new Point2D((points.get(0).getX()+translatePoint.getX()), (points.get(0).getY()+translatePoint.getY())));
-        //this.getPoints().clear();
-        //this.points.clear();
         this.setShapeParameters(newPoints);
     }
 
@@ -173,54 +162,39 @@ public class PolygonModel extends Polygon implements ShapeModel{
     
     @Override
     public void changeDimensions(ArrayList<Point2D> points){
-        /*
-        How to read
-        o: old, n: new, p: position, P: point, h: height, w: width
-        e.g. oh -> old height
-        */
         double deg = this.getRotation();       
         if(!(deg == 0 || deg == 180)){
-            //this.rotate(deg);
             return;
         }
         this.rotate(-deg);
+        
         ArrayList<Point2D> newPoints = new ArrayList<>();
         Point2D newStartPoint = points.get(0);
         Point2D newEndPoint = points.get(1);
-        ArrayList<Point2D> oldBounds = this.getBounds();        
-        double osX = oldBounds.get(0).getX();
-        double osY = oldBounds.get(0).getY();
-        double oeX = oldBounds.get(1).getX();
-        double oeY = oldBounds.get(1).getY();
         
-        double oh = oeY - osY;
-        double ow = oeX - osX;
-        double nw = newEndPoint.getX() - newStartPoint.getX();
-        double nh = newEndPoint.getY() - newStartPoint.getY();
-        //System.out.println(points.get(0) + " " + points.get(1));
-        //System.out.println(newStartPoint + " " + newEndPoint);
-        //System.out.println(oldBounds.get(0) + " " + oldBounds.get(1)+"\n");
-                
-        //System.out.println(osX + " " + osY + " " + oeX + " " + oeY);
-        //System.out.println(oh + " " + ow + " " + nh + " " + nw);
-        for(Point2D p:this.getAllPoints()){
-            Point2D nP;
+        //saving the old parameters
+        ArrayList<Point2D> oldBounds = this.getBounds();        
+        double oldStartX = oldBounds.get(0).getX();
+        double oldStartY = oldBounds.get(0).getY();
+        double oldEndX = oldBounds.get(1).getX();
+        double oldEndY = oldBounds.get(1).getY();
+        
+        double oldHeight = oldEndY - oldStartY;
+        double oldWidth = oldEndX - oldStartX;
+        double newWidth = newEndPoint.getX() - newStartPoint.getX();
+        double newHeight = newEndPoint.getY() - newStartPoint.getY();
+        for(Point2D p : this.getAllPoints()){
+            Point2D newPoint;
+            double oldXposition = p.getX() - oldStartX;
+            double oldYposition = p.getY() - oldStartY;
             
-            double nX = p.getX(),nY = p.getY();
-            //System.out.println("before: " + nX + " " + nY);
-            double oxp = p.getX() - osX;
-            double oyp = p.getY() - osY;
-            //System.out.println(": " + oxp + " " + oyp);
+            double newX = (oldXposition*newWidth)/oldWidth + newStartPoint.getX();
+            double newY = (oldYposition*newHeight)/oldHeight + newStartPoint.getY();
             
-            nX = (oxp*nw)/ow + newStartPoint.getX();
-            nY = (oyp*nh)/oh + newStartPoint.getY();
-            
-            //System.out.println("after: " + nX + " " + nY);
-            nP = new Point2D(nX,nY);
-            newPoints.add(nP);
+            newPoint = new Point2D(newX,newY);
+            newPoints.add(newPoint);
         }        
         this.setShapeParameters(newPoints);
-        //System.out.println("chdim: " + this.points.size());
         this.rotate(deg);
     }  
 

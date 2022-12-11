@@ -1,5 +1,8 @@
 
-package seproject;
+package seproject.commands;
+
+import seproject.exceptions.GenericDrawException;
+import seproject.shapes.ShapeModel;
 
 
 /**

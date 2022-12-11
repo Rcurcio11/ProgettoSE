@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
-import seproject.EllipseModel;
+import seproject.shapes.EllipseModel;
 
 /**
  *

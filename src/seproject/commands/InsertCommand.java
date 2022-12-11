@@ -1,10 +1,13 @@
 
-package seproject;
+package seproject.commands;
 
+import seproject.exceptions.GenericDrawException;
+import seproject.shapes.ShapeModel;
 import java.util.ArrayList;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import seproject.exceptions.ShapeNotSelectedDrawException;
 
 /**
  *

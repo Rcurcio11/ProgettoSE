@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
-import seproject.RectangleModel;
+import seproject.shapes.RectangleModel;
 
 /**
  *

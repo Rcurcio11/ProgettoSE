@@ -1,5 +1,5 @@
 
-package seproject;
+package seproject.shapes;
 
 
 import java.util.ArrayList;
@@ -7,40 +7,16 @@ import javafx.geometry.Point2D;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-
-
-
 /**
 *
 * @author Group14
 */
 public class LineModel extends Line implements ShapeModel {
     
-   public LineModel() {
+    public LineModel() {
         super();
     }
-
-    @Override
-    public ShapeModel nextDraw() {
-        return new LineModel();
-    }
-    
-   @Override
-    public void insert(AnchorPane drawingPane, ArrayList<Point2D> points, Color outlineColor, Color fillingColor) {
-        setShapeParameters(points);
-        
-        this.setStroke(outlineColor);
-        this.setStrokeWidth(2.0);
-
-        drawingPane.getChildren().add(this);
-    }
-
-
-    @Override
-    public String saveOnFileString(String separator) {
-        return this.getClass().getSimpleName() + separator + 2 + separator + this.getRotation() + separator + this.getStartX() + separator + this.getStartY() + separator + this.getEndX() + separator + this.getEndY() + separator + this.getStroke() + separator + this.getStroke() + separator;
-    }
-
+   
     @Override
     public Point2D getLowerBound() {
         return new Point2D(this.getEndX(),this.getEndY());
@@ -50,7 +26,7 @@ public class LineModel extends Line implements ShapeModel {
     public Point2D getUpperBound() {
         return new Point2D(this.getStartX(),this.getStartY());
     }
-     
+    
     @Override 
     public Color getOutlineColor(){
         return (Color) this.getStroke();
@@ -62,7 +38,29 @@ public class LineModel extends Line implements ShapeModel {
     }
     
     @Override
+    public void insert(AnchorPane drawingArea, ArrayList<Point2D> points, Color outlineColor, Color fillingColor) {
+        setShapeParameters(points);
+        
+        this.setStroke(outlineColor);
+        this.setStrokeWidth(2.0);
+
+        drawingArea.getChildren().add(this);
+    }
+
+    @Override
+    public ShapeModel nextDraw() {
+        return new LineModel();
+    }
+
+    @Override
+    public String saveOnFileString(String separator) {
+        return this.getClass().getSimpleName() + separator + 2 + separator + this.getRotation() + separator + this.getStartX() + separator + this.getStartY() + separator + this.getEndX() + separator + this.getEndY() + separator + this.getStroke() + separator + this.getStroke() + separator;
+    }
+
+    @Override
     public void setShapeParameters(ArrayList<Point2D> points) {
+        //checking the point with minimum values ​​that will represent the starting point
+        
         if(points.get(0).getX() > points.get(1).getX()){
             this.setStartX(points.get(1).getX());
             this.setStartY(points.get(1).getY());
@@ -75,10 +73,24 @@ public class LineModel extends Line implements ShapeModel {
             this.setEndY(points.get(1).getY());
         }
     }
+    
+    @Override
+    public void changeDimensions(ArrayList<Point2D> points){
+        double deg = this.getRotation()%360;
+        if(!(deg == 0 || deg == 180))
+            return;
+        if(this.getStartY() <= this.getEndY())
+            this.setShapeParameters(points);
+        else{
+            ArrayList<Point2D> p = new ArrayList<>();
+            p.add(new Point2D(points.get(0).getX(),points.get(1).getY()));
+            p.add(new Point2D(points.get(1).getX(),points.get(0).getY()));
+            this.setShapeParameters(p);
+        }
+    }
 
     @Override
     public void move(Point2D translatePoint) {
-        
         double newX = translatePoint.getX() + this.getStartX();
         double newY = translatePoint.getY() + this.getStartY();
         this.setStartX(newX);
@@ -94,6 +106,16 @@ public class LineModel extends Line implements ShapeModel {
         this.setTranslateY(0);
 
     }
+    
+    @Override
+    public void changeOutlineColor(Color outlineColor) {
+        this.setStroke(outlineColor);
+    }
+
+    @Override
+    public void changeFillingColor(Color fillingColor) {  
+        //LineModel doesn't have a filling color
+    }  
 
     @Override
     public ShapeModel pasteShape(AnchorPane drawingArea, Point2D startPoint) {
@@ -116,16 +138,6 @@ public class LineModel extends Line implements ShapeModel {
     }
 
     @Override
-    public void changeOutlineColor(Color outlineColor) {
-        this.setStroke(outlineColor);
-    }
-
-    @Override
-    public void changeFillingColor(Color fillingColor) {
-        
-    }   
-
-    @Override
     public ArrayList<Point2D> getAllPoints() {
         ArrayList<Point2D> points = new ArrayList<>();
         points.add(new Point2D(this.getStartX(),this.getStartY()));
@@ -137,34 +149,6 @@ public class LineModel extends Line implements ShapeModel {
     public ArrayList<Point2D> getBounds() {
         return this.getAllPoints();
     }
-
-     @Override
-    public void rotate(double angle) {
-        this.setRotate((this.getRotate() + angle) % 360);
-    }
-
-    @Override
-    public double getRotation() {
-        return this.getRotate();
-    }
-    
-    @Override
-    public void changeDimensions(ArrayList<Point2D> points){
-        //System.out.println("line: " + points);
-        double deg = this.getRotation()%360;
-        //System.out.println(deg);
-        if(!(deg == 0 || deg == 180))
-            return;
-        if(this.getStartY() <= this.getEndY())
-            this.setShapeParameters(points);
-        else{
-            ArrayList<Point2D> p = new ArrayList<>();
-            p.add(new Point2D(points.get(0).getX(),points.get(1).getY()));
-            p.add(new Point2D(points.get(1).getX(),points.get(0).getY()));
-            this.setShapeParameters(p);
-        }
-        //System.out.println(this.getAllPoints());
-    }
     
     @Override
     public void mirrorShape(){
@@ -175,4 +159,14 @@ public class LineModel extends Line implements ShapeModel {
             this.setEndY(y);
         }
     }
+
+     @Override
+    public void rotate(double angle) {
+        this.setRotate((this.getRotate() + angle) % 360);
+    }
+
+    @Override
+    public double getRotation() {
+        return this.getRotate();
+    } 
 }

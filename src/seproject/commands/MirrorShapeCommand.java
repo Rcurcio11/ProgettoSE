@@ -1,8 +1,8 @@
-package seproject;
+package seproject.commands;
 
-import java.util.ArrayList;
-import javafx.geometry.Point2D;
+import seproject.shapes.ShapeModel;
 import javafx.scene.layout.AnchorPane;
+import seproject.exceptions.GenericDrawException;
 
 /**
  *
