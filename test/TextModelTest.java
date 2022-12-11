@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
 import org.junit.Before;
 import static org.junit.Assert.*;
 import org.junit.Test;
-import seproject.TextModel;
+import seproject.shapes.TextModel;
 
 /**
  *
