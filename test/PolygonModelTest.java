@@ -151,8 +151,8 @@ public class PolygonModelTest {
         testShapePolygon.stretchVertical(height/2);
         assertEquals(startPoint.getY() - height/4,testShapePolygon.getUpperBound().getY(),0.1);
         assertEquals(endPoint.getY() + height/4,testShapePolygon.getLowerBound().getY(),0.1);
-        assertEquals(startPoint.getX(),testShapePolygon.getUpperBound().getX(),0);
-        assertEquals(endPoint.getX(),testShapePolygon.getLowerBound().getX(),0);
+        assertEquals(startPoint.getX(),testShapePolygon.getUpperBound().getX(),0.1);
+        assertEquals(endPoint.getX(),testShapePolygon.getLowerBound().getX(),0.1);
         
     }
     
@@ -170,8 +170,8 @@ public class PolygonModelTest {
         testShapePolygon.stretchHorizontal(width/2);
         assertEquals(startPoint.getX() - width/4,testShapePolygon.getUpperBound().getX(),0.1);
         assertEquals(endPoint.getX() + width/4,testShapePolygon.getLowerBound().getX(),0.1);
-        assertEquals(startPoint.getY(),testShapePolygon.getUpperBound().getY(),0);
-        assertEquals(endPoint.getY(),testShapePolygon.getLowerBound().getY(),0);
+        assertEquals(startPoint.getY(),testShapePolygon.getUpperBound().getY(),0.1);
+        assertEquals(endPoint.getY(),testShapePolygon.getLowerBound().getY(),0.1);
     }
 
     @Test
