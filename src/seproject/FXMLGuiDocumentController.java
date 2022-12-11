@@ -28,6 +28,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
@@ -158,6 +159,12 @@ public class FXMLGuiDocumentController implements Initializable {
     private Button moreStretchVButton;
     @FXML
     private Button lessStretchVButton;
+    @FXML
+    private Button insertTextButton;
+    @FXML
+    private TextField textField;
+    @FXML
+    private VBox textBox;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -231,8 +238,18 @@ public class FXMLGuiDocumentController implements Initializable {
             }
             
         };        
+        
         // when the polygon button is armed the polygonButtonListener kikcs in
         polygonButton.armedProperty().addListener(polygonButtonListener);
+        
+        textButton.armedProperty().addListener((o,oldVal,newVal) -> {
+            if(newVal.booleanValue()){
+                insertionArea.setDisable(true);
+                insertPolygonArea.setDisable(true);
+                //insertionShape = null;
+                selectShapeCheckBox.setSelected(false);
+            }
+        });
         
         // If a shape is selected, then the paste button is disabled (automatically enabled when a there isn't a shape selected)
         pasteButton.disableProperty().bind(shapeIsSelected);
@@ -280,6 +297,7 @@ public class FXMLGuiDocumentController implements Initializable {
         // When the checkBox is selected, automatically the insertionArea and the editingArea are set to disable
         selectShapeCheckBox.selectedProperty().addListener((o,oldVal,newVal) -> {
             if(newVal){
+                textButton.setDefaultButton(false);
                 insertionArea.setDisable(true);
                 insertPolygonArea.setDisable(true);
                 editingArea.setDisable(true);
@@ -320,6 +338,10 @@ public class FXMLGuiDocumentController implements Initializable {
         scrollArea.hvalueProperty().addListener((o,oldVal,newVal) -> {
             parentArea.setTranslateX(-newVal.doubleValue() * (zoomFactor-1));
         }); 
+        
+        textBox.disableProperty().bind(textButton.defaultButtonProperty().not());
+        textBox.visibleProperty().bind(textBox.disableProperty().not());
+        undoButton.disableProperty().bind(commandInvoker.commandIn().not());
     }
 
     @FXML
@@ -863,6 +885,35 @@ public class FXMLGuiDocumentController implements Initializable {
         commandInvoker.execute(r);
         removeSelectionRectangle();
         insertSelectionRectangle();
+    }
+
+    @FXML
+    private void handleButtonActionText(ActionEvent event) {
+        if(textButton.defaultButtonProperty().getValue()){
+            textButton.setDefaultButton(false);
+        }
+        else{
+            textButton.setDefaultButton(true);
+        }
+    }
+
+    @FXML
+    private void handleButtonActionInsertText(ActionEvent event) {
+        String text = textField.getText();
+        if(textField.getText().isEmpty())
+            return;
+        TextModel t = new TextModel();
+        points.clear();
+        //Point2D p = new Point2D(scrollArea.getHvalue(),scrollArea.getVvalue());
+        
+        Point2D p = new Point2D(300,300);
+        points.add(parentArea.screenToLocal(p));
+        System.out.println(parentArea.getTranslateX() + " " + p.getX());
+        InsertCommand ic = new InsertCommand(drawingArea,t,points,outlineColor.getValue(),fillingColor.getValue());
+        commandInvoker.execute(ic);
+        t.setText(text);
+        textButton.setDefaultButton(false);
+        System.out.println(points);
     }
     
 }

@@ -116,7 +116,6 @@ public class EllipseModel extends Ellipse implements ShapeModel{
         this.setFill(fillingColor); 
     }
 
-
     @Override
     public ArrayList<Point2D> getAllPoints() {
         ArrayList<Point2D> points = new ArrayList<>();

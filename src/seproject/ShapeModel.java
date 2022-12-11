@@ -108,7 +108,7 @@ public interface ShapeModel {
     
     default Point2D getCenterPoint() {
         double width = this.getLowerBound().getX() - this.getUpperBound().getX();
-        double height = this.getLowerBound().getY() - this.getUpperBound().getX();
+        double height = this.getLowerBound().getY() - this.getUpperBound().getY();
         
         return new Point2D(this.getUpperBound().getX() + width/2, this.getUpperBound().getY() + height/2);
     }

@@ -38,6 +38,28 @@ public class LoadDrawingFromFileCommand implements OperationCommand{
             Scanner loader = new Scanner(new FileInputStream(filePath)).useDelimiter(";").useLocale(Locale.US);
             while(loader.hasNext()){
                 String className = loader.next();
+                
+                double pointsNumber = loader.nextDouble();
+                double deg = loader.nextDouble();
+                ArrayList<Point2D> points = new ArrayList<>();
+                double pointX;
+                double pointY;
+                
+                for(int i = 0; i<pointsNumber; i++){
+                    pointX = loader.nextDouble();
+                    pointY = loader.nextDouble();
+                    points.add(new Point2D(pointX, pointY));
+                }
+                
+                String outlineColor = loader.next();
+                System.out.println("out" + outlineColor);
+                if(outlineColor.equals("null"))
+                    outlineColor = Color.BLACK.toString();
+                String fillingColor = loader.next();
+                System.out.println(fillingColor);
+                if(fillingColor.equals("null"))
+                    fillingColor = Color.TRANSPARENT.toString();
+                
                 ShapeModel shape = null;
                 if(className.equals(RectangleModel.class.getSimpleName())){
                     shape = new RectangleModel();
@@ -51,22 +73,17 @@ public class LoadDrawingFromFileCommand implements OperationCommand{
                 else if(className.equals(PolygonModel.class.getSimpleName())){
                     shape = new PolygonModel();
                 }
+                else if(className.equals(TextModel.class.getSimpleName())){
+                    shape = new TextModel();
+                    String text = loader.next();
+                    double fontSize = loader.nextDouble();
+                    ((TextModel)shape).setContent(text);
+                    ((TextModel)shape).setFont(fontSize);
+                    
+                }
                 else
                     throw new ShapeModelNotSupportedDrawException();
                 
-                double pointsNumber = loader.nextDouble();
-                double deg = loader.nextDouble();
-                ArrayList<Point2D> points = new ArrayList<>();
-                double pointX;
-                double pointY;
-                
-                for(int i = 0; i<pointsNumber; i++){
-                    pointX = loader.nextDouble();
-                    pointY = loader.nextDouble();
-                    points.add(new Point2D(pointX, pointY));
-                }
-                String outlineColor = loader.next();
-                String fillingColor = loader.next();
                 shape.insert(drawingArea,points,Color.web(outlineColor), Color.web(fillingColor));
                 shape.rotate(deg);
             }
