@@ -201,9 +201,25 @@ public class FXMLGuiDocumentController implements Initializable {
             if(!newVal){
                 editingArea.setDisable(true);
                 removeSelectionRectangle();
-                selectedShape = null;
+                //selectedShape = null;
             }
             else{
+                if(!(selectedShape.getRotation() == 0 || selectedShape.getRotation() == 180)){
+                    changeDimensionsButton.setDisable(true);
+                    moreStretchVButton.setDisable(true);
+                    moreStretchHButton.setDisable(true);
+                    lessStretchVButton.setDisable(true);
+                    lessStretchHButton.setDisable(true);
+                    mirrorButton.setDisable(true);
+                }
+                else{
+                    changeDimensionsButton.setDisable(false);
+                    moreStretchVButton.setDisable(false);
+                    moreStretchHButton.setDisable(false);
+                    lessStretchVButton.setDisable(false);
+                    lessStretchHButton.setDisable(false);
+                    mirrorButton.setDisable(false);
+                }
                 editingArea.setDisable(false);
                 insertSelectionRectangle();
             }
@@ -883,8 +899,8 @@ public class FXMLGuiDocumentController implements Initializable {
         changeDimensionsButton.setDefaultButton(false);
         RotateCommand r = new RotateCommand(selectedShape,angle);
         commandInvoker.execute(r);
-        removeSelectionRectangle();
-        insertSelectionRectangle();
+        shapeIsSelected.setValue(false);
+        shapeIsSelected.setValue(true);
     }
 
     @FXML
