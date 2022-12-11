@@ -56,11 +56,9 @@ public class LoadDrawingFromFileCommand implements OperationCommand{
                 }
                 
                 String outlineColor = loader.next();
-                System.out.println("out" + outlineColor);
                 if(outlineColor.equals("null"))
                     outlineColor = Color.BLACK.toString();
                 String fillingColor = loader.next();
-                System.out.println(fillingColor);
                 if(fillingColor.equals("null"))
                     fillingColor = Color.TRANSPARENT.toString();
                 

@@ -132,7 +132,7 @@ public class LineModel extends Line implements ShapeModel {
         LineModel toInsert = new LineModel();
         toInsert.setShapeParameters(newPoints); 
         toInsert.setStroke(this.getStroke());
-
+        toInsert.setStrokeWidth(this.getStrokeWidth());
         drawingArea.getChildren().add(toInsert);
         return toInsert;
     }

@@ -27,8 +27,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -550,14 +548,12 @@ public class FXMLGuiDocumentController implements Initializable {
         TextModel t = new TextModel();
         points.clear();
         
-        Point2D p = new Point2D(300,300);
-        points.add(parentArea.screenToLocal(p));
-        System.out.println(parentArea.getTranslateX() + " " + p.getX());
+        Point2D p = new Point2D(350,50);
+        points.add(p);
         InsertCommand ic = new InsertCommand(drawingArea,t,points,outlineColor.getValue(),fillingColor.getValue());
         commandInvoker.execute(ic);
         t.setText(text);
         textButton.setDefaultButton(false);
-        System.out.println(points);
     }
     
     @FXML
@@ -759,11 +755,17 @@ public class FXMLGuiDocumentController implements Initializable {
                     mirrorButton.setDisable(true);
                 }
                 else{
-                    changeDimensionsButton.setDisable(false);
                     moreStretchVButton.setDisable(false);
                     moreStretchHButton.setDisable(false);
                     lessStretchVButton.setDisable(false);
                     lessStretchHButton.setDisable(false);
+                    if(selectedShape.getClass().getSimpleName().equals(TextModel.class.getSimpleName())){
+                        moreStretchVButton.setDisable(true);
+                        moreStretchHButton.setDisable(true);
+                        lessStretchVButton.setDisable(true);
+                        lessStretchHButton.setDisable(true);
+                    }
+                    changeDimensionsButton.setDisable(false);
                     mirrorButton.setDisable(false);
                 }
                 editingArea.setDisable(false);

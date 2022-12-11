@@ -19,7 +19,7 @@ import seproject.shapes.ShapeModel;
 
 /**
  *
- * @author Rosario
+ * @author Group14
  */
 public class SaveDrawingOnFileCommandTest {
     private SaveDrawingOnFileCommand testSaveDrawingOnFileCommand;
